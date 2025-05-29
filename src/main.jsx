@@ -16,7 +16,6 @@ createRoot(document.getElementById('root')).render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/login" element={<Login />} />
-
           <Route path="/expenses" element={<Expense />} />
         </Routes>
       </BrowserRouter>
@@ -25,8 +24,8 @@ createRoot(document.getElementById('root')).render(
 );
 
 
-// ReactDOM.createRoot(document.getElementById("root")).render(
-//   <React.StrictMode>
-//     <Login />
-//   </React.StrictMode>
-// );
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <Login />
+  </React.StrictMode>
+);
