@@ -78,22 +78,22 @@ event.preventDefault();
           setError("Unauthorized access. Please check your email and password.");
           console.error("Unauthorized access:", requestData.message);
         }
-        if(response.status.valueOf() === 500) {
+        else if(response.status.valueOf() === 500) {
           // If the login fails due to a server error, display an error message
           setError("Server error. Please try again later.");
           console.error("Server error:", requestData.message);
         }
-        if(response.status.valueOf() === 400) {
+        else if(response.status.valueOf() === 400) {
           // If the login fails due to bad request, display an error message
           setError("Bad request. Please check your input.");
           console.error("Bad request:", requestData.message);
         }
-        if(response.status.valueOf() === 403) {
+        else if(response.status.valueOf() === 403) {
           // If the login fails due to forbidden access, display an error message
           setError("Forbidden access. You do not have permission to access this resource.");
           console.error("Forbidden access:", requestData.message);
         }
-        if(response.status.valueOf() === 404) {
+        else if(response.status.valueOf() === 404) {
           // If the login fails due to not found, display an error message
           setError("User not found. Please check your username and password.");
           console.error("Not found:", requestData.message);
