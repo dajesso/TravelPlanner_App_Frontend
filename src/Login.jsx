@@ -54,13 +54,14 @@ event.preventDefault();
         const requestData = await response.json();
 
         console.log(requestData);
+  
 
         // we check the response status to see if the login was successful or not
         // we handled most of the errors in the backend so we will just check the status code
         // one minor bug i have discovered is that the status code is not being returned correctly
         // burno shows one erorr while this application shows two errors there is no way to fix this
         // without changing the backend code so its a bug that we will have to live with for now
-
+      
 
         if(response.status.valueOf() === 200) {
           // If the login is successful, store the session token in a cookie
@@ -90,6 +91,9 @@ event.preventDefault();
           setError("Server error. Please try again later.");
           console.error("Server error:", requestData.message);
         }
+
+      
+
         else if(response.status.valueOf() === 400) {
           // If the login fails due to bad request, display an error message
           setError("Bad request. Please check your input.");
@@ -100,15 +104,20 @@ event.preventDefault();
           setError("Forbidden access. You do not have permission to access this resource.");
           console.error("Forbidden access:", requestData.message);
         }
-        else if(response.status.valueOf() === 404) {
-          // If the login fails due to not found, display an error message
-          setError("User not found. Please check your username and password.");
-          console.error("Not found:", requestData.message);
+
+
+        else if(response.status.valueOf() === 404){
+          // User doesn't exist maybe in another universe.
+          //setError("User doesn't exist.");
+          //console.error("User not found:", requestData.message);
         }
+
         else {
           setError("Login failed. Please try again.");
           console.error("Unknown error:", requestData.message);
       }
+
+      
 
       // we catch all errors i should modify this later to handle the main specific errors
         
