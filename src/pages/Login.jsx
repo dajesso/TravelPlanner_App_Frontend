@@ -1,7 +1,7 @@
 import { useState } from 'react'
 // import './App.css'
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+// import { StrictMode } from 'react'
+// import { createRoot } from 'react-dom/client'
 import { verifyToken } from '../components/verifyToken'
 
 

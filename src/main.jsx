@@ -6,6 +6,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import App from './App.jsx'
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx'
+import Expense from './pages/Expense.jsx';
 
 
 
@@ -17,6 +18,14 @@ createRoot(document.getElementById('root')).render(
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
+        {/* Layout wrapper */}
+        <Route element={<App />}>
+
+          {/* This is the expense route, as it will negivate from tripsPage, and only display ONE Trip's expenses */}
+          <Route path="/trips/:tripId" element={<Expense />} />
+
+        </Route>
       </Routes>
     
     </BrowserRouter>
