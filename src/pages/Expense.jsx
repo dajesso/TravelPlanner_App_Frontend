@@ -14,42 +14,59 @@ function Expense() {
 
   // Storing the follwing data
   const [trip, setTrip] = useState(null);
+  const [expenses, setExpenses] = useState([]);
   const [error, setError] = useState("");
 
   // Get the token
   // document.cookie gives all cookies, we need to find and get the token from it
-  // const token = document.cookie
-  //   .split("; ")
-  //   .find(row => row.startsWith("sessionToken="))
-  //   ?.split("=")[1];
+  const token = document.cookie
+    .split("; ")
+    .find(row => row.startsWith("sessionToken="))
+    ?.split("=")[1];
 
   // hardcode token for manual testing:
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODM3MWNmMDlhZGU0ZWUwNDc2OWFmNWQiLCJlbWFpbCI6IjEzQGdtYWlsLmNvbSIsImV4cCI6MTc0ODU4MTk4NywiaWF0IjoxNzQ4NTc4Mzg3fQ.VgNVCsP08TiBlrA-2lupfzdj_0Sa1E69J35VH-QV0O8"
+  // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODM3MWNmMDlhZGU0ZWUwNDc2OWFmNWQiLCJlbWFpbCI6IjEzQGdtYWlsLmNvbSIsImV4cCI6MTc0ODU4MTk4NywiaWF0IjoxNzQ4NTc4Mzg3fQ.VgNVCsP08TiBlrA-2lupfzdj_0Sa1E69J35VH-QV0O8"
+  
+  
+
+  useEffect(() => {
   // Need get One Trip data to show the detail on the top of the page
-  const fetchTrip = async () => {
-    try {
-      // Sends a request to the backend to get one trip
-      const res = await fetch(`http://localhost:3000/trips/${tripId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+    const fetchTrip = async () => {
+      try {
+        const res = await fetch(`http://localhost:3000/trips/${tripId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
 
-      const data = await res.json();
-
-      // if sucessful
-      if (res.ok) {
-        setTrip(data);          
-      } else {
-        setError(data.error || "Failed to load trip data");
+        if (res.ok) {
+          setTrip(data);
+        } else {
+          setError(data.error || "Failed to load trip data");
+        }
+      } catch (err) {
+        console.error("Error fetching trip:", err);
+        setError("Network error while fetching trip data");
       }
-    } catch (error) {
-      setError("Network error while fetching trip data");
+    };
+
+    const fetchExpenses = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/expenses?trip=${tripId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setExpenses(data)
+      } else {
+        setError(data.error);}
+    } catch (err) {
+      setError("Failed to fetch expenses.");
     }
   };
 
-
-  useEffect(() => {
-    fetchTrip()
-  }, [tripId]);
+  fetchTrip(),
+  fetchExpenses();
+}, [tripId]);
 
   return (
     <div>
@@ -66,6 +83,11 @@ function Expense() {
           <p>Total Expense: ${trip.totalExpense}</p>
 
           <h3>Expenses:</h3>
+            {expenses.map(exp => (
+              <div key={exp._id}>
+                <p> {exp.category?.name}-{exp.description} - ${exp.amount}</p>
+              </div>
+      ))}
           
         </div>
       ) : (
