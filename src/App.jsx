@@ -1,12 +1,17 @@
-import React from "react";
+// shared layout
+import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
     <div>
-      <h1>Welcome to My React App</h1>
-      <p>This is the default App component.</p>
+      <header>
+        <h1>Travel Planner</h1>
+      </header>
+      <main>
+        <Outlet /> {/* This will render the child route component */}
+      </main>
     </div>
-  );
-}
+  )
+};
 
-export default App;
+export default App
