@@ -4,8 +4,6 @@
 
 import { jwtDecode } from "jwt-decode";
 
-
-
 function verifyToken(token){
 
 
@@ -31,5 +29,5 @@ function verifyToken(token){
 }
 
 // export the function for later use
-
 export { verifyToken };
+
