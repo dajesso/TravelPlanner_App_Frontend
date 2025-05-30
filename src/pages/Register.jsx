@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
+// import './App.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { verifyToken } from './verifyToken'
+import { verifyToken } from '../components/verifyToken.jsx'
 
 
 // We are building onto the template we wil create a html form with a username and password input
@@ -137,8 +137,8 @@ event.preventDefault();
   );
 }
 
-const root = createRoot(document.getElementById("register"));
-root.render(<Register />);
+// const root = createRoot(document.getElementById("register"));
+// root.render(<Register />);
 
 export default Register;
 

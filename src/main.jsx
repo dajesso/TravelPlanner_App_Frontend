@@ -5,6 +5,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import App from './App.jsx'
 import Login from './pages/Login.jsx';
+import Register from './pages/Register.jsx'
 
 
 
@@ -15,7 +16,7 @@ createRoot(document.getElementById('root')).render(
         {/* Redirect root to login Page */}
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
-        {/* <Route path="/register" element={<Register />} /> */}
+        <Route path="/register" element={<Register />} />
       </Routes>
     
     </BrowserRouter>
