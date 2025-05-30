@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
+// import './App.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { verifyToken } from './verifyToken'
+import { verifyToken } from '../components/verifyToken.jsx'
 
 
 // We are building onto the template we wil create a html form with a username and password input
@@ -20,7 +20,7 @@ import { verifyToken } from './verifyToken'
 
 
 
-function Login()
+function Register()
 {
 
 //we handle the state of the form using useState
@@ -34,7 +34,7 @@ event.preventDefault();
 
 
   try{
-    const response = await fetch("http://localhost:3000/login", {
+    const response = await fetch("http://localhost:3000/register", {
         method: "POST",
         headers: {
         "Content-Type": "application/json",
@@ -56,46 +56,43 @@ event.preventDefault();
         console.log(requestData);
   
 
-        // we check the response status to see if the login was successful or not
+        // we check the response status to see if the registeration was successful or not
         // we handled most of the errors in the backend so we will just check the status code
-        // one minor bug i have discovered is that the status code is not being returned correctly
-        // burno shows one erorr while this application shows two errors there is no way to fix this
-        // without changing the backend code so its a bug that we will have to live with for now
+
       
 
-        if(response.status.valueOf() === 200) {
-          // If the login is successful, store the session token in a cookie
-          document.cookie = `sessionToken=${requestData.token}; path=/;`;
-          document.cookie = `userType=${requestData.accountType}; path=/;`;
-          document.cookie = `email=${requestData.email}; path=/;`;
+        if(response.status.valueOf() === 201) {
 
-          // hey why not lets test to see if the token is valid.
+ 
 
-          console.log(verifyToken(requestData.token));
-
-
-
-          console.log("Login successful, session token stored in cookie.");
-          //window.location.href = "/"; // Redirect to the home page
-
-          console.log(document.cookie);
+          console.log("User created successfully");
+          //window.location.href = "/login.html"; // Redirect to the home page
         }
         
         else if(response.status.valueOf() === 401) {
-          // If the login fails due to unauthorized access, display an error message
+          // If the register fails due to unauthorized access, display an error message
           setError("Unauthorized access. Please check your email and password.");
           console.error("Unauthorized access:", requestData.message);
         }
         else if(response.status.valueOf() === 500) {
-          // If the login fails due to a server error, display an error message
+          // If the registeration fails due to a server error, display an error message
           setError("Server error. Please try again later.");
           console.error("Server error:", requestData.message);
         }
 
-      
+        // this error is usually due to a email account always existing
 
         else if(response.status.valueOf() === 400) {
-          // If the login fails due to bad request, display an error message
+          // User account is already registered
+          setError("Email is already registered");
+          console.error("Email is already registered", requestData.message);
+        }
+        
+
+        else if(response.status.valueOf() === 400) {
+          // bad request is usually due to incorrect input data
+          // If the register fails due to bad request, display an error message
+          // this is usually due to incorrect input data
           setError("Bad request. Please check your input.");
           console.error("Bad request:", requestData.message);
         }
@@ -103,19 +100,6 @@ event.preventDefault();
           // If the login fails due to forbidden access, display an error message
           setError("Forbidden access. You do not have permission to access this resource.");
           console.error("Forbidden access:", requestData.message);
-        }
-
-
-        else if(response.status.valueOf() === 404){
-          // User doesn't exist maybe in another universe.
-          //setError("User doesn't exist.");
-          //console.error("User not found:", requestData.message);
-
-          // my bad it applies to non existant users and incorrect fields 
-
-          setError("Email or password incorrect");
-          console.error("Email or password incorrect", requestData.message);
-
         }
 
         else {
@@ -138,7 +122,7 @@ event.preventDefault();
 
   return (
     <div>
-      <h1>Travel Planner Authentication: Login</h1>
+      <h1>Travel Planner Authentication: Register</h1>
       <form onSubmit={submitButton}>
         <input type="email" placeholder="hello@hello.com" required
         value={email}
@@ -147,14 +131,14 @@ event.preventDefault();
         <input type="password" placeholder="123456" value={password}
         onChange={(event) => setPassword(event.target.value)} required
         />
-        <button type="submit">Login</button>
+        <button type="submit">Register</button>
         </form>
     </div>
   );
 }
 
-const root = createRoot(document.getElementById("login"));
-root.render(<Login />);
+// const root = createRoot(document.getElementById("register"));
+// root.render(<Register />);
 
-export default Login;
+export default Register;
 
