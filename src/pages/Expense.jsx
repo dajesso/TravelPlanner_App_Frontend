@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ExpenseTable from '../components/ExpenseTable';
 import './Expense.css';
+import ExpenseEditWindow from "../components/ExpenseEditWindow";
 
 function Expense() {
   //  grabs the tripId from the URL
@@ -16,7 +17,7 @@ function Expense() {
   const [trip, setTrip] = useState(null);
   const [expenses, setExpenses] = useState([]);
   const [error, setError] = useState("");
-
+  const [editingExpense, setEditingExpense] = useState(null);
   // Get the token
   // document.cookie gives all cookies, we need to find and get the token from it
   const token = document.cookie
@@ -27,6 +28,17 @@ function Expense() {
   // hardcode token for manual testing:
   // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODM3MWNmMDlhZGU0ZWUwNDc2OWFmNWQiLCJlbWFpbCI6IjEzQGdtYWlsLmNvbSIsImV4cCI6MTc0ODU4MTk4NywiaWF0IjoxNzQ4NTc4Mzg3fQ.VgNVCsP08TiBlrA-2lupfzdj_0Sa1E69J35VH-QV0O8"
   
+  // Function to start editing a specific expense (opens the edit window)
+  const handleEdit = (expense) => {
+  setEditingExpense(expense); 
+  } ;
+
+  // Function to update the expense list after an expense is edited and saved
+  const handleSaveEdit = (updatedExpense) => {
+    setExpenses((prev) =>
+      prev.map((exp) => (exp._id === updatedExpense._id ? updatedExpense : exp))
+    );
+  };
 
   useEffect(() => {
   // Need get One Trip data to show the detail on the top of the page
@@ -74,22 +86,32 @@ function Expense() {
       {error && <p style={{ color: "red" }}>{error}</p>}
       {!trip && !error && <p>Loading trip data...</p>}
 
-      {trip && (
-        <div>
-          <h2>Location: {trip.location}</h2>
-          <p>Dates: {trip.arrivalDate} - {trip.departureDate}</p>
-          <p>Total Expense: ${trip.totalExpense}</p>
+      {trip ? (
+      <div>
+        <h2>Location: {trip.location}</h2>
+        <p>Dates: {trip.arrivalDate} - {trip.departureDate}</p>
+        <p>Total Expense: ${trip.totalExpense}</p>
 
-          <h3>Expenses:</h3>
-          <ExpenseTable
-            expenses={expenses}
-            // onEdit={handleEdit}
-            // onDelete={handleDelete}
-          />
-        </div>
-      )}
-    </div>
-  );
+        <h3>Expenses:</h3>
+        <ExpenseTable
+          expenses={expenses}
+          onEdit={handleEdit}
+        //   onDelete={handleDelete}
+        />
+      </div>
+    ) : (
+      !error && <p>Loading trip data...</p>
+    )}
+
+    {editingExpense && (
+      <ExpenseEditWindow
+        expense={editingExpense}
+        onClose={() => setEditingExpense(null)}
+        onSave={handleSaveEdit}
+      />
+    )}
+  </div>
+);
 }
 
 
