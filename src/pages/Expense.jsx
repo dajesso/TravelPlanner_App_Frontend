@@ -5,8 +5,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
-
+import ExpenseTable from '../components/ExpenseTable';
+import './Expense.css';
 
 function Expense() {
   //  grabs the tripId from the URL
@@ -26,7 +26,6 @@ function Expense() {
 
   // hardcode token for manual testing:
   // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODM3MWNmMDlhZGU0ZWUwNDc2OWFmNWQiLCJlbWFpbCI6IjEzQGdtYWlsLmNvbSIsImV4cCI6MTc0ODU4MTk4NywiaWF0IjoxNzQ4NTc4Mzg3fQ.VgNVCsP08TiBlrA-2lupfzdj_0Sa1E69J35VH-QV0O8"
-  
   
 
   useEffect(() => {
@@ -60,38 +59,34 @@ function Expense() {
       } else {
         setError(data.error);}
     } catch (err) {
+      console.error("Error fetching expenses:", err);
       setError("Failed to fetch expenses.");
     }
   };
 
   fetchTrip(),
   fetchExpenses();
-}, [tripId]);
+}, [token, tripId]);
 
   return (
     <div>
-      <h1>Trip Expenses for Trip ID: {tripId}</h1>
-
+      <h2>Trip Details</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
+      {!trip && !error && <p>Loading trip data...</p>}
 
-      {trip ? (
+      {trip && (
         <div>
           <h2>Location: {trip.location}</h2>
-          <p>
-            Dates: {trip.arrivalDate} - {trip.departureDate}
-          </p>
+          <p>Dates: {trip.arrivalDate} - {trip.departureDate}</p>
           <p>Total Expense: ${trip.totalExpense}</p>
 
           <h3>Expenses:</h3>
-            {expenses.map(exp => (
-              <div key={exp._id}>
-                <p> {exp.category?.name}-{exp.description} - ${exp.amount}</p>
-              </div>
-      ))}
-          
+          <ExpenseTable
+            expenses={expenses}
+            // onEdit={handleEdit}
+            // onDelete={handleDelete}
+          />
         </div>
-      ) : (
-        !error && <p>Loading trip data...</p>
       )}
     </div>
   );
