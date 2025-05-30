@@ -3,6 +3,7 @@ import { useState } from 'react'
 // import { StrictMode } from 'react'
 // import { createRoot } from 'react-dom/client'
 import { verifyToken } from '../components/verifyToken'
+import { retrieveToken } from '../components/retrieveToken';
 
 
 // We are building onto the template we wil create a html form with a username and password input
@@ -77,6 +78,8 @@ event.preventDefault();
           //window.location.href = "/"; // Redirect to the home page
 
           console.log(document.cookie);
+
+          console.log(retrieveToken());
         }
         
         else if(response.status.valueOf() === 401) {
