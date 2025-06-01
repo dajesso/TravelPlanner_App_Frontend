@@ -6,7 +6,7 @@
 // 5. When the user submits the form sends the updated data to the backend
 
 import React, { useEffect, useState } from "react";
-import "./ExpenseEditWindow.css";
+import "./Pop-UpWindow.css";
 
 
 // {current expense object we want to edit, function to close the popup, function to save the updated data.}
@@ -109,8 +109,6 @@ function ExpenseEditWindow({ expense, onClose, onSave }) {
       alert("Network error: " + err.message);
     }
   };
-
-
 
   return(
     <div className="modal-backdrop">
