@@ -145,7 +145,7 @@ function Expense() {
     )}
 
     {expenseToDelete && (
-      <DeleteConfirmationModal
+      <ExpenseDeleteWindow
         expense={expenseToDelete}
         onConfirm={confirmDelete}
         onCancel={() => setExpenseToDelete(null)}
