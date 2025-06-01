@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import ExpenseTable from '../components/ExpenseTable';
 import './Expense.css';
 import ExpenseEditWindow from "../components/ExpenseEditWindow";
+import ExpenseDeleteWindow from "../components/ExpenseDeleteWindow";
 
 function Expense() {
   //  grabs the tripId from the URL
@@ -18,6 +19,8 @@ function Expense() {
   const [expenses, setExpenses] = useState([]);
   const [error, setError] = useState("");
   const [editingExpense, setEditingExpense] = useState(null);
+  const [expenseToDelete, setExpenseToDelete] = useState(null);
+
   // Get the token
   // document.cookie gives all cookies, we need to find and get the token from it
   const token = document.cookie
@@ -38,6 +41,35 @@ function Expense() {
     setExpenses((prev) =>
       prev.map((exp) => (exp._id === updatedExpense._id ? updatedExpense : exp))
     );
+  };
+  // handle delete click
+  const handleDelete = (expense) => {
+    setExpenseToDelete(expense);
+  };
+
+  // confirm actual deletion
+  const confirmDelete = async (expenseId) => {
+    try {
+      const token = document.cookie
+        .split("; ")
+        .find(row => row.startsWith("sessionToken="))
+        ?.split("=")[1];
+
+      const res = await fetch(`http://localhost:3000/expenses/${expenseId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (res.ok) {
+        setExpenses(prev => prev.filter(exp => exp._id !== expenseId));
+        setExpenseToDelete(null);
+      } else {
+        const data = await res.json();
+        alert("Failed to delete: " + data.error);
+      }
+    } catch (err) {
+      alert("Network error: " + err.message);
+    }
   };
 
   useEffect(() => {
@@ -80,6 +112,7 @@ function Expense() {
   fetchExpenses();
 }, [token, tripId]);
 
+
   return (
     <div>
       <h2>Trip Details</h2>
@@ -95,8 +128,8 @@ function Expense() {
         <h3>Expenses:</h3>
         <ExpenseTable
           expenses={expenses}
-          onEdit={handleEdit}
-        //   onDelete={handleDelete}
+          onEdit={(expense) => handleEdit(expense)}
+          onDelete={(expense) => handleDelete(expense)}
         />
       </div>
     ) : (
@@ -108,6 +141,14 @@ function Expense() {
         expense={editingExpense}
         onClose={() => setEditingExpense(null)}
         onSave={handleSaveEdit}
+      />
+    )}
+
+    {expenseToDelete && (
+      <DeleteConfirmationModal
+        expense={expenseToDelete}
+        onConfirm={confirmDelete}
+        onCancel={() => setExpenseToDelete(null)}
       />
     )}
   </div>

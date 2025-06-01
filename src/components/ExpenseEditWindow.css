@@ -13,6 +13,7 @@
 
 .modal-content {
   background: rgb(111, 42, 42);
+  color: white;      
   padding: 1.5rem;
   border-radius: 8px;
   width: 350px;
@@ -26,4 +27,15 @@
   margin-top: 1rem;
   display: flex;
   justify-content: space-between;
+}
+
+input, select {
+  width: 100%;
+  padding: 0.4rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.8rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: white;
+  color: black;
 }

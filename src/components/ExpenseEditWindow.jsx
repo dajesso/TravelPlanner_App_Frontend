@@ -21,8 +21,12 @@ function ExpenseEditWindow({ expense, onClose, onSave }) {
     });
     const [categories, setCategories] = useState([]);
 
+    if (!expense) return null;
+
   // Run everytime when the expense changed (prefill the form)
     useEffect(() => {
+        console.log("Editing expense:", JSON.stringify(expense, null, 2));
+        console.log("Expense._id:", expense?._id);
         if (expense) {
             setFormData({
                 category: expense.category?._id  || "",
