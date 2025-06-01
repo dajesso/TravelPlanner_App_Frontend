@@ -1,6 +1,5 @@
 import { useState } from 'react'
-
-
+import {validateAuth, validateForm} from '../components/validateAuth.jsx';
 // we don't need the followwing imports for now.
 
 //import { StrictMode } from 'react'
@@ -26,13 +25,30 @@ const [email, setEmail] = useState('');
 const [password, setPassword] = useState("");
 const [status, setStatus] = useState("");
 const [error, setError] = useState("");
+const schema = validateAuth();
+
 
 const submitButton = async (event) => {
 event.preventDefault();
 
 
   try{
-    const response = await fetch("http://localhost:3000/login", {
+
+
+    // Validate the form data using the schema
+    // validation error occurs it will return and end the code block
+    const validationError = validateForm(email, password, schema);
+
+    if (validationError) {
+      setError(validationError);
+      setStatus("");
+      return;
+    }else{
+      setError("");
+      setStatus("Validating credentials...");
+    }
+
+        const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
         "Content-Type": "application/json",
@@ -70,23 +86,32 @@ event.preventDefault();
 }
 
 
+// fixed a bug errors are red successful logins are white.
 
-  return (
-    <div>
-      <h1>Travel Planner Authentication: Login</h1>
-      <form onSubmit={submitButton}>
-        <input type="email" placeholder="hello@hello.com" required
+return (
+  <div>
+    <h1>Travel Planner Authentication: Login</h1>
+    <form onSubmit={submitButton}>
+      <input
+        type="text"
+        placeholder="Enter email"
         value={email}
-        onChange={(event) => setEmail(event.target.value)}/>
-        
-        <input type="password" placeholder="123456" value={password}
-        onChange={(event) => setPassword(event.target.value)} required
-        />
-        <p id="loginStatus">{status}</p>
-        <button type="submit">Login</button>
-        </form>
-    </div>
-  );
+        onChange={(event) => setEmail(event.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Enter password"
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+      />
+      {/* Only show status if there is no error */}
+      {!error && <p id="loginStatus" style={{ color: 'white' }}>{status}</p>}
+      {/* Show error in red */}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <button type="submit">Login</button>
+    </form>
+  </div>
+);
 }
 
 // const root = createRoot(document.getElementById("login"));

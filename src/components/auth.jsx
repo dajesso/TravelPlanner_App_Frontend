@@ -8,6 +8,8 @@ function auth(requestData, response, type = "login", setStatus, setError) {
     console.log(requestData);
     console.log(response.status);
 
+    // we check the respsonse code and set the cookies which contain the session usertype and email
+
     if (response.status === 200) {
         // If the login/register  is successful, store the session token in a cookie
         document.cookie = `sessionToken=${requestData.token}; path=/;`;
