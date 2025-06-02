@@ -23,14 +23,26 @@ function Expense() {
 
   // Get the token
   // document.cookie gives all cookies, we need to find and get the token from it
-  const token = document.cookie
+  const getToken = () =>
+    document.cookie
     .split("; ")
     .find(row => row.startsWith("sessionToken="))
     ?.split("=")[1];
 
-  // hardcode token for manual testing:
-  // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODM3MWNmMDlhZGU0ZWUwNDc2OWFmNWQiLCJlbWFpbCI6IjEzQGdtYWlsLmNvbSIsImV4cCI6MTc0ODU4MTk4NywiaWF0IjoxNzQ4NTc4Mzg3fQ.VgNVCsP08TiBlrA-2lupfzdj_0Sa1E69J35VH-QV0O8"
-  
+  const fetchData = async (url, setter, errorMsg) => {
+    try {
+      const res = await fetch(url, {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      });
+      const data = await res.json();
+      if (res.ok) setter(data);
+      else setError(data.error || errorMsg);
+    } catch (err) {
+      setError(errorMsg);
+      console.error(errorMsg, err);
+    }
+  };
+
   // Function to start editing a specific expense (opens the edit window)
   const handleEdit = (expense) => {
   setEditingExpense(expense); 
@@ -42,6 +54,7 @@ function Expense() {
       prev.map((exp) => (exp._id === updatedExpense._id ? updatedExpense : exp))
     );
   };
+  
   // handle delete click
   const handleDelete = (expense) => {
     setExpenseToDelete(expense);
@@ -50,14 +63,9 @@ function Expense() {
   // confirm actual deletion
   const confirmDelete = async (expenseId) => {
     try {
-      const token = document.cookie
-        .split("; ")
-        .find(row => row.startsWith("sessionToken="))
-        ?.split("=")[1];
-
       const res = await fetch(`http://localhost:3000/expenses/${expenseId}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${getToken}` },
       });
 
       if (res.ok) {
@@ -73,45 +81,19 @@ function Expense() {
   };
 
   useEffect(() => {
-  // Need get One Trip data to show the detail on the top of the page
-    const fetchTrip = async () => {
-      try {
-        const res = await fetch(`http://localhost:3000/trips/${tripId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
-
-        if (res.ok) {
-          setTrip(data);
-        } else {
-          setError(data.error || "Failed to load trip data");
-        }
-      } catch (err) {
-        console.error("Error fetching trip:", err);
-        setError("Network error while fetching trip data");
-      }
-    };
-
-    const fetchExpenses = async () => {
-    try {
-      const res = await fetch(`http://localhost:3000/expenses?trip=${tripId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setExpenses(data)
-      } else {
-        setError(data.error);}
-    } catch (err) {
-      console.error("Error fetching expenses:", err);
-      setError("Failed to fetch expenses.");
-    }
-  };
-
-  fetchTrip(),
-  fetchExpenses();
-}, [token, tripId]);
-
+  // fetch trip
+    fetchData(
+      `http://localhost:3000/trips/${tripId}`,
+      setTrip,
+      "Failed to load trip data"
+    );
+  // fetch expense
+    fetchData(
+      `http://localhost:3000/expenses?trip=${tripId}`,
+      setExpenses,
+      "Failed to fetch expenses."
+    );
+  }, [tripId]);
 
   return (
     <div>
@@ -119,21 +101,21 @@ function Expense() {
       {error && <p style={{ color: "red" }}>{error}</p>}
       {!trip && !error && <p>Loading trip data...</p>}
 
-      {trip ? (
-      <div>
-        <h2>Location: {trip.location}</h2>
-        <p>Dates: {trip.arrivalDate} - {trip.departureDate}</p>
-        <p>Total Expense: ${trip.totalExpense}</p>
+      {trip && (
+        <>
+          <div>
+            <h2>Location: {trip.location}</h2>
+            <p>Dates: {trip.arrivalDate} - {trip.departureDate}</p>
+            <p>Total Expense: ${trip.totalExpense}</p>
 
-        <h3>Expenses:</h3>
-        <ExpenseTable
-          expenses={expenses}
-          onEdit={(expense) => handleEdit(expense)}
-          onDelete={(expense) => handleDelete(expense)}
-        />
+            <h3>Expenses:</h3>
+            <ExpenseTable
+              expenses={expenses}
+              onEdit={(expense) => handleEdit(expense)}
+              onDelete={(expense) => handleDelete(expense)}
+            />
       </div>
-    ) : (
-      !error && <p>Loading trip data...</p>
+      </>
     )}
 
     {editingExpense && (
