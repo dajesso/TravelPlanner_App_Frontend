@@ -128,6 +128,7 @@ function Expense() {
     {editingExpense && (
       <ExpenseEditWindow
         expense={editingExpense}
+        tripId={tripId}
         onClose={() => setEditingExpense(null)}
         onSave={handleSaveExpense}
       />

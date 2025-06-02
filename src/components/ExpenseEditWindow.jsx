@@ -15,7 +15,7 @@ import React, { useEffect, useState } from "react";
 import "./Pop-UpWindow.css";
 
 // {current expense object we want to edit, function to close the popup, function to save the updated data.}
-function ExpenseEditWindow({ expense, onClose, onSave }) {
+function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
     // Check is it Edit mode or Add mode
     const isEditMode = Boolean(expense && expense._id);
 
@@ -89,11 +89,18 @@ function ExpenseEditWindow({ expense, onClose, onSave }) {
         .find(row => row.startsWith("sessionToken="))
         ?.split("=")[1];
 
+        // Check is it Edit mode or Add mode
+        const isEditMode = Boolean(expense && expense._id);
+
         const url = isEditMode
         ? `http://localhost:3000/expenses/${expense._id}`
         : "http://localhost:3000/expenses";
 
         const method = isEditMode ? "PUT" : "POST";
+
+        const body = isEditMode
+            ? formData
+            : {...formData, trip:tripId};
 
         const res = await fetch(url, {
         method,
@@ -101,7 +108,7 @@ function ExpenseEditWindow({ expense, onClose, onSave }) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(body),
         });
 
         const data = await res.json();
