@@ -5,12 +5,19 @@
 // 4. When the user types in a field, updates that field in the form data (and other fields can just reuse the previous data)
 // 5. When the user submits the form sends the updated data to the backend
 
+// Add expense feature code logic:
+// Reason: Re-use what we had as these two windows should look similar
+// 1. Detect whether we are editing or adding
+// 2. Adjust the form title and API
+// 3. Save it (as same as save Edit)
+
 import React, { useEffect, useState } from "react";
 import "./Pop-UpWindow.css";
 
-
 // {current expense object we want to edit, function to close the popup, function to save the updated data.}
 function ExpenseEditWindow({ expense, onClose, onSave }) {
+    // Check is it Edit mode or Add mode
+    const isEditMode = Boolean(expense && expense._id);
 
     // [ holds the values for the form fields ,  function to update the form data]
     const [formData, setFormData] = useState({
@@ -77,43 +84,45 @@ function ExpenseEditWindow({ expense, onClose, onSave }) {
         // stop the page from reloading
         e.preventDefault();
     try {
-      const token = document.cookie
+        const token = document.cookie
         .split("; ")
         .find(row => row.startsWith("sessionToken="))
         ?.split("=")[1];
 
-      const res = await fetch(`http://localhost:3000/expenses/${expense._id}`, {
-        method: "PUT",
+        const url = isEditMode
+        ? `http://localhost:3000/expenses/${expense._id}`
+        : "http://localhost:3000/expenses";
+
+        const method = isEditMode ? "PUT" : "POST";
+
+        const res = await fetch(url, {
+        method,
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-            category: formData.category,
-            description: formData.description,
-            amount: formData.amount
-        }),
-      });
+        body: JSON.stringify(formData),
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (res.ok) {
-        // update parent state
-        onSave(data); 
-        // close modal
-        onClose(); 
-      } else {
-        alert("Update failed: " + data.error);
-      }
-    } catch (err) {
-      alert("Network error: " + err.message);
-    }
-  };
+        if (res.ok) {
+            // update parent state
+            onSave(data); 
+            // close modal
+            onClose(); 
+        } else {
+            alert("Update failed: " + data.error);
+        }
+        } catch (err) {
+        alert("Network error: " + err.message);
+        }
+    };
 
   return(
     <div className="modal-backdrop">
       <div className="modal-content">
-        <h3>Edit Expense</h3>
+        <h3>{isEditMode ? "Edit Expense" : "Add Expense"}</h3>
         <form onSubmit={handleSubmit}>
           <label>
             Category:

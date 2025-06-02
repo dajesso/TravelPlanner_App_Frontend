@@ -45,14 +45,17 @@ function Expense() {
 
   // Function to start editing a specific expense (opens the edit window)
   const handleEdit = (expense) => {
-  setEditingExpense(expense); 
+  setSavedExpense(expense); 
   } ;
 
   // Function to update the expense list after an expense is edited and saved
-  const handleSaveEdit = (updatedExpense) => {
-    setExpenses((prev) =>
-      prev.map((exp) => (exp._id === updatedExpense._id ? updatedExpense : exp))
-    );
+  const handleSaveExpense = (savedExpense) => {
+    setExpenses(prev => {
+      const exists = prev.find(exp => exp._id === savedExpense._id);
+      return exists
+        ? prev.map(exp => (exp._id === savedExpense._id ? savedExpense : exp))
+        : [...prev, savedExpense];
+    });
   };
   
   // handle delete click
@@ -108,6 +111,10 @@ function Expense() {
             <p>Dates: {trip.arrivalDate} - {trip.departureDate}</p>
             <p>Total Expense: ${trip.totalExpense}</p>
 
+            <button onClick={() => setEditingExpense({})}>
+              + Add Expense
+            </button>
+
             <h3>Expenses:</h3>
             <ExpenseTable
               expenses={expenses}
@@ -122,7 +129,7 @@ function Expense() {
       <ExpenseEditWindow
         expense={editingExpense}
         onClose={() => setEditingExpense(null)}
-        onSave={handleSaveEdit}
+        onSave={handleSaveExpense}
       />
     )}
 
