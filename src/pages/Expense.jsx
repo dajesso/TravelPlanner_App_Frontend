@@ -16,6 +16,7 @@ import './Expense.css';
 
 // Import utility functions
 import { deleteExpense, fetchData, loadExpensesByTrip } from '../utils/fetchApi';
+import TripEditWindow from "../components/TripEditWindow";
 
 
 function Expense() {
@@ -28,6 +29,7 @@ function Expense() {
   const [error, setError] = useState("");
   const [editingExpense, setEditingExpense] = useState(null);
   const [expenseToDelete, setExpenseToDelete] = useState(null);
+  const [editingTrip, setEditingTrip] = useState(null);
 
   // Load trip and associated expenses from backend
   const loadTripAndExpenses = async () => {
@@ -79,6 +81,9 @@ function Expense() {
       {trip && (
         <>
           <div>
+            <button onClick={() => setEditingTrip(trip)}>
+              Edit Trip
+            </button>
             <h2>Location: {trip.location}</h2>
             <p>Dates: {trip.arrivalDate} - {trip.departureDate}</p>
             <p>Total Expense: ${trip.totalExpense}</p>
@@ -117,6 +122,17 @@ function Expense() {
         expense={expenseToDelete}
         onConfirm={confirmDelete}
         onCancel={() => setExpenseToDelete(null)}
+      />
+    )}
+
+    {editingTrip && (
+      <TripEditWindow
+        trip={editingTrip}
+        onClose={() => setEditingTrip(null)}
+        onSave={async () => {
+          await loadTripAndExpenses();  // Refresh trip + expenses
+          setEditingTrip(null);         // Close modal
+        }}
       />
     )}
   </div>
