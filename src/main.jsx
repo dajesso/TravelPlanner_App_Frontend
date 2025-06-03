@@ -7,6 +7,7 @@ import App from './App.jsx'
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx'
 import Expense from './pages/Expense.jsx';
+import Logout from './pages/Logout.jsx';
 
 
 
@@ -16,7 +17,7 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         {/* Redirect root to login Page */}
         <Route path="/" element={<Navigate to="/login" />} />
-        
+
         {/* Layout wrapper */}
         <Route element={<App />}>
           <Route path="/login" element={<Login />} />
