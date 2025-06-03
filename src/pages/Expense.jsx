@@ -52,10 +52,16 @@ function Expense() {
   const handleSaveExpense = async() => {
     // refresh the data from backend
     await loadExpenses();
+
+    await fetchData(
+      `http://localhost:3000/trips/${tripId}`,
+      setTrip,
+      "Failed to reload trip data"
+    );
+    
     setEditingExpense(null);
     };
-  
-  
+
   // handle delete click
   const handleDelete = (expense) => {
     setExpenseToDelete(expense);
@@ -70,7 +76,15 @@ function Expense() {
       });
 
       if (res.ok) {
-        setExpenses(prev => prev.filter(exp => exp._id !== expenseId));
+        await loadExpenses();
+
+        // refresh trip totalExpense
+        await fetchData(
+        `http://localhost:3000/trips/${tripId}`,
+        setTrip,
+        "Failed to reload trip data"
+      ); 
+
         setExpenseToDelete(null);
       } else {
         const data = await res.json();
