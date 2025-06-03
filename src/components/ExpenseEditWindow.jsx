@@ -15,18 +15,19 @@ import React, { useEffect, useState } from "react";
 import { getToken } from '../utils/getToken';
 import "./Pop-UpWindow.css";
 
-// {current expense object we want to edit, function to close the popup, function to save the updated data.}
+// Current expense object we want to edit, function to close the popup, function to save the updated data.}
 function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
     // Check is it Edit mode or Add mode
     const isEditMode = Boolean(expense?._id);
 
-    // Holds the values for the form fields ,  function to update the form data]
+    // Initialize form with empty strings
     const [formData, setFormData] = useState({
-        // start the field with empty first with ""
         category: "",
         description: "",
         amount: ""
     });
+
+    // Store available categories from the backend
     const [categories, setCategories] = useState([]);
 
   // Run everytime when the expense changed (prefill the form)
@@ -41,6 +42,7 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
     // Run this effect whenever the value of expense changes
   }, [expense]);
 
+    // Load all categories from the server once when component mounts
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -60,11 +62,13 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
         };
 
     fetchCategories();
+    // Only run on first render
     }, []);
 
-// When user types into an input field
-  //e = event that happens when the user types.
+    // When user types into an input field
+    //e = event that happens when the user types.
     const handleChange = (e) => {
+
         // <input name="description" value="Coffee" />
         const { name, value } = e.target;
         // copy everything from the previous state, only change the updated one
@@ -75,33 +79,42 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
     const handleSubmit = async (e) => {
         // stop the page from reloading
         e.preventDefault();
+
         try {
+            // Choose the mode
             const url = isEditMode
             ? `http://localhost:3000/expenses/${expense._id}`
             : "http://localhost:3000/expenses";
 
             const method = isEditMode ? "PUT" : "POST";
 
+            // Add Trip Id only when adding a new expense
             const body = isEditMode
                 ? formData
                 : {...formData, trip:tripId};
-
+            
+            // Send request to backend
             const res = await fetch(url, {
                 method,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${getToken()}`,
                 },
+
+                // Convert data to Json
                 body: JSON.stringify(body),
             });
 
         const data = await res.json();
 
         if (res.ok) {
+
             // update parent state
             onSave(data); 
+            
             // close modal
             onClose(); 
+
         } else {
             alert("Update failed: " + data.error);
         }
