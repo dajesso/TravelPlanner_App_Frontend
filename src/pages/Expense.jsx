@@ -4,10 +4,20 @@
 // Handles authorization using the JWT token from cookies.
 
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+
+// useParams allows us to grab the tripId from the URL
+import { Navigate, useParams } from "react-router-dom";
+
+// Import custom components and styles
 import ExpenseTable from '../components/ExpenseTable';
-import './Expense.css';
 import ExpenseEditWindow from "../components/ExpenseEditWindow";
+import ExpenseDeleteWindow from "../components/ExpenseDeleteWindow";
+import './Expense.css';
+
+// Import utility functions
+import { deleteExpense, fetchData, loadExpensesByTrip } from '../utils/fetchApi';
+import TripEditWindow from "../components/TripEditWindow";
+
 
 function Expense() {
   //  grabs the tripId from the URL
@@ -18,101 +28,128 @@ function Expense() {
   const [expenses, setExpenses] = useState([]);
   const [error, setError] = useState("");
   const [editingExpense, setEditingExpense] = useState(null);
-  // Get the token
-  // document.cookie gives all cookies, we need to find and get the token from it
-  const token = document.cookie
-    .split("; ")
-    .find(row => row.startsWith("sessionToken="))
-    ?.split("=")[1];
+  const [expenseToDelete, setExpenseToDelete] = useState(null);
+  const [editingTrip, setEditingTrip] = useState(null);
 
-  // hardcode token for manual testing:
-  // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODM3MWNmMDlhZGU0ZWUwNDc2OWFmNWQiLCJlbWFpbCI6IjEzQGdtYWlsLmNvbSIsImV4cCI6MTc0ODU4MTk4NywiaWF0IjoxNzQ4NTc4Mzg3fQ.VgNVCsP08TiBlrA-2lupfzdj_0Sa1E69J35VH-QV0O8"
-  
-  // Function to start editing a specific expense (opens the edit window)
-  const handleEdit = (expense) => {
-  setEditingExpense(expense); 
-  } ;
+  // Load trip and associated expenses from backend
+  const loadTripAndExpenses = async () => {
 
-  // Function to update the expense list after an expense is edited and saved
-  const handleSaveEdit = (updatedExpense) => {
-    setExpenses((prev) =>
-      prev.map((exp) => (exp._id === updatedExpense._id ? updatedExpense : exp))
-    );
+    // Fetch Trip Details
+    await fetchData(`http://localhost:3000/trips/${tripId}`, setTrip, "Failed to load trip", setError);
+    // Fetch all expenses related to the trip
+    await loadExpensesByTrip(tripId, setExpenses, setError);
   };
 
-  useEffect(() => {
-  // Need get One Trip data to show the detail on the top of the page
-    const fetchTrip = async () => {
-      try {
-        const res = await fetch(`http://localhost:3000/trips/${tripId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
+  // Called after saving an expense to refresh the list
+  const handleSaveExpense = async() => {
 
-        if (res.ok) {
-          setTrip(data);
-        } else {
-          setError(data.error || "Failed to load trip data");
-        }
-      } catch (err) {
-        console.error("Error fetching trip:", err);
-        setError("Network error while fetching trip data");
-      }
+    // Refresh the data from backend
+    await loadTripAndExpenses();
+    // Close the edit modal
+    setEditingExpense(null);
     };
 
-    const fetchExpenses = async () => {
-    try {
-      const res = await fetch(`http://localhost:3000/expenses?trip=${tripId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setExpenses(data)
-      } else {
-        setError(data.error);}
-    } catch (err) {
-      console.error("Error fetching expenses:", err);
-      setError("Failed to fetch expenses.");
+  // confirm actual deletion
+  const confirmDelete = async (expenseId) => {
+
+    // Attempt to delete the expense
+    const { ok, data } = await deleteExpense(expenseId);
+
+    if (ok) {
+
+      // Refresh data
+      await loadTripAndExpenses();
+      // Close the modal
+      setExpenseToDelete(null);
+
+    } else {
+      alert("Failed to delete: " + data.error);
     }
   };
 
-  fetchTrip(),
-  fetchExpenses();
-}, [token, tripId]);
+  // Load trip and expenses when component mounts or tripId changes
+  useEffect(() => {
+    loadTripAndExpenses();
+  }, [tripId]);
 
   return (
-    <div>
-      <h2>Trip Details</h2>
+    <div className="page-container">
       {error && <p style={{ color: "red" }}>{error}</p>}
       {!trip && !error && <p>Loading trip data...</p>}
 
-      {trip ? (
-      <div>
-        <h2>Location: {trip.location}</h2>
-        <p>Dates: {trip.arrivalDate} - {trip.departureDate}</p>
-        <p>Total Expense: ${trip.totalExpense}</p>
+      {trip && (
+        <>
+          <div className="top-row">
 
-        <h3>Expenses:</h3>
-        <ExpenseTable
-          expenses={expenses}
-          onEdit={handleEdit}
-        //   onDelete={handleDelete}
-        />
-      </div>
-    ) : (
-      !error && <p>Loading trip data...</p>
+            <button className="back-button" onClick={() => Navigate("/trips")}>
+              ← All Trips
+            </button>
+
+            <h2>Trip Details</h2>
+
+            <button onClick={() => setEditingTrip(trip)}>
+              Edit Trip
+            </button>
+          </div>
+
+          <div className="trip-info">
+            <h2>Location: {trip.location}</h2>
+            <p>Dates: {trip.arrivalDate} - {trip.departureDate}</p>
+            <p>Total Expense: ${trip.totalExpense}</p>
+          </div>
+
+          <div className="add-expense-container">
+            <button onClick={() => setEditingExpense({})}>
+              + Add Expense
+            </button>
+          </div>
+
+          <div className="expense-table-container">
+            <h3>Expenses:</h3>
+            <ExpenseTable
+              // Pass expenses data to table
+              expenses={expenses}
+              // Open edit modal
+              onEdit={(expense) => setEditingExpense(expense)}
+              // Open delete modal
+              onDelete={(expense) => setExpenseToDelete(expense)}
+            />
+        </div>
+      </>
     )}
 
     {editingExpense && (
       <ExpenseEditWindow
+        // Current expense being edited or added
         expense={editingExpense}
+        // Needed for new expenses
+        tripId={tripId}
         onClose={() => setEditingExpense(null)}
-        onSave={handleSaveEdit}
+        onSave={handleSaveExpense}
+      />
+    )}
+
+    {expenseToDelete && (
+      <ExpenseDeleteWindow
+        // Expense to delete
+        expense={expenseToDelete}
+        onConfirm={confirmDelete}
+        onCancel={() => setExpenseToDelete(null)}
+      />
+    )}
+
+    {editingTrip && (
+      <TripEditWindow
+        trip={editingTrip}
+        onClose={() => setEditingTrip(null)}
+        onSave={async () => {
+          await loadTripAndExpenses();  // Refresh trip + expenses
+          setEditingTrip(null);         // Close modal
+        }}
       />
     )}
   </div>
 );
 }
-
 
 export default Expense;

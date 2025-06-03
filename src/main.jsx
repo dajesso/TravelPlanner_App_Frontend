@@ -9,8 +9,12 @@ import Register from './pages/Register.jsx'
 import UpdateTrip from './pages/Trips/UpdateTrip.jsx'
 import GetOneTrip from './pages/Trips/GetOneTrip.jsx'
 import Expense from './pages/Expense.jsx';
-import { Header } from './components/Header.jsx'
-import { Footer } from './components/Footer.jsx'
+
+// import { Header } from './components/Header.jsx'
+// import { Footer } from './components/Footer.jsx'
+
+import Logout from './pages/Logout.jsx';
+
 
 
 
@@ -20,11 +24,11 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         {/* Redirect root to login Page */}
         <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
 
         {/* Layout wrapper */}
         <Route element={<App />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
           {/* GET one trip*/}
           <Route path="/trips/:tripId" element={<GetOneTrip />} />
