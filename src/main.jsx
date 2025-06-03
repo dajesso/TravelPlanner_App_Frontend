@@ -17,12 +17,11 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         {/* Redirect root to login Page */}
         <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/logout" element={<Logout />} />
 
         {/* Layout wrapper */}
         <Route element={<App />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
           {/* This is the expense route, as it will negivate from tripsPage, and only display ONE Trip's expenses */}
           <Route path="/trips/:tripId" element={<Expense />} />
