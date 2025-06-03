@@ -98,7 +98,7 @@ return (
       {!error && <p id="registerStatus" style={{ color: 'white' }}>{status}</p>}
       {/* Show error in red */}
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <button type="submit">Login</button>
+      <button type="submit">Register</button>
     </form>
   </div>
 );
