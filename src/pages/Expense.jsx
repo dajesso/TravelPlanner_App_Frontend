@@ -45,7 +45,7 @@ function Expense() {
 
   // Function to start editing a specific expense (opens the edit window)
   const handleEdit = (expense) => {
-  setSavedExpense(expense); 
+  setEditingExpense(expense); 
   } ;
 
   // Function to update the expense list after an expense is edited and saved
@@ -66,7 +66,7 @@ function Expense() {
     try {
       const res = await fetch(`http://localhost:3000/expenses/${expenseId}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${getToken}` },
+        headers: { Authorization: `Bearer ${getToken()}` },
       });
 
       if (res.ok) {
