@@ -1,13 +1,13 @@
-// Logics:
+// Edit Expense Window Logics:
 // 1. Get the existing expense data
 // 2. Create a form to manage input fields
 // 3. Fill in the form with the existing data
 // 4. When the user types in a field, updates that field in the form data (and other fields can just reuse the previous data)
 // 5. When the user submits the form sends the updated data to the backend
 
-// Add expense feature code logic:
-// Reason: Re-use what we had as these two windows should look similar
-// 1. Detect whether we are editing or adding
+// Add expense window code logic:
+// Reason: Re-use what we had (Edit Expense Window) as these two windows have similar features
+// 1. Detect whether the user are editing or adding
 // 2. Adjust the form title and API
 // 3. Save it (as same as save Edit)
 
