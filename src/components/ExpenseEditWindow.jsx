@@ -199,23 +199,27 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
 
                     ) : (
                     <>
-                        <input
-                            type="text"
-                            name="newCategory"
-                            placeholder="Enter new category name"
-                            value={newCategoryName}
-                            onChange={(e) => setNewCategoryName(e.target.value)}
-                            required
-                        />
-                        <button
-                            type="button"
-                            onClick={() => {
+                        <div style={{ display: "flex", gap: "5px" }}>
+                            <input
+                                type="text"
+                                name="newCategory"
+                                placeholder="Enter new category name"
+                                value={newCategoryName}
+                                onChange={(e) => setNewCategoryName(e.target.value)}
+                                required
+                            />
+                            <button type="submit">Add</button>
+                            <button
+                                type="button"
+                                onClick={() => {
                                 setIsAddingCategory(false);
                                 setNewCategoryName("");
-                        }}
-                        >
-                        Cancel
-                        </button>
+                                }}
+
+                            >
+                            Cancel
+                            </button>
+                        </div>
                     </>
                     )}
           </label>
