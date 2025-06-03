@@ -49,14 +49,12 @@ function Expense() {
   } ;
 
   // Function to update the expense list after an expense is edited and saved
-  const handleSaveExpense = (savedExpense) => {
-    setExpenses(prev => {
-      const exists = prev.find(exp => exp._id === savedExpense._id);
-      return exists
-        ? prev.map(exp => (exp._id === savedExpense._id ? savedExpense : exp))
-        : [...prev, savedExpense];
-    });
-  };
+  const handleSaveExpense = async() => {
+    // refresh the data from backend
+    await loadExpenses();
+    setEditingExpense(null);
+    };
+  
   
   // handle delete click
   const handleDelete = (expense) => {
@@ -83,6 +81,24 @@ function Expense() {
     }
   };
 
+  // reload table when edit/add expense
+  const loadExpenses = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/expenses?trip=${tripId}`, {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setExpenses(data);
+      } else {
+        setError(data.error);
+      }
+    } catch (err) {
+      console.error("Error fetching expenses:", err);
+      setError("Failed to fetch expenses.");
+    }
+  };
+
   useEffect(() => {
   // fetch trip
     fetchData(
@@ -90,12 +106,9 @@ function Expense() {
       setTrip,
       "Failed to load trip data"
     );
-  // fetch expense
-    fetchData(
-      `http://localhost:3000/expenses?trip=${tripId}`,
-      setExpenses,
-      "Failed to fetch expenses."
-    );
+    // fetch expense
+    loadExpenses();
+
   }, [tripId]);
 
   return (
