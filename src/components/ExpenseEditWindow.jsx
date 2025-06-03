@@ -13,6 +13,7 @@
 
 import React, { useEffect, useState } from "react";
 import { getToken } from '../utils/getToken';
+import CategoryManagerModal from "./CategoryDeleteModal"
 import "./Pop-UpWindow.css";
 
 // Current expense object we want to edit, function to close the popup, function to save the updated data.}
@@ -33,6 +34,10 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
     //Add category
     const [isAddingCategory, setIsAddingCategory] = useState(false);
     const [newCategoryName, setNewCategoryName] = useState("");
+
+    // Delete category
+    const [showCategoryManager, setShowCategoryManager] = useState(false);
+
 
   // Run everytime when the expense changed (prefill the form)
     useEffect(() => {
@@ -160,85 +165,129 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
         }
     };
 
+    const handleCategoryDelete = async (categoryId) => {
+        try {
+            const res = await fetch(`http://localhost:3000/categories/${categoryId}`, {
+            method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                alert("Failed to delete category: " + data.error);
+            } else {
+            // Update category list
+            setCategories((prev) => prev.filter((cat) => cat._id !== categoryId));
+
+            // Clear selected category if it was just deleted
+            if (formData.category === categoryId) {
+                setFormData((prev) => ({ ...prev, category: "" }));
+            }
+        }
+    } catch (err) {
+        alert("Error deleting category: " + err.message);
+    }
+};
+
   return(
-    <div className="modal-backdrop">
-      <div className="modal-content">
-        <h3>{isEditMode ? "Edit Expense" : "Add Expense"}</h3>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Category:
-                {!isAddingCategory ? (
-                    <>
-                        <select
-                            name="category"
-                            value={formData.category}
-                            onChange={(e) => {
-                                if (e.target.value === "__add_new__") {
-                                setIsAddingCategory(true);
-                                setFormData((prev) => ({ ...prev, category: "" }));
-                                } else {
-                                handleChange(e);
-                                }
-                            }}
-                            required
-                        >
-
-                        <option value="">-- Select Category --</option>
-
-                        {categories.map((cat) => (
-
-                            <option key={cat._id} value={cat._id}>
-                            {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
-                            </option>
-
-                        ))}
-
-                        <option value="__add_new__">+ Add New Category</option>
-                        </select>
-                    </>
-
-                    ) : (
-                    <>
-                        <div style={{ display: "flex", gap: "5px" }}>
-                            <input
-                                type="text"
-                                name="newCategory"
-                                placeholder="Enter new category name"
-                                value={newCategoryName}
-                                onChange={(e) => setNewCategoryName(e.target.value)}
+    <>
+        <div className="modal-backdrop">
+        <div className="modal-content">
+            <h3>{isEditMode ? "Edit Expense" : "Add Expense"}</h3>
+            <form onSubmit={handleSubmit}>
+            <label>
+                Category:
+                    {!isAddingCategory ? (
+                        <>
+                            <select
+                                name="category"
+                                value={formData.category}
+                                onChange={(e) => {
+                                    if (e.target.value === "__add_new__") {
+                                    setIsAddingCategory(true);
+                                    setFormData((prev) => ({ ...prev, category: "" }));
+                                    } else {
+                                    handleChange(e);
+                                    }
+                                }}
                                 required
-                            />
-                            <button type="submit">Add</button>
+                            >
+
+                            <option value="">-- Select Category --</option>
+
+                            {categories.map((cat) => (
+
+                                <option key={cat._id} value={cat._id}>
+                                {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
+                                </option>
+
+                            ))}
+
+                            <option value="__add_new__">+ Add New Category</option>
+                            </select>
+                            
                             <button
                                 type="button"
-                                onClick={() => {
-                                setIsAddingCategory(false);
-                                setNewCategoryName("");
-                                }}
-
-                            >
-                            Cancel
+                                style={{ marginTop: "0.5rem" }}
+                                onClick={() => setShowCategoryManager(true)}
+                                >
+                                Manage Categories
                             </button>
-                        </div>
-                    </>
-                    )}
-          </label>
 
-          <label>
-            Description:
-            <input name="description" value={formData.description} onChange={handleChange} required />
-          </label>
-          <label>
-            Amount:
-            <input name="amount" type="number" value={formData.amount} onChange={handleChange} required />
-          </label>
-          <div className="modal-buttons">
-            <button type="submit">Save</button>
-            <button type="button" onClick={onClose}>Cancel</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+                        </>
+
+                        ) : (
+                        <>
+                            <div style={{ display: "flex", gap: "5px" }}>
+                                <input
+                                    type="text"
+                                    name="newCategory"
+                                    placeholder="Enter new category name"
+                                    value={newCategoryName}
+                                    onChange={(e) => setNewCategoryName(e.target.value)}
+                                    required
+                                />
+                                <button type="submit">Add</button>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                    setIsAddingCategory(false);
+                                    setNewCategoryName("");
+                                    }}
+                                >
+                                Cancel
+                                </button>
+                            </div>
+                        </>
+                        )}
+            </label>
+
+            <label>
+                Description:
+                <input name="description" value={formData.description} onChange={handleChange} required />
+            </label>
+            <label>
+                Amount:
+                <input name="amount" type="number" value={formData.amount} onChange={handleChange} required />
+            </label>
+            <div className="modal-buttons">
+                <button type="submit">Save</button>
+                <button type="button" onClick={onClose}>Cancel</button>
+            </div>
+            </form>
+        </div>
+        </div>
+        {showCategoryManager && (
+            <CategoryManagerModal
+                categories={categories}
+                onClose={() => setShowCategoryManager(false)}
+                onDelete={handleCategoryDelete}
+            />
+        )}
+    </>
+    );
 }
 export default ExpenseEditWindow
