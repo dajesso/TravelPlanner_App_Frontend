@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from "react";
 
 // useParams allows us to grab the tripId from the URL
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 // Import custom components and styles
 import ExpenseTable from '../components/ExpenseTable';
@@ -73,25 +73,38 @@ function Expense() {
   }, [tripId]);
 
   return (
-    <div>
-      <h2>Trip Details</h2>
+    <div className="page-container">
       {error && <p style={{ color: "red" }}>{error}</p>}
       {!trip && !error && <p>Loading trip data...</p>}
 
       {trip && (
         <>
-          <div>
+          <div className="top-row">
+
+            <button className="back-button" onClick={() => Navigate("/trips")}>
+              ← All Trips
+            </button>
+
+            <h2>Trip Details</h2>
+
             <button onClick={() => setEditingTrip(trip)}>
               Edit Trip
             </button>
+          </div>
+
+          <div className="trip-info">
             <h2>Location: {trip.location}</h2>
             <p>Dates: {trip.arrivalDate} - {trip.departureDate}</p>
             <p>Total Expense: ${trip.totalExpense}</p>
+          </div>
 
+          <div className="add-expense-container">
             <button onClick={() => setEditingExpense({})}>
               + Add Expense
             </button>
+          </div>
 
+          <div className="expense-table-container">
             <h3>Expenses:</h3>
             <ExpenseTable
               // Pass expenses data to table
@@ -138,6 +151,5 @@ function Expense() {
   </div>
 );
 }
-
 
 export default Expense;
