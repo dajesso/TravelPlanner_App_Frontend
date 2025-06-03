@@ -30,6 +30,10 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
     // Store available categories from the backend
     const [categories, setCategories] = useState([]);
 
+    //Add category
+    const [isAddingCategory, setIsAddingCategory] = useState(false);
+    const [newCategoryName, setNewCategoryName] = useState("");
+
   // Run everytime when the expense changed (prefill the form)
     useEffect(() => {
         if (expense) {
@@ -81,6 +85,37 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
         e.preventDefault();
 
         try {
+
+            let categoryId = formData.category;
+
+            // Create new category if needed
+            if (isAddingCategory && newCategoryName.trim()) {
+            const categoryRes = await fetch("http://localhost:3000/categories", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getToken()}`,
+                },
+                body: JSON.stringify({ name: newCategoryName.trim() }),
+            });
+
+            const categoryData = await categoryRes.json();
+
+            if (!categoryRes.ok) {
+                return alert("Failed to add new category: " + categoryData.error);
+            }
+
+            categoryId = categoryData._id; 
+
+            // Update UI and category list
+            setIsAddingCategory(false);
+            setNewCategoryName("");
+            setCategories((prev) => [...prev, categoryData]);
+
+            // Save the new category in formData
+            setFormData((prev) => ({ ...prev, category: categoryId }));
+            }
+
             // Choose the mode
             const url = isEditMode
             ? `http://localhost:3000/expenses/${expense._id}`
@@ -89,9 +124,11 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
             const method = isEditMode ? "PUT" : "POST";
 
             // Add Trip Id only when adding a new expense
-            const body = isEditMode
-                ? formData
-                : {...formData, trip:tripId};
+            const body = {
+                ...formData,
+                category: categoryId,
+                ...(isEditMode ? {} : { trip: tripId }),
+            };
             
             // Send request to backend
             const res = await fetch(url, {
@@ -111,7 +148,7 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
 
             // update parent state
             onSave(data); 
-            
+
             // close modal
             onClose(); 
 
@@ -130,20 +167,59 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
         <form onSubmit={handleSubmit}>
           <label>
             Category:
-                <select
-                    name="category"
-                    value={formData.category}
-                    onChange={handleChange}
-                    required
-                >
-                    <option value="">-- Select Category --</option>
-                    {categories.map(cat => (
-                    <option key={cat._id} value={cat._id}>
-                        {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
-                    </option>
-                    ))}
-                </select>
+                {!isAddingCategory ? (
+                    <>
+                        <select
+                            name="category"
+                            value={formData.category}
+                            onChange={(e) => {
+                                if (e.target.value === "__add_new__") {
+                                setIsAddingCategory(true);
+                                setFormData((prev) => ({ ...prev, category: "" }));
+                                } else {
+                                handleChange(e);
+                                }
+                            }}
+                            required
+                        >
+
+                        <option value="">-- Select Category --</option>
+
+                        {categories.map((cat) => (
+
+                            <option key={cat._id} value={cat._id}>
+                            {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
+                            </option>
+
+                        ))}
+
+                        <option value="__add_new__">+ Add New Category</option>
+                        </select>
+                    </>
+
+                    ) : (
+                    <>
+                        <input
+                            type="text"
+                            name="newCategory"
+                            placeholder="Enter new category name"
+                            value={newCategoryName}
+                            onChange={(e) => setNewCategoryName(e.target.value)}
+                            required
+                        />
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setIsAddingCategory(false);
+                                setNewCategoryName("");
+                        }}
+                        >
+                        Cancel
+                        </button>
+                    </>
+                    )}
           </label>
+
           <label>
             Description:
             <input name="description" value={formData.description} onChange={handleChange} required />
