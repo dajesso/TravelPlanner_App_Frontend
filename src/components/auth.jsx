@@ -2,7 +2,6 @@
 // it will check if its login or register so we don't reuse large sections of code.
 
 
-
 function auth(requestData, response, type = "login", setStatus, setError) {
 
     console.log(requestData);

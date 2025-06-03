@@ -39,14 +39,14 @@ event.preventDefault();
     // validation error occurs it will return and end the code block
     const validationError = validateForm(email, password, schema);
 
-    if (validationError) {
-      setError(validationError);
-      setStatus("");
-      return;
-    }else{
-      setError("");
-      setStatus("Validating credentials...");
-    }
+      if (validationError) {
+        setError(validationError);
+        setStatus("");
+        return;
+      }else{
+        setError("");
+        setStatus("Validating credentials...");
+        }
 
         const response = await fetch("http://localhost:3000/login", {
         method: "POST",
