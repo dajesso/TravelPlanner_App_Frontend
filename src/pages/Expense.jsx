@@ -6,6 +6,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ExpenseTable from '../components/ExpenseTable';
+import { getToken } from '../utils/getToken';
+import { deleteExpense, fetchData, loadExpensesByTrip } from '../utils/fetchApi';
 import './Expense.css';
 import ExpenseEditWindow from "../components/ExpenseEditWindow";
 import ExpenseDeleteWindow from "../components/ExpenseDeleteWindow";
@@ -22,107 +24,30 @@ function Expense() {
   const [expenseToDelete, setExpenseToDelete] = useState(null);
 
   // Get the token
-  // document.cookie gives all cookies, we need to find and get the token from it
-  const getToken = () =>
-    document.cookie
-    .split("; ")
-    .find(row => row.startsWith("sessionToken="))
-    ?.split("=")[1];
-
-  const fetchData = async (url, setter, errorMsg) => {
-    try {
-      const res = await fetch(url, {
-        headers: { Authorization: `Bearer ${getToken()}` },
-      });
-      const data = await res.json();
-      if (res.ok) setter(data);
-      else setError(data.error || errorMsg);
-    } catch (err) {
-      setError(errorMsg);
-      console.error(errorMsg, err);
-    }
+  const loadTripAndExpenses = async () => {
+    await fetchData(`http://localhost:3000/trips/${tripId}`, setTrip, "Failed to load trip", setError);
+    await loadExpensesByTrip(tripId, setExpenses, setError);
   };
 
-  // Function to start editing a specific expense (opens the edit window)
-  const handleEdit = (expense) => {
-  setEditingExpense(expense); 
-  } ;
-
-  // Function to update the expense list after an expense is edited and saved
   const handleSaveExpense = async() => {
     // refresh the data from backend
-    await loadExpenses();
-
-    await fetchData(
-      `http://localhost:3000/trips/${tripId}`,
-      setTrip,
-      "Failed to reload trip data"
-    );
-    
+    await loadTripAndExpenses();
     setEditingExpense(null);
     };
 
-  // handle delete click
-  const handleDelete = (expense) => {
-    setExpenseToDelete(expense);
-  };
-
   // confirm actual deletion
   const confirmDelete = async (expenseId) => {
-    try {
-      const res = await fetch(`http://localhost:3000/expenses/${expenseId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${getToken()}` },
-      });
-
-      if (res.ok) {
-        await loadExpenses();
-
-        // refresh trip totalExpense
-        await fetchData(
-        `http://localhost:3000/trips/${tripId}`,
-        setTrip,
-        "Failed to reload trip data"
-      ); 
-
-        setExpenseToDelete(null);
-      } else {
-        const data = await res.json();
-        alert("Failed to delete: " + data.error);
-      }
-    } catch (err) {
-      alert("Network error: " + err.message);
-    }
-  };
-
-  // reload table when edit/add expense
-  const loadExpenses = async () => {
-    try {
-      const res = await fetch(`http://localhost:3000/expenses?trip=${tripId}`, {
-        headers: { Authorization: `Bearer ${getToken()}` },
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setExpenses(data);
-      } else {
-        setError(data.error);
-      }
-    } catch (err) {
-      console.error("Error fetching expenses:", err);
-      setError("Failed to fetch expenses.");
+    const { ok, data } = await deleteExpense(expenseId);
+    if (ok) {
+      await loadTripAndExpenses();
+      setExpenseToDelete(null);
+    } else {
+      alert("Failed to delete: " + data.error);
     }
   };
 
   useEffect(() => {
-  // fetch trip
-    fetchData(
-      `http://localhost:3000/trips/${tripId}`,
-      setTrip,
-      "Failed to load trip data"
-    );
-    // fetch expense
-    loadExpenses();
-
+    loadTripAndExpenses();
   }, [tripId]);
 
   return (
@@ -145,10 +70,10 @@ function Expense() {
             <h3>Expenses:</h3>
             <ExpenseTable
               expenses={expenses}
-              onEdit={(expense) => handleEdit(expense)}
-              onDelete={(expense) => handleDelete(expense)}
+              onEdit={(expense) => setEditingExpense(expense)}
+              onDelete={(expense) => setExpenseToDelete(expense)}
             />
-      </div>
+        </div>
       </>
     )}
 

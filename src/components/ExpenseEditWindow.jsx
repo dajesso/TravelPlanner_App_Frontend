@@ -12,14 +12,15 @@
 // 3. Save it (as same as save Edit)
 
 import React, { useEffect, useState } from "react";
+import { getToken } from '../utils/getToken';
 import "./Pop-UpWindow.css";
 
 // {current expense object we want to edit, function to close the popup, function to save the updated data.}
 function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
     // Check is it Edit mode or Add mode
-    const isEditMode = Boolean(expense && expense._id);
+    const isEditMode = Boolean(expense?._id);
 
-    // [ holds the values for the form fields ,  function to update the form data]
+    // Holds the values for the form fields ,  function to update the form data]
     const [formData, setFormData] = useState({
         // start the field with empty first with ""
         category: "",
@@ -28,12 +29,8 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
     });
     const [categories, setCategories] = useState([]);
 
-    if (!expense) return null;
-
   // Run everytime when the expense changed (prefill the form)
     useEffect(() => {
-        console.log("Editing expense:", JSON.stringify(expense, null, 2));
-        console.log("Expense._id:", expense?._id);
         if (expense) {
             setFormData({
                 category: expense.category?._id  || "",
@@ -47,14 +44,9 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const token = document.cookie
-                    .split("; ")
-                    .find(row => row.startsWith("sessionToken="))
-                    ?.split("=")[1];
-
                 const res = await fetch("http://localhost:3000/categories", {
-                    headers: { Authorization: `Bearer ${token}` },
-            });
+                    headers: { Authorization: `Bearer ${getToken()}` },
+                });
 
             const data = await res.json();
             
@@ -83,33 +75,25 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
     const handleSubmit = async (e) => {
         // stop the page from reloading
         e.preventDefault();
-    try {
-        const token = document.cookie
-        .split("; ")
-        .find(row => row.startsWith("sessionToken="))
-        ?.split("=")[1];
+        try {
+            const url = isEditMode
+            ? `http://localhost:3000/expenses/${expense._id}`
+            : "http://localhost:3000/expenses";
 
-        // Check is it Edit mode or Add mode
-        const isEditMode = Boolean(expense && expense._id);
+            const method = isEditMode ? "PUT" : "POST";
 
-        const url = isEditMode
-        ? `http://localhost:3000/expenses/${expense._id}`
-        : "http://localhost:3000/expenses";
+            const body = isEditMode
+                ? formData
+                : {...formData, trip:tripId};
 
-        const method = isEditMode ? "PUT" : "POST";
-
-        const body = isEditMode
-            ? formData
-            : {...formData, trip:tripId};
-
-        const res = await fetch(url, {
-        method,
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(body),
-        });
+            const res = await fetch(url, {
+                method,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getToken()}`,
+                },
+                body: JSON.stringify(body),
+            });
 
         const data = await res.json();
 
