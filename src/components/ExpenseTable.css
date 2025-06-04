@@ -1,21 +1,17 @@
 table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: center;
-  margin-top: 1rem;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    text-align: center;
+    color: white;
 }
 
 th, td {
-  border: 1px solid #ddd;
-  padding: 12px;
+    border: 1px solid #ccc;
+    padding: 12px;
+    text-align: center;
 }
 
 th {
-  background-color: #424769;
-  color: white;
-  font-weight: bold;
-}
-
-tr:hover {
-  background-color: #ddd;
+    background-color: #424769;
 }
