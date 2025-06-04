@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getToken } from '../../utils/getToken';
 
 export default function GetAllTrips() {
   const [trips, setTrips] = useState([]);
@@ -9,9 +10,16 @@ export default function GetAllTrips() {
   useEffect(() => {
     async function fetchTrips() {
       try {
+        // THIS BELOW TO AUTOMATE JWT AT THE BACKEND
+        // const res = await fetch('http://localhost:3000/trips', {
+        //   method: 'GET',
+        //   credentials: 'include', // send cookies if needed later
         const res = await fetch('http://localhost:3000/trips', {
           method: 'GET',
-          credentials: 'include', // send cookies if needed later
+          headers: {
+            'Authorization': `Bearer ${getToken()}`
+            // 'Content-Type': 'application/json'
+          }
         });
 
         if (!res.ok) {
