@@ -1,14 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-// TEST TEST TEST
-export default function CreateTrip() {
-  return (
-    <div>
-      <h2>CreateTrip Page Loaded ✅</h2>
-    </div>
-  );
-}
+import { getToken } from '../../utils/getToken'; // adjust if needed
 
 export default function CreateTrip() {
   const navigate = useNavigate();
@@ -33,8 +25,10 @@ export default function CreateTrip() {
     try {
       const res = await fetch('http://localhost:3000/trips', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // 🔐 to include auth cookies later
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(trip)
       });
 
@@ -48,6 +42,7 @@ export default function CreateTrip() {
       setError(err.message);
     }
   }
+
 
   return (
     <div>
@@ -63,18 +58,18 @@ export default function CreateTrip() {
           required
         />
 
-        <label>Arrival Date (DD/MM/YYYY):</label>
+        <label>Arrival Date:</label>
         <input
-          type="text"
+          type="date"
           name="arrivalDate"
           value={trip.arrivalDate}
           onChange={handleChange}
           required
         />
 
-        <label>Departure Date (DD/MM/YYYY):</label>
+        <label>Departure Date:</label>
         <input
-          type="text"
+          type="date"
           name="departureDate"
           value={trip.departureDate}
           onChange={handleChange}
