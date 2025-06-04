@@ -1,3 +1,5 @@
+import "./ExpenseTable.css"
+
 function ExpenseTable({ expenses, onEdit, onDelete }) {
   return (
     <table>

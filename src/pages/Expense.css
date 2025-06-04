@@ -1,13 +1,13 @@
 /* General layout styling */
 .page-container {
-    max-width: 100%;
+    max-width: 960px;
     margin: 0 auto;
     padding: 2rem;
-    border-radius: 10px;
-    padding: 2rem;
     background-color: #2d3250;
+    border-radius: 10px;
     min-height: 100vh;
     font-family: 'Segoe UI', sans-serif;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Top row: nav + title + edit trip */
@@ -15,17 +15,21 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #2d3250;
-  padding: 1rem;
+  background-color: #424769;
+  color: white;
+  padding: 1rem 1.5rem;
   border-radius: 8px;
+  margin-bottom: 1rem;
 }
 
 /* Trip info */
 .trip-info {
   margin-top: 1rem;
-  background-color: #2d3250;
-  padding: 1rem;
+  background-color: #3e4266;
+  padding: 1.5rem;
   border-radius: 8px;
+  color: white;
+  margin-bottom: 1.5rem;
 }
 
 /* Add Expense button */
@@ -37,11 +41,10 @@
 
 /* Expense table */
 .expense-table-container {
-  background-color:#676f9d;
-  padding: 1rem;
+  background-color: #676f9d;
+  padding: 1.5rem;
   border-radius: 8px;
-  max-width: 800px;
-  margin: 0 auto; /* center the table */
+  max-width: 100%;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -50,15 +53,17 @@ button {
   background-color: #f9b17a;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  margin-left: 0.5rem;
-  border-radius: 5px;
+  padding: 0.6rem 1.2rem;
+  margin: 0.5rem;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 1rem;
+  transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #3a7bd5;
+  background-color: #fa804b;
 }
 
 .back-button {
@@ -69,4 +74,9 @@ button:hover {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #f9b17a;
+  color: #2d3250;
 }

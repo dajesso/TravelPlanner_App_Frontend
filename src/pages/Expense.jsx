@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from "react";
 
 // useParams allows us to grab the tripId from the URL
-import { Navigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // Import custom components and styles
 import ExpenseTable from '../components/ExpenseTable';
@@ -17,7 +17,6 @@ import './Expense.css';
 // Import utility functions
 import { deleteExpense, fetchData, loadExpensesByTrip } from '../utils/fetchApi';
 import TripEditWindow from "../components/TripEditWindow";
-
 
 function Expense() {
   //  grabs the tripId from the URL
@@ -30,6 +29,8 @@ function Expense() {
   const [editingExpense, setEditingExpense] = useState(null);
   const [expenseToDelete, setExpenseToDelete] = useState(null);
   const [editingTrip, setEditingTrip] = useState(null);
+
+  const navigate = useNavigate();
 
   // Load trip and associated expenses from backend
   const loadTripAndExpenses = async () => {
@@ -81,7 +82,7 @@ function Expense() {
         <>
           <div className="top-row">
 
-            <button className="back-button" onClick={() => Navigate("/trips")}>
+            <button className="back-button" onClick={() => navigate("/trips")}>
               ← All Trips
             </button>
 
