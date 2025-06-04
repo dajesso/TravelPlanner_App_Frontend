@@ -29,6 +29,7 @@ function Expense() {
   const [editingExpense, setEditingExpense] = useState(null);
   const [expenseToDelete, setExpenseToDelete] = useState(null);
   const [editingTrip, setEditingTrip] = useState(null);
+  const [sortOption, setSortOption] = useState("");
 
   const navigate = useNavigate();
 
@@ -73,6 +74,19 @@ function Expense() {
     loadTripAndExpenses();
   }, [tripId]);
 
+  // Sort by...
+  const sortedExpenses = [...expenses];
+
+  if (sortOption === "price-low-high") {
+    sortedExpenses.sort((a, b) => a.amount - b.amount);
+  } else if (sortOption === "category-az") {
+    sortedExpenses.sort((a, b) => {
+      const nameA = a.category?.name?.toLowerCase() || "";
+      const nameB = b.category?.name?.toLowerCase() || "";
+      return nameA.localeCompare(nameB);
+    });
+  }
+
   return (
     <div className="page-container">
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -99,17 +113,32 @@ function Expense() {
             <p>Total Expense: ${trip.totalExpense}</p>
           </div>
 
-          <div className="add-expense-container">
-            <button onClick={() => setEditingExpense({})}>
-              + Add Expense
-            </button>
+          <div className="table-header-row">
+            <div className="sort-dropdown">
+              <label htmlFor="sort">Sort By: </label>
+              <select
+                id="sort"
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value)}
+              >
+                <option value="">-- Select --</option>
+                <option value="price-low-high">Price: Low to High</option>
+                <option value="category-az">Category A → Z</option>
+              </select>
+            </div>
+            
+            <div className="add-expense-container">
+              <button onClick={() => setEditingExpense({})}>
+                + Add Expense
+              </button>
+            </div>
           </div>
 
           <div className="expense-table-container">
             <h3>Expenses:</h3>
             <ExpenseTable
               // Pass expenses data to table
-              expenses={expenses}
+              expenses={sortedExpenses}
               // Open edit modal
               onEdit={(expense) => setEditingExpense(expense)}
               // Open delete modal
@@ -144,8 +173,8 @@ function Expense() {
         trip={editingTrip}
         onClose={() => setEditingTrip(null)}
         onSave={async () => {
-          await loadTripAndExpenses();  // Refresh trip + expenses
-          setEditingTrip(null);         // Close modal
+          await loadTripAndExpenses();  
+          setEditingTrip(null);         
         }}
       />
     )}

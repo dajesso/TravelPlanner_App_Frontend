@@ -80,3 +80,25 @@ button:hover {
   background-color: #f9b17a;
   color: #2d3250;
 }
+
+.table-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.sort-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sort-dropdown select {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: none;
+  width: auto;
+  max-width: 160px;
+}
