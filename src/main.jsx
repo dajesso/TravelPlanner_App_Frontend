@@ -23,13 +23,13 @@ createRoot(document.getElementById('root')).render(
         <Route element={<App />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-<<<<<<< HEAD
           <Route path="/logout" element={<Logout />} />
-=======
+
           
           {/* All trips list page for testing */}
           <Route path="/trips" element={<Trips />} />
->>>>>>> 076acb7a3a7f1fdaa2d6eb169311cc1c8472e891
+                   
+
 
           {/* This is the expense route, as it will negivate from tripsPage, and only display ONE Trip's expenses */}
           <Route path="/trips/:tripId" element={<Expense />} />

@@ -7,6 +7,8 @@ import {validateAuth, validateForm} from '../components/validateAuth.jsx';
 //import { verifyToken } from '../components/verifyToken.jsx'
 
 import {auth} from '../components/auth.jsx';
+
+
 // We are building onto the template we wil create a html form with a username and password input
 // username is email
 // we will check the user type and store it into a cookie.
@@ -32,8 +34,11 @@ const submitButton = async (event) => {
 event.preventDefault();
 
 
-  try{
 
+
+
+
+  try{
 
     // Validate the form data using the schema
     // validation error occurs it will return and end the code block
