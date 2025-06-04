@@ -120,12 +120,14 @@ return (
       {/* Show login link if registration was successful */}
     {!error && status.toLowerCase().includes('success') && (
       <div style={{ marginTop: '1em' }}>
-        <p>
          <p>Redirecting to login page in {secondsLeft} second{secondsLeft !== 1 ? 's' : ''}...</p>
-        </p>
+
       </div>
     )}
 
+     <p>
+        Already have an account? <a href="/login">Login</a>
+        </p>
       <button type="submit">Register</button>
     </form>
     
