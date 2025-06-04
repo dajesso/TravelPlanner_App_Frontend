@@ -1,5 +1,4 @@
 import Joi from 'joi-browser';
-import React,  { useState } from 'react';
 
 
 // this component is used to validate the username and password

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // import { StrictMode } from 'react'
 // import { createRoot } from 'react-dom/client'
@@ -19,8 +19,26 @@ const [status, setStatus] = useState("");
 const [error, setError] = useState("");
 const schema = validateAuth();
 
+const [secondsLeft, setSecondsLeft] = useState(30);
+
+  useEffect(() => {
+    if (secondsLeft === 0) {
+      window.location.href = '/login';
+      return;
+    }
+    const timer = setTimeout(() => {
+      setSecondsLeft(secondsLeft - 1);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [secondsLeft]);
+
+
 const submitButton = async (event) => {
 event.preventDefault();
+
+// we use this effect to start the countdown to the redirect.
+
+
 
 
   try{
@@ -98,8 +116,19 @@ return (
       {!error && <p id="registerStatus" style={{ color: 'white' }}>{status}</p>}
       {/* Show error in red */}
       {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      {/* Show login link if registration was successful */}
+    {!error && status.toLowerCase().includes('success') && (
+      <div style={{ marginTop: '1em' }}>
+        <p>
+         <p>Redirecting to login page in {secondsLeft} second{secondsLeft !== 1 ? 's' : ''}...</p>
+        </p>
+      </div>
+    )}
+
       <button type="submit">Register</button>
     </form>
+    
   </div>
 );
 }
