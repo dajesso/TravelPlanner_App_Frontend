@@ -7,6 +7,7 @@ import App from './App.jsx'
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx'
 import Expense from './pages/Expense.jsx';
+import Trips from './pages/Trips.jsx'
 import Logout from './pages/Logout.jsx';
 
 
@@ -22,6 +23,9 @@ createRoot(document.getElementById('root')).render(
         <Route element={<App />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          
+          {/* All trips list page for testing */}
+          <Route path="/trips" element={<Trips />} />
 
           {/* This is the expense route, as it will negivate from tripsPage, and only display ONE Trip's expenses */}
           <Route path="/trips/:tripId" element={<Expense />} />
