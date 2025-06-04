@@ -1,12 +1,8 @@
 import { useState } from 'react'
 import {validateAuth, validateForm} from '../components/validateAuth.jsx';
-// we don't need the followwing imports for now.
-
-//import { StrictMode } from 'react'
-//import { createRoot } from 'react-dom/client'
-//import { verifyToken } from '../components/verifyToken.jsx'
 
 import {auth} from '../components/auth.jsx';
+import "./Login.css"
 // We are building onto the template we wil create a html form with a username and password input
 // username is email
 // we will check the user type and store it into a cookie.
@@ -56,21 +52,14 @@ event.preventDefault();
         // we are sending the data as json
 
         }, body: JSON.stringify({email, password}),
-
-        
-
-   
     });
 
 
       // now to deal with the response we will use the auth function
-
-
       console.log(JSON.stringify({email, password}))
 
 
         // get the data from the request
-
         const requestData = await response.json();
 
         console.log(requestData);
@@ -89,33 +78,40 @@ event.preventDefault();
 // fixed a bug errors are red successful logins are white.
 
 return (
-  <div>
-    <h1>Travel Planner Authentication: Login</h1>
-    <form onSubmit={submitButton}>
-      <input
-        type="text"
-        placeholder="Enter email"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Enter password"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
-      {/* Only show status if there is no error */}
-      {!error && <p id="loginStatus" style={{ color: 'white' }}>{status}</p>}
-      {/* Show error in red */}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <button type="submit">Login</button>
-    </form>
-  </div>
-);
+  <div className="login-page">
+      <div className="about-section">
+        <h2>Welcome to Travel Planner</h2>
+        <p>
+          Travel Planner helps you effortlessly manage your trips, track expenses, and stay organized all in one place.
+          Whether you're backpacking across Europe or planning a weekend getaway, our intuitive app provides everything you need to
+          simplify travel planning. Sign in now to access your personalized dashboard and start organizing your journeys with ease.
+        </p>
+      </div>
+
+      <div className="login-section">
+        <h1>Login</h1>
+        <form onSubmit={submitButton}>
+          <input
+            type="text"
+            placeholder="Enter email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+          {!error && <p className="login-status">{status}</p>}
+          {error && <p className="login-error">{error}</p>}
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+  );
 }
 
-// const root = createRoot(document.getElementById("login"));
-// root.render(<Login />);
 
 export default Login;
 
