@@ -219,28 +219,64 @@
     }
 
     .filter-and-add-container {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .filter-bar {
-        flex: 1 1 100%;
-    }
-
-    .filter-bar input,
-    .filter-bar select {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        max-width: 850px; /* example max total width */
         width: 100%;
-        max-width: 200px;
-        flex: 1 1 auto;
+    }
+    .filter-bar {
+        max-width: 600px; 
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 1;  
+    }
+
+    /* Add some space between input and selects */
+    .filter-bar input {
+        margin-right: 1rem;
+        flex: 2; 
+        min-width: 0;
+        height: 36px;
+        align-items: center;
+    }
+
+    .filter-bar select {
+        flex: 1;
+        min-width: 0;
     }
 
     .filter-bar button {
-        flex-shrink: 0;
+        flex: 1; 
+        background-color: #f9b17a;
+        color: white;
+        font-weight: bold;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        height: 36px;
+    }
+
+    .filter-bar button:hover {
+        background-color: #3a7bd5;
     }
 
     .add-trip-button {
-        width: 100%;
-        margin-top: 1rem;
+        flex: 0 0 200px;
+        padding: 0.5rem 1rem;
+        background-color: #f9b17a;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        color: white;
+        transition: background-color 0.3s;
+        height: 36px;
+    }
+
+    .add-trip-button:hover {
+        background-color: #3a7bd5;
     }
 
     .trip-grid {
