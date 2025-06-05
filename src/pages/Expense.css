@@ -13,10 +13,23 @@
 .top-row {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     background-color: #2d3250;
     padding: 1rem;
     border-radius: 8px;
+}
+
+.top-row h2 {
+  font-size: 2rem; 
+  font-weight: 700; 
+  margin: 0;       
+  color: #fff;      
+}
+
+.top-row button {
+  display: flex;
+  align-items: center;
+  height: 40px; 
 }
 
 /* Trip info */
