@@ -17,7 +17,7 @@ import CategoryManagerModal from "./CategoryDeleteModal"
 import "./Pop-UpWindow.css";
 
 // Current expense object we want to edit, function to close the popup, function to save the updated data.}
-function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
+function ExpenseEditWindow({ expense, tripId, expenses,onClose, onSave }) {
     // Check is it Edit mode or Add mode
     const isEditMode = Boolean(expense?._id);
 
@@ -38,8 +38,11 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
     // Delete category
     const [showCategoryManager, setShowCategoryManager] = useState(false);
 
+    // Error Handling
+    const [localError, setLocalError] = useState("");
 
-  // Run everytime when the expense changed (prefill the form)
+
+    // Run everytime when the expense changed (prefill the form)
     useEffect(() => {
         if (expense) {
             setFormData({
@@ -89,6 +92,9 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
         // stop the page from reloading
         e.preventDefault();
 
+        // Clear all previous error
+        setLocalError("");
+
         try {
 
             let categoryId = formData.category;
@@ -107,12 +113,14 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
             const categoryData = await categoryRes.json();
 
             if (!categoryRes.ok) {
-                return alert("Failed to add new category: " + categoryData.error);
+                setLocalError("Failed to add new category: " + categoryData.error);
+                return;
             }
 
             categoryId = categoryData._id; 
 
             // Update UI and category list
+            setFormData((prev) => ({ ...prev, category: categoryId }));
             setIsAddingCategory(false);
             setNewCategoryName("");
             setCategories((prev) => [...prev, categoryData]);
@@ -158,17 +166,50 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
             onClose(); 
 
         } else {
-            alert("Update failed: " + data.error);
+            setLocalError("Update failed: " + data.error);
         }
         } catch (err) {
-        alert("Network error: " + err.message);
+            setLocalError("Network error: " + err.message);
         }
     };
+    const handleAddCategory = async () => {
+        if (!newCategoryName.trim()) {
+            setLocalError("Category name cannot be empty.");
+            return;
+        }
+
+        try {
+            const categoryRes = await fetch("http://localhost:3000/categories", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getToken()}`,
+            },
+            body: JSON.stringify({ name: newCategoryName.trim() }),
+            });
+
+            const categoryData = await categoryRes.json();
+
+            if (!categoryRes.ok) {
+            setLocalError("Failed to add new category: " + categoryData.error);
+            return;
+            }
+
+            // Update dropdown list and select new category
+            setCategories((prev) => [...prev, categoryData]);
+            setFormData((prev) => ({ ...prev, category: categoryData._id }));
+            setIsAddingCategory(false);
+            setNewCategoryName("");
+        } catch (err) {
+            setLocalError("Error creating category: " + err.message);
+        }
+        };
+
 
     const handleCategoryDelete = async (categoryId) => {
         try {
             const res = await fetch(`http://localhost:3000/categories/${categoryId}`, {
-            method: "DELETE",
+                method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${getToken()}`
                 }
@@ -177,18 +218,19 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
             const data = await res.json();
 
             if (!res.ok) {
-                alert("Failed to delete category: " + data.error);
+                setLocalError("Failed to delete category: " + data.error);
             } else {
             // Update category list
             setCategories((prev) => prev.filter((cat) => cat._id !== categoryId));
+            setLocalError("");
 
-            // Clear selected category if it was just deleted
+            // Clear selected category if it was deleted
             if (formData.category === categoryId) {
                 setFormData((prev) => ({ ...prev, category: "" }));
             }
         }
     } catch (err) {
-        alert("Error deleting category: " + err.message);
+        setLocalError("Error deleting category: " + err.message); 
     }
 };
 
@@ -197,6 +239,7 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
         <div className="modal-backdrop">
         <div className="modal-content">
             <h3>{isEditMode ? "Edit Expense" : "Add Expense"}</h3>
+            {localError && <p className="modal-error">{localError}</p>}
             <form onSubmit={handleSubmit}>
             <label>
                 Category:
@@ -213,7 +256,7 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
                                     handleChange(e);
                                     }
                                 }}
-                                required
+                                // required
                             >
 
                             <option value="">-- Select Category --</option>
@@ -248,17 +291,20 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
                                     placeholder="Enter new category name"
                                     value={newCategoryName}
                                     onChange={(e) => setNewCategoryName(e.target.value)}
-                                    required
+                                    // required
                                 />
-                                <button type="submit">Add</button>
+                                <button type="button" onClick={handleAddCategory}>
+                                    
+                                </button>
                                 <button
+                                    className="btn-cancel"
                                     type="button"
                                     onClick={() => {
-                                    setIsAddingCategory(false);
-                                    setNewCategoryName("");
+                                        setIsAddingCategory(false);
+                                        setNewCategoryName("");
                                     }}
                                 >
-                                Cancel
+                                    Cancel
                                 </button>
                             </div>
                         </>
@@ -267,15 +313,15 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
 
             <label>
                 Description:
-                <input name="description" value={formData.description} onChange={handleChange} required />
+                <input name="description" value={formData.description} onChange={handleChange} /*required*/ />
             </label>
             <label>
                 Amount:
-                <input name="amount" type="number" value={formData.amount} onChange={handleChange} required />
+                <input name="amount" type="number" value={formData.amount} onChange={handleChange} /*required*//>
             </label>
             <div className="modal-buttons">
-                <button type="submit">Save</button>
-                <button type="button" onClick={onClose}>Cancel</button>
+                <button className="btn-primary" type="submit">Save</button>
+                <button className="btn-cancel" type="button" onClick={onClose}>Cancel</button>
             </div>
             </form>
         </div>
@@ -283,8 +329,10 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
         {showCategoryManager && (
             <CategoryManagerModal
                 categories={categories}
+                setCategories={setCategories}
                 onClose={() => setShowCategoryManager(false)}
                 onDelete={handleCategoryDelete}
+                expenses={expenses}
             />
         )}
     </>

@@ -9,6 +9,8 @@ function TripEditWindow({ trip, onClose, onSave }) {
     departureDate: "",
   });
 
+  const [localError, setLocalError] = useState("");
+
   useEffect(() => {
     if (trip) {
       setFormData({
@@ -27,6 +29,9 @@ function TripEditWindow({ trip, onClose, onSave }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Clear all previous error
+    setLocalError("");
+
     try {
       const res = await fetch(`http://localhost:3000/trips/${trip._id}`, {
         method: "PATCH",
@@ -43,10 +48,11 @@ function TripEditWindow({ trip, onClose, onSave }) {
         onSave(data); // Refresh trip data
         onClose();    // Close modal
       } else {
-        alert("Update failed: " + data.error);
+        setLocalError("Update failed: " + data.error); 
+
       }
     } catch (err) {
-      alert("Network error: " + err.message);
+        setLocalError("Network error: " + err.message); 
     }
   };
 
@@ -54,6 +60,7 @@ function TripEditWindow({ trip, onClose, onSave }) {
     <div className="modal-backdrop">
       <div className="modal-content">
         <h3>Edit Trip</h3>
+        {localError && <p className="modal-error">{localError}</p>}
         <form onSubmit={handleSubmit}>
           <label>
             Location:

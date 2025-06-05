@@ -1,32 +1,78 @@
+/* Desktop (default) */
 .app-layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   background-color: #2d3250;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  color: white;
 }
 
 .header {
   width: 100%;
   background-color: #424769;
-  color: white;
+  color: #ffff;
   text-align: center;
-  padding: 1rem 0;
-  font-size: 1.8rem;
+  padding: 1.2rem 0;
+  font-size: 2rem;
+  font-weight: bold;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.5px;
 }
 
 .main-content {
   flex: 1;
   padding: 2rem;
+  max-width: 1024px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .footer {
   width: 100%;
   background-color: #424769;
-  color: white;
+  color: #ffff;
   text-align: center;
-  padding: 1rem 0;
-  font-size: 1rem;
+  padding: 0.75rem 0;
+  font-size: 0.95rem;
   box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Tablet */
+@media only screen and (max-width: 1023px) and (min-width: 768px) {
+  .main-content {
+    padding: 1.2rem;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .header {
+    font-size: 1.5rem;
+    padding: 1rem 0;
+  }
+
+  .footer {
+    font-size: 0.85rem;
+    padding: 0.6rem 0;
+  }
+}
+
+/* Phone */
+@media only screen and (max-width: 767px) {
+  .main-content {
+    padding: 1rem;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .header {
+    font-size: 1.25rem;
+    padding: 0.9rem 0;
+  }
+
+  .footer {
+    font-size: 0.8rem;
+    padding: 0.5rem 0;
+  }
 }
