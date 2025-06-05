@@ -10,8 +10,8 @@ function ExpenseDeleteWindow({ expense, onConfirm, onCancel }) {
         <h3>Confirm Delete</h3>
         <p>Are you sure you want to delete <strong>{expense.description}</strong>?</p>
         <div className="modal-buttons">
-          <button onClick={() => onConfirm(expense._id)}>Delete</button>
-          <button onClick={onCancel}>Cancel</button>
+          <button className="btn-primary" onClick={() => onConfirm(expense._id)}>Delete</button>
+          <button className="btn-cancel" onClick={onCancel}>Cancel</button>
         </div>
       </div>
     </div>

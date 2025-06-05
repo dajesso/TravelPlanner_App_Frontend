@@ -297,6 +297,7 @@ function ExpenseEditWindow({ expense, tripId, expenses,onClose, onSave }) {
                                     
                                 </button>
                                 <button
+                                    className="btn-cancel"
                                     type="button"
                                     onClick={() => {
                                         setIsAddingCategory(false);
@@ -319,8 +320,8 @@ function ExpenseEditWindow({ expense, tripId, expenses,onClose, onSave }) {
                 <input name="amount" type="number" value={formData.amount} onChange={handleChange} /*required*//>
             </label>
             <div className="modal-buttons">
-                <button type="submit">Save</button>
-                <button type="button" onClick={onClose}>Cancel</button>
+                <button className="btn-primary" type="submit">Save</button>
+                <button className="btn-cancel" type="button" onClick={onClose}>Cancel</button>
             </div>
             </form>
         </div>

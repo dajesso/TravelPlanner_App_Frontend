@@ -34,7 +34,7 @@ function CategoryManagerModal({ categories, onClose, onDelete, expenses }) {
               <li key={cat._id} style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
                 <span>{cat.name}</span>
                 <button
-                  style={{ color: "white", backgroundColor: "red", border: "none", borderRadius: "4px", padding: "0.2rem 0.5rem" }}
+                  className="btn-primary"
                   onClick={() => handleDelete(cat._id, cat.name)}
                 >
                   Delete
@@ -44,7 +44,7 @@ function CategoryManagerModal({ categories, onClose, onDelete, expenses }) {
           </ul>
         )}
         <div className="modal-buttons">
-          <button type="button" onClick={onClose}>Close</button>
+          <button className="btn-cancel" type="button" onClick={onClose}>Close</button>
         </div>
       </div>
     </div>
