@@ -1,3 +1,4 @@
+/* Desktop (default) */
 .app-layout {
   display: flex;
   flex-direction: column;
@@ -38,9 +39,8 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-
 /* Tablet */
-@media only screen and (min-width: 768px) and (max-width: 1023px){
+@media only screen and (max-width: 1023px) and (min-width: 768px) {
   .main-content {
     padding: 1.2rem;
     max-width: 100%;
@@ -48,7 +48,7 @@
   }
 
   .header {
-    font-size: 1.5rem;   
+    font-size: 1.5rem;
     padding: 1rem 0;
   }
 
@@ -59,9 +59,11 @@
 }
 
 /* Phone */
-@media only screen and (min-width: 1024px) {
+@media only screen and (max-width: 767px) {
   .main-content {
-    padding: 1rem;        
+    padding: 1rem;
+    max-width: 100%;
+    width: 100%;
   }
 
   .header {

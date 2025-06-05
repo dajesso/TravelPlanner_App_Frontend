@@ -1,5 +1,9 @@
 /* General layout styling */
 /* desktop */
+.edit-trip-desktop {
+  display: inline-block;
+}
+
 .edit-trip-mobile {
   display: none;
 }
@@ -141,27 +145,16 @@ button:hover {
 
 /* Tablet Layout */
 /* Tablet and below */
-@media (max-width: 768px) {
-  .edit-trip-desktop {
-    display: none;
+@media only screen and (max-width: 1023px) {
+    .edit-trip-desktop {
+        display: none !important; /* force hide */
   }
-
-  .edit-trip-mobile {
-    display: block;
-    margin-top: 1rem;
-    align-self: center;
+    .edit-trip-mobile {
+        display: inline-block !important; /* force show */
+        margin-top: 1rem;
+        width: 100%;
+        max-width: 200px;
   }
-
-  .trip-info-content {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-  }
-}
-
-@media only screen and (min-width: 767px) and (max-width: 1023px){
     .top-row {
         flex-direction: column;
         align-items: center;
