@@ -2,7 +2,7 @@ import { useMediaQuery } from 'react-responsive';
 import "./ExpenseTable.css";
 
 function ExpenseTable({ expenses, onEdit, onDelete }) {
-  const isTabletOrMobile = useMediaQuery({ maxWidth: 768 });
+  const isTabletOrMobile = useMediaQuery({ maxWidth: 1023 });
 
   if (isTabletOrMobile) {
     return (
