@@ -96,35 +96,36 @@ export default function GetAllTrips() {
   return (
     <div className="trip-list">
       <h2>Travel List</h2>
+      <div className="filter-and-add-container">
+        <div className="filter-bar">
+          <input
+            ref={locationInputRef}
+            type="text"
+            name="location"
+            placeholder="Location"
+            value={filters.location}
+            onChange={handleFilterChange}
+          />
 
-      <div className="filter-bar">
-        <input
-          ref={locationInputRef}
-          type="text"
-          name="location"
-          placeholder="Location"
-          value={filters.location}
-          onChange={handleFilterChange}
-        />
+          <select name="month" value={filters.month} onChange={handleFilterChange}>
+            <option value="">Month</option>
+            {months.map(({ label, value }) => (
+              <option key={value} value={value}>{label}</option>
+            ))}
+          </select>
 
-        <select name="month" value={filters.month} onChange={handleFilterChange}>
-          <option value="">Month</option>
-          {months.map(({ label, value }) => (
-            <option key={value} value={value}>{label}</option>
-          ))}
-        </select>
+          <select name="year" value={filters.year} onChange={handleFilterChange}>
+            <option value="">Year</option>
+            {years.map(y => (
+              <option key={y} value={y}>{y}</option>
+            ))}
+          </select>
 
-        <select name="year" value={filters.year} onChange={handleFilterChange}>
-          <option value="">Year</option>
-          {years.map(y => (
-            <option key={y} value={y}>{y}</option>
-          ))}
-        </select>
+          <button onClick={resetFilters}>Clear All</button>
+        </div>
 
-        <button onClick={resetFilters}>Clear All</button>
+        <button onClick={goToCreate}>+ Add Trip</button>
       </div>
-
-      <button onClick={goToCreate}>+ Add Trip</button>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {filteredTrips.length === 0 && !error && <p>No trips found.</p>}
