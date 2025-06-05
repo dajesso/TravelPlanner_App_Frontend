@@ -83,6 +83,63 @@
 .trip-list li button:hover {
   background-color: #3a7bd5;
 }
+/* Cards */
+.trip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding-top: 1rem;
+}
+
+.trip-card {
+  background-color: #424769;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s;
+}
+
+.trip-card:hover {
+  transform: translateY(-5px);
+}
+
+.trip-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: #f9b17a;
+}
+
+.trip-card p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+  color: #ddd;
+}
+
+.card-buttons {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.card-buttons button {
+  flex: 1;
+  padding: 0.5rem;
+  background-color: #f9b17a;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.card-buttons button:hover {
+  background-color: #3a7bd5;
+}
 
 /* Create Trip Form */
 .create-trip-container form {

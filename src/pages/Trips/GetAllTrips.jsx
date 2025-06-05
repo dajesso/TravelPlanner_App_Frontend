@@ -129,16 +129,19 @@ export default function GetAllTrips() {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {filteredTrips.length === 0 && !error && <p>No trips found.</p>}
 
-      <ul>
+      <div className="trip-grid">
         {filteredTrips.map(trip => (
-          <li key={trip._id}>
-            <strong>{trip.location}</strong><br />
-            {trip.arrivalDate} → {trip.departureDate}<br />
-            <button onClick={() => navigate(`/trips/${trip._id}`)}>View</button>
-            <button onClick={() => setTripToDelete(trip)}>Delete</button>
-          </li>
+          <div className="trip-card" key={trip._id}>
+            <h3>{trip.location}</h3>
+            <p>{trip.arrivalDate} → {trip.departureDate}</p>
+            <p>Total: ${trip.totalExpense}</p>
+            <div className="card-buttons">
+              <button onClick={() => navigate(`/trips/${trip._id}`)}>View</button>
+              <button onClick={() => setTripToDelete(trip)}>Delete</button>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
 
       {tripToDelete && (
         <DeleteTripConfirmation
