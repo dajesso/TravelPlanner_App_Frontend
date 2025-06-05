@@ -1,129 +1,85 @@
-import { useState } from 'react'
-import {validateAuth, validateForm} from '../components/validateAuth.jsx';
-// we don't need the followwing imports for now.
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { validateAuth, validateForm } from '../components/validateAuth.jsx';
+import { auth } from '../components/auth.jsx';
+//import './Login.css';
 
-//import { StrictMode } from 'react'
-//import { createRoot } from 'react-dom/client'
-//import { verifyToken } from '../components/verifyToken.jsx'
+export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [status, setStatus] = useState('');
+  const [error, setError] = useState('');
+  const schema = validateAuth();
 
-import {auth} from '../components/auth.jsx';
+  const navigate = useNavigate();
 
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setError('');
+    setStatus('');
 
-// We are building onto the template we wil create a html form with a username and password input
-// username is email
-// we will check the user type and store it into a cookie.
-// and we will store the session token in a cookie as well
-
-// this function reutrns html code to generate a html form we create a form with a username and password input and then
-// we use events to modify and keep the login information in the form.
-
-
-function Login()
-{
-
-//we handle the state of the form using useState
-
-const [email, setEmail] = useState('');
-const [password, setPassword] = useState("");
-const [status, setStatus] = useState("");
-const [error, setError] = useState("");
-const schema = validateAuth();
-
-
-const submitButton = async (event) => {
-event.preventDefault();
-
-
-
-
-
-
-  try{
-
-    // Validate the form data using the schema
-    // validation error occurs it will return and end the code block
     const validationError = validateForm(email, password, schema);
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
 
-      if (validationError) {
-        setError(validationError);
-        setStatus("");
-        return;
-      }else{
-        setError("");
-        setStatus("Validating credentials...");
-        }
+    setStatus('Validating credentials...');
 
-        const response = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json",
+    try {
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-        // we are sending the data as json
+      const requestData = await response.json();
+      auth(requestData, response, 'login', setStatus, setError);
 
-        }, body: JSON.stringify({email, password}),
-
-        
-
-   
-    });
-
-
-      // now to deal with the response we will use the auth function
-
-
-      console.log(JSON.stringify({email, password}))
-
-
-        // get the data from the request
-
-        const requestData = await response.json();
-
-        console.log(requestData);
-
-        auth(requestData, response, "login", setStatus, setError);
-
-  
-  } catch (error) {
-    console.error("Error during login:", error);
-    console.log(error)
-    setError("Login failed. Please try again.");
+      if (response.ok && requestData.token) {
+        navigate('/trips');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('Login failed. Please try again.');
+    }
   }
-}
 
 
-// fixed a bug errors are red successful logins are white.
-
-return (
-  <div>
-    <h1>Travel Planner Authentication: Login</h1>
-    <form onSubmit={submitButton}>
-      <input
-        type="text"
-        placeholder="Enter email"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Enter password"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
-      {/* Only show status if there is no error */}
-      {!error && <p id="loginStatus" style={{ color: 'white' }}>{status}</p>}
-      {/* Show error in red */}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-           <p>
-        Don't have an account? <a href="/register">Register</a>
+  return (
+    <div className="login-page">
+      <div className="about-section">
+        <h2>Welcome to Travel Planner</h2>
+        <p>
+          Travel Planner helps you manage trips, track expenses, and stay organized.
+          Sign in to access your dashboard and start planning!
         </p>
-      <button type="submit">Login</button>
-    </form>
-  </div>
-);
+      </div>
+
+      <div className="login-section">
+        <h1>Login</h1>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Enter email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {!error && <p style={{ color: 'white' }}>{status}</p>}
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+
+          <p>
+            Don't have an account? <a href="/register">Register</a>
+          </p>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+  );
 }
-
-// const root = createRoot(document.getElementById("login"));
-// root.render(<Login />);
-
-export default Login;
-
