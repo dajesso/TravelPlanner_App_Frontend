@@ -1,4 +1,4 @@
-import { getToken } from '../getToken'
+import { getToken } from '../src/utils/getToken'
 
 Object.defineProperty(document, 'cookie', {
     writable: true,
