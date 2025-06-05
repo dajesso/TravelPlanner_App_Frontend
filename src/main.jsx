@@ -8,7 +8,6 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx'
 import CreateTrip from './pages/Trips/CreateTrip.jsx'
 import GetAllTrips from './pages/Trips/GetAllTrips.jsx'
-import SearchTripByLocation from './pages/Trips/SearchTripByLocation.jsx'
 import Expense from './pages/Expense.jsx';
 import Logout from './pages/Logout.jsx';
 
@@ -36,11 +35,6 @@ createRoot(document.getElementById('root')).render(
 
           {/* Get all trips */}
           <Route path="trips" element={<GetAllTrips />} /> 
-
-          {/* Search one trip by location */}
-          <Route path="/trips/search" element={<SearchTripByLocation />} />
-
-          
 
         </Route>
       </Routes>

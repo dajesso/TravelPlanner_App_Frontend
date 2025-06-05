@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getToken } from '../../utils/getToken'; // adjust if needed
+import { getToken } from '../../utils/getToken';
+import { formatDateToDDMMYYYY } from '../../utils/formatDate';
 
 export default function CreateTrip() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ export default function CreateTrip() {
   });
 
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -22,6 +24,19 @@ export default function CreateTrip() {
     e.preventDefault();
     setError(null);
 
+    // Validation: arrival must be before departure
+    if (new Date(trip.arrivalDate) >= new Date(trip.departureDate)) {
+      setError('Arrival date must be before departure date');
+      return;
+    }
+
+    const tripToSend = {
+      ...trip,
+      arrivalDate: formatDateToDDMMYYYY(trip.arrivalDate),
+      departureDate: formatDateToDDMMYYYY(trip.departureDate)
+    };
+
+    setLoading(true);
     try {
       const res = await fetch('http://localhost:3000/trips', {
         method: 'POST',
@@ -29,7 +44,7 @@ export default function CreateTrip() {
           Authorization: `Bearer ${getToken()}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(trip)
+        body: JSON.stringify(tripToSend)
       });
 
       if (!res.ok) {
@@ -40,6 +55,8 @@ export default function CreateTrip() {
       navigate('/trips');
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -76,8 +93,10 @@ export default function CreateTrip() {
           required
         />
 
-        <button type="submit">Save Trip</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Saving...' : 'Save Trip'}
+        </button>
       </form>
     </div>
   );
-}
+} 
