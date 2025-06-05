@@ -6,6 +6,8 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import App from './App.jsx'
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx'
+import CreateTrip from './pages/Trips/CreateTrip.jsx'
+import GetAllTrips from './pages/Trips/GetAllTrips.jsx'
 import Expense from './pages/Expense.jsx';
 import Trips from './pages/Trips.jsx'
 import Logout from './pages/Logout.jsx';
@@ -23,12 +25,17 @@ createRoot(document.getElementById('root')).render(
         <Route element={<App />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          
-          {/* All trips list page for testing */}
-          <Route path="/trips" element={<Trips />} />
+          <Route path="/logout" element={<Logout />} />
 
-          {/* This is the expense route, as it will negivate from tripsPage, and only display ONE Trip's expenses */}
+
+          {/* Create a new trip */}
+          <Route path="/trips/create" element={<CreateTrip />} />
+
+          {/* This is the expense route, as it will navigate from tripsPage, and only display ONE Trip's expenses */}
           <Route path="/trips/:tripId" element={<Expense />} />
+
+          {/* Get all trips */}
+          <Route path="trips" element={<GetAllTrips />} /> 
 
         </Route>
       </Routes>

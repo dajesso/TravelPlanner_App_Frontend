@@ -2,6 +2,7 @@ import { useState } from 'react'
 import {validateAuth, validateForm} from '../components/validateAuth.jsx';
 
 import {auth} from '../components/auth.jsx';
+
 import "./Login.css"
 // We are building onto the template we wil create a html form with a username and password input
 // username is email
@@ -28,8 +29,11 @@ const submitButton = async (event) => {
 event.preventDefault();
 
 
-  try{
 
+
+
+
+  try{
 
     // Validate the form data using the schema
     // validation error occurs it will return and end the code block
@@ -78,6 +82,7 @@ event.preventDefault();
 // fixed a bug errors are red successful logins are white.
 
 return (
+
   <div className="login-page">
       <div className="about-section">
         <h2>Welcome to Travel Planner</h2>
