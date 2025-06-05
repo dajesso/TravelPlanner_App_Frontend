@@ -9,6 +9,7 @@ import Register from './pages/Register.jsx'
 import CreateTrip from './pages/Trips/CreateTrip.jsx'
 import GetAllTrips from './pages/Trips/GetAllTrips.jsx'
 import Expense from './pages/Expense.jsx';
+import Trips from './pages/Trips.jsx'
 import Logout from './pages/Logout.jsx';
 
 
