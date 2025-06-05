@@ -74,10 +74,12 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {!error && <p style={{ color: 'white' }}>{status}</p>}
+          {/* Only show status if there is no error */}
+          {!error && <p className="login-message" id="loginStatus" style={{ color: 'white' }}>{status}</p>}
+          {/* Show error in red */}
           {error && <p style={{ color: 'red' }}>{error}</p>}
 
-          <p>
+          <p className="register-link">
             Don't have an account? <a href="/register">Register</a>
           </p>
           <button type="submit">Login</button>

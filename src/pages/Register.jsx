@@ -7,6 +7,8 @@ import { useState, useEffect } from 'react'
 import {auth} from '../components/auth.jsx';
 import { validateAuth, validateForm } from '../components/validateAuth.jsx';
 
+import "./Login.css"
+
 // We are building onto the template we will create a html form with a username and password input
 function Register()
 {
@@ -97,8 +99,19 @@ event.preventDefault();
 
 
 return (
-  <div>
-    <h1>Travel Planner Authentication: Register</h1>
+    <div className="login-page">
+      <div className="about-section">
+        <h2>Welcome to Travel Planner</h2>
+        <p>
+          Travel Planner helps you effortlessly manage your trips, track expenses, and stay organized all in one place.
+          Whether you're backpacking across Europe or planning a weekend getaway, our intuitive app provides everything you need to
+          simplify travel planning. Sign in now to access your personalized dashboard and start organizing your journeys with ease.
+        </p>
+      </div>
+    
+
+  <div className="login-section">
+    <h1>Register</h1>
     <form onSubmit={submitButton}>
       <input
         type="text"
@@ -131,6 +144,7 @@ return (
       <button type="submit">Register</button>
     </form>
     
+  </div>
   </div>
 );
 }

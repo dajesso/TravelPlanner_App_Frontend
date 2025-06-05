@@ -1,179 +1,431 @@
-
 .page-container,
 .trip-list,
 .create-trip-container {
-  padding: 2rem;
-  background-color: #2d3250;
-  color: white;
-  min-height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
+    padding: 2rem;
+    background-color: #2d3250;
+    color: white;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 .page-title {
-  font-size: 2rem;
-  color: #f9b17a;
-  margin-bottom: 1.5rem;
+    font-size: 2.2rem;
+    color: #f9b17a;
+    margin-bottom: 2.5rem;
+    border-left: 5px solid #f9b17a;
+    padding-left: 1rem;
 }
 
 /* Filter Bar Styling */
+.filter-and-add-container {
+    display: flex;
+    flex-wrap: wrap;     
+    align-items: center;
+    gap: 1rem;        
+    margin-bottom: 2rem;     
+}
+
 .filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: flex-end;
-  margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    flex: 1 1 auto; 
 }
 
 .filter-bar input,
 .filter-bar select {
-  padding: 0.5rem;
-  border: none;
-  border-radius: 6px;
-  width: 150px;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 6px;
+    width: 150px;
 }
 
 .filter-bar button {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 6px;
-  background-color: #f9b17a;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  flex: 0 0 auto; 
 }
 
 .filter-bar button:hover {
-  background-color: #3a7bd5;
+    background-color: #3a7bd5;
 }
+
+.add-trip-button {
+    flex: 0 0 auto;       
+    padding: 0.5rem 1rem;
+    background-color: #f9b17a;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-trip-button:hover {
+    background-color: #3a7bd5;
+}
+
 
 /* Trip List Display */
 .trip-list ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .trip-list li {
-  background-color: #424769;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+    background-color: #424769;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .trip-list li strong {
-  font-size: 1.2rem;
+    font-size: 1.2rem;
 }
 
 .trip-list li button {
-  margin-left: 0.5rem;
-  padding: 0.4rem 0.8rem;
-  background-color: #f9b17a;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
+    margin-left: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background-color: #f9b17a;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .trip-list li button:hover {
-  background-color: #3a7bd5;
+    background-color: #3a7bd5;
 }
+
 /* Cards */
 .trip-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-  padding-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding-top: 1rem;
 }
 
 .trip-card {
-  background-color: #424769;
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.3s;
+    background-color: #424769;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s;
 }
 
 .trip-card:hover {
-  transform: translateY(-5px);
+    transform: translateY(-5px);
 }
 
 .trip-card h3 {
-  font-size: 1.4rem;
-  margin-bottom: 0.5rem;
-  color: #f9b17a;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: #f9b17a;
 }
 
 .trip-card p {
-  margin: 0.3rem 0;
-  font-size: 0.95rem;
-  color: #ddd;
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+    color: #ddd;
 }
 
 .card-buttons {
-  margin-top: 1rem;
-  display: flex;
-  gap: 0.5rem;
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
 }
 
 .card-buttons button {
-  flex: 1;
-  padding: 0.5rem;
-  background-color: #f9b17a;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
+    flex: 1;
+    padding: 0.5rem;
+    background-color: #f9b17a;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .card-buttons button:hover {
-  background-color: #3a7bd5;
+    background-color: #3a7bd5;
 }
 
 /* Create Trip Form */
 .create-trip-container form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 500px;
-  margin-top: 1rem;
+    background-color: #393e6c;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    border: 1px solid #5f668b;
+    max-width: 480px;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.create-trip-container button {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #f9b17a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+.create-trip-container button:hover {
+    background-color: #3a7bd5;
+}
+
+.create-trip-container label {
+    font-weight: 600;
+    color: #eee;
+    margin-bottom: 0.3rem;
 }
 
 .create-trip-container input[type="text"],
 .create-trip-container input[type="date"] {
-  padding: 0.75rem;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #777;
+    border-radius: 8px;
+    background-color: #2d3250;
+    color: white;
+    font-size: 1rem;
 }
 
-.create-trip-container button {
-  padding: 0.75rem;
-  background-color: #f9b17a;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
+.create-trip-container input:focus {
+    border-color: #f9b17a;
+    outline: none;
 }
 
-.create-trip-container button:hover {
-  background-color: #3a7bd5;
+.cancel-button {
+    flex: 1;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.cancel-button:hover {
+    background-color: #777;
 }
 
 /* Error Text */
 .error-message {
-  color: #ff6b6b;
-  font-weight: bold;
+    color: #ff6b6b;
+    font-weight: bold;
+}
+
+/* Tablet*/
+@media (max-width: 1023px) {
+    .page-container,
+    .trip-list,
+    .create-trip-container {
+        padding: 1.5rem 2rem;
+    }
+
+    .filter-and-add-container {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        max-width: 850px; /* example max total width */
+        width: 100%;
+    }
+    .filter-bar {
+        max-width: 600px; 
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 1;  
+    }
+
+    /* Add some space between input and selects */
+    .filter-bar input {
+        margin-right: 1rem;
+        flex: 2; 
+        min-width: 0;
+        height: 36px;
+        align-items: center;
+    }
+
+    .filter-bar select {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .filter-bar button {
+        flex: 1; 
+        background-color: #f9b17a;
+        color: white;
+        font-weight: bold;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        height: 36px;
+    }
+
+    .filter-bar button:hover {
+        background-color: #3a7bd5;
+    }
+
+    .add-trip-button {
+        flex: 0 0 200px;
+        padding: 0.5rem 1rem;
+        background-color: #f9b17a;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        color: white;
+        transition: background-color 0.3s;
+        height: 36px;
+    }
+
+    .add-trip-button:hover {
+        background-color: #3a7bd5;
+    }
+
+    .trip-grid {
+        display: block;
+        padding: 0;
+    }
+
+    .trip-card {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #555;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: none;
+        background-color: #383c5a;
+    }
+
+    .trip-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .trip-card p {
+        margin: 0.2rem 0;
+        font-size: 1.3rem;
+        color: #ccc;
+    }
+
+    .card-buttons {
+        display: flex;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        margin-top: 1rem;
+     }
+
+    .card-buttons button {
+        flex: 1 1 auto;
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+}
+
+/* Mobile*/
+@media (max-width: 767px) {
+    .page-container,
+    .trip-list,
+    .create-trip-container {
+        padding: 1rem 1.5rem;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+    }
+
+    /* filter bar and button vertically */
+    .filter-and-add-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        width: 100%;
+    }
+
+    .filter-bar select{
+        width: 100%;
+        max-width: none;
+        flex: none;
+        height: 36px;
+    }
+
+    .filter-bar input{
+        width: 100%;
+        max-width: 95%;
+        align-self: flex-end;
+    }
+
+    .filter-bar button{
+        width: 100%;
+        max-width: 98%;
+        align-self: flex-start;
+    }
+    
+    /* button below filter bar stretches */
+    .add-trip-button {
+        width: 100%;
+        height: 36px;
+    }
+
+    .trip-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .trip-card {
+        padding: 1rem;
+    }
+
+    .trip-card h3 {
+        font-size: 1.2rem;
+    }
+
+    .trip-card p {
+        font-size: 0.9rem;
+    }
+
+    .card-buttons {
+        flex-direction: column;
+    }
+
+    .card-buttons button {
+        width: 100%;
+        padding: 0.6rem;
+    }
+
+    .create-trip-container form {
+        max-width: 100%;
+    }
+
+    .create-trip-container input[type="text"],
+    .create-trip-container input[type="date"],
+    .create-trip-container button,
+    .cancel-button {
+        font-size: 1rem;
+    }
 }

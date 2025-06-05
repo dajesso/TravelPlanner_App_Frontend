@@ -157,11 +157,17 @@ button:hover {
         max-width: 200px;
     }
 
+    .page-container {
+        padding: 1rem;
+        margin: 0 auto;
+    }
+
     .top-row {
         flex-direction: column;
         align-items: center;
         gap: 0.8rem;
         text-align: center;
+        padding: 0 1.5rem;
     }
 
     .top-row h2 {
@@ -212,7 +218,7 @@ button:hover {
         flex: 1 0 auto;
         display: flex;
         justify-content: flex-end;
-        padding-right: 2rem;
+        padding: 2rem;
     }
 
     .add-expense-container button {
@@ -254,5 +260,86 @@ button:hover {
 
     .expense-card p {
         margin: 0.25rem 0;
+    }
+    }
+
+/* Mobile Layout */
+@media only screen and (max-width: 767px) {
+    .page-container {
+        padding: 1rem;
+        margin: 0 auto;
+    }
+
+    .top-row {
+        padding: 0;
+        gap: 0.6rem;
+    }
+
+    .top-row h2 {
+        font-size: 1.5rem; /* smaller heading */
+    }
+
+    .back-button,
+    .top-row button,
+    .add-expense-container button {
+        font-size: 0.8rem;
+        padding: 0.3em 0.8em;
+        max-width: 160px;
+    }
+
+    .back-button {
+        margin: 0%;
+    }
+
+    .trip-info {
+        padding: 0.8rem;
+    }
+
+    .trip-info h2,
+    .trip-info p {
+        font-size: 0.9rem;
+    }
+
+    .table-header-row {
+        padding: 0;
+        margin-bottom: 0;
+        align-items: flex-end;
+    }
+
+    .sort-dropdown {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2rem;
+    }
+
+    .sort-dropdown select {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+    .add-expense-container{
+        margin: 0;
+        padding: 0;
+    }
+
+    .expense-table-container {
+        padding: 1.5rem 0rem;
+        border: 0;
+    }
+    .expense-card {
+        padding: 0.8rem;
+    }
+
+    .expense-card h4 {
+        font-size: 1rem;
+    }
+
+    .expense-card p {
+        font-size: 0.85rem;
+    }
+
+    .expense-card .expense-actions button {
+        font-size: 0.75rem;
+        padding: 0.3em 0.6em;
     }
     }

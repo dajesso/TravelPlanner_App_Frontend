@@ -2,23 +2,28 @@ import { useMediaQuery } from 'react-responsive';
 import "./ExpenseTable.css";
 
 function ExpenseTable({ expenses, onEdit, onDelete }) {
-  const isTabletOrMobile = useMediaQuery({ maxWidth: 768 });
+  const isTabletOrMobile = useMediaQuery({ maxWidth: 1023 });
+  const capitalize = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
 
   if (isTabletOrMobile) {
     return (
-      <div className="expense-cards">
-        {expenses.map((exp) => (
-          <div key={exp._id} className="expense-card">
-            <p><strong>Category:</strong> {exp.category?.name.charAt(0).toUpperCase() + exp.category?.name.slice(1)}</p>
-            <p><strong>Description:</strong> {exp.description.charAt(0).toUpperCase() + exp.description.slice(1)}</p>
-            <p><strong>Amount:</strong> ${exp.amount}</p>
-            <div className="card-buttons">
-              <button onClick={() => onEdit(exp)}>Edit</button>
-              <button onClick={() => onDelete(exp)}>Delete</button>
-            </div>
-          </div>
-        ))}
-      </div>
+        <div className="expense-cards">
+            {expenses.map((exp) => (
+                <div key={exp._id} className="expense-card">
+                    <div className="expense-meta-row">
+                    <span><strong>Category:</strong> {capitalize(exp.category?.name)}</span>
+                    <span><strong>Amount:</strong> ${exp.amount}</span>
+                    </div>
+                    <div className="expense-meta-row">
+                    <span className="description"><strong>Description:</strong> {capitalize(exp.description)}</span>
+                    <div className="card-buttons">
+                        <button onClick={() => onEdit(exp)}>Edit</button>
+                        <button onClick={() => onDelete(exp)}>Delete</button>
+                    </div>
+                    </div>
+                </div>
+                ))}
+        </div>
     );
   }
 
