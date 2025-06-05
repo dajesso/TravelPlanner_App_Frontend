@@ -1,33 +1,42 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getToken } from '../../utils/getToken';
+import { filterTripsBy } from '../../utils/filterTrips.js';
 
 export default function GetAllTrips() {
   const [trips, setTrips] = useState([]);
+  const [filteredTrips, setFilteredTrips] = useState([]);
+  const [filters, setFilters] = useState({ location: '', month: '', year: '' });
   const [error, setError] = useState(null);
+
+  const locationInputRef = useRef(null);
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     async function fetchTrips() {
       try {
-        // THIS BELOW TO AUTOMATE JWT AT THE BACKEND
-        // const res = await fetch('http://localhost:3000/trips', {
-        //   method: 'GET',
-        //   credentials: 'include', // send cookies if needed later
         const res = await fetch('http://localhost:3000/trips', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${getToken()}`
-            // 'Content-Type': 'application/json'
           }
         });
 
-        if (!res.ok) {
-          throw new Error('Failed to fetch trips, or you do not travel much');
-        }
+        if (!res.ok) throw new Error('Failed to fetch trips');
 
         const data = await res.json();
         setTrips(data);
+
+        // Load initial filters from URL
+        const location = searchParams.get('location') || '';
+        const month = searchParams.get('month') || '';
+        const year = searchParams.get('year') || '';
+        const initialFilters = { location, month, year };
+        setFilters(initialFilters);
+
+        const initialFiltered = filterTripsBy(data, initialFilters);
+        setFilteredTrips(initialFiltered);
       } catch (err) {
         setError(err.message);
       }
@@ -36,18 +45,70 @@ export default function GetAllTrips() {
     fetchTrips();
   }, []);
 
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    const updatedFilters = { ...filters, [name]: value };
+    setFilters(updatedFilters);
+    setSearchParams(updatedFilters);
+    const filtered = filterTripsBy(trips, updatedFilters);
+    setFilteredTrips(filtered);
+  };
+
+  const resetFilters = () => {
+    const cleared = { location: '', month: '', year: '' };
+    setFilters(cleared);
+    setSearchParams(cleared);
+    setFilteredTrips(trips);
+    locationInputRef.current?.focus();
+  };
+
   const goToCreate = () => navigate('/trips/create');
+
+  const months = Array.from({ length: 12 }, (_, i) => {
+    const val = String(i + 1).padStart(2, '0');
+    return { label: val, value: val };
+  });
+  const years = ['2024', '2025', '2026', '2027'];
+
 
   return (
     <div className="trip-list">
       <h2>Travel List</h2>
+
+      <div style={{ marginBottom: '1rem' }}>
+        <input
+          ref={locationInputRef}
+          type="text"
+          name="location"
+          placeholder="Location"
+          value={filters.location}
+          onChange={handleFilterChange}
+        />
+
+        <select name="month" value={filters.month} onChange={handleFilterChange}>
+          <option value="">Month</option>
+          {months.map(({ label, value }) => (
+            <option key={value} value={value}>{label}</option>
+          ))}
+        </select>
+
+        <select name="year" value={filters.year} onChange={handleFilterChange}>
+          <option value="">Year</option>
+          {years.map(y => (
+            <option key={y} value={y}>{y}</option>
+          ))}
+        </select>
+
+        <button onClick={resetFilters}>Clear All</button>
+      </div>
+
       <button onClick={goToCreate}>+ Add Trip</button>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      {trips.length === 0 && !error && <p>No trips found.</p>}
+      {filteredTrips.length === 0 && !error && <p>No trips found.</p>}
 
       <ul>
-        {trips.map(trip => (
+        {filteredTrips.map(trip => (
           <li key={trip._id}>
             <strong>{trip.location}</strong><br />
             {trip.arrivalDate} → {trip.departureDate}<br />
