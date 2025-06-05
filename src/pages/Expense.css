@@ -322,6 +322,10 @@ button:hover {
         padding: 0;
     }
 
+    .expense-table-container {
+        padding: 1.5rem 0rem;
+        border: 0;
+    }
     .expense-card {
         padding: 0.8rem;
     }

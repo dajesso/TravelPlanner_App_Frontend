@@ -31,6 +31,13 @@ th {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
+.expense-card p {
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #f0f0f0;
+}
+
 .card-buttons {
   display: flex;
   justify-content: flex-end;
@@ -49,4 +56,20 @@ th {
 
 .card-buttons button:hover {
   background-color: #7a82b6;
+}
+
+.expense-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.expense-meta-row .description {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.expense-meta-row span {
+  margin: 0.25rem 0;
 }
