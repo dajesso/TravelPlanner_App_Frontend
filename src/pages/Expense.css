@@ -1,4 +1,13 @@
 /* General layout styling */
+/* desktop */
+.edit-trip-mobile {
+  display: none;
+}
+
+body, html {
+  overflow-x: hidden;
+}
+
 .page-container {
     max-width: 100%;
     margin: 0 auto;
@@ -17,6 +26,8 @@
     background-color: #2d3250;
     padding: 1rem;
     border-radius: 8px;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .top-row h2 {
@@ -30,6 +41,9 @@
   display: flex;
   align-items: center;
   height: 40px; 
+  max-width: 40vw;
+  max-width: 200px;
+  width: auto;
 }
 
 /* Trip info */
@@ -41,6 +55,8 @@
     box-shadow: 0 3px 8px rgba(0,0,0,0.2);
     color: #ffffff;
     margin-bottom: 1.5rem;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 /* Add Expense button */
@@ -86,6 +102,8 @@ button:hover {
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s;
+    max-width: 200px;
+    width: auto;
 }
 
 .back-button:hover {
@@ -119,4 +137,117 @@ button:hover {
 .sort-dropdown label {
     font-size: 0.95rem;
     margin-bottom: 0.2rem;
+}
+
+/* Tablet Layout */
+/* Tablet and below */
+@media (max-width: 768px) {
+  .edit-trip-desktop {
+    display: none;
+  }
+
+  .edit-trip-mobile {
+    display: block;
+    margin-top: 1rem;
+    align-self: center;
+  }
+
+  .trip-info-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+@media only screen and (min-width: 767px) and (max-width: 1023px){
+    .top-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+        text-align: center;
+  }
+
+    .top-row h2 {
+        font-size: 2rem;
+        text-align: center;
+  }
+
+  .back-button {
+    font-size: 0.9rem;
+    padding: 0.4em 1em;
+    width: fit-content;
+    align-self: flex-start;
+    margin-bottom: 0;
+  }
+
+  .trip-info {
+    text-align: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .trip-info h2,
+  .trip-info p {
+    font-size: 1rem;
+  }
+
+  .top-row button:last-child {
+    width: fit-content;
+    font-size: 0.9rem;
+    padding: 0.4em 1em;
+  }
+
+  .table-header-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+    gap: 1rem;
+  }
+
+  .sort-dropdown,
+  .add-expense-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sort-dropdown select {
+    font-size: 0.9rem;
+    width: 100%;
+  }
+
+  /* Switch from table to cards */
+  .expense-table-container {
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .expense-card {
+    background-color: #3e4266;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    color: white;
+    position: relative;
+  }
+
+  .expense-card .expense-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .expense-card h4 {
+    margin-bottom: 0.5rem;
+  }
+
+  .expense-card p {
+    margin: 0.25rem 0;
+  }
 }

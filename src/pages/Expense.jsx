@@ -101,57 +101,65 @@ function Expense() {
       {!trip && !error && <p>Loading trip data...</p>}
 
       {trip && (
-        <>
-          <div className="top-row">
+      <>
+        {/* --- Top Row --- */}
+        <div className="top-row">
+          <button className="back-button" onClick={() => navigate("/trips")}>
+            ← All Trips
+          </button>
 
-            <button className="back-button" onClick={() => navigate("/trips")}>
-              ← All Trips
-            </button>
+          <h2>Trip Details</h2>
 
-            <h2>Trip Details</h2>
+          {/* This button stays on the top row for desktop only */}
+          <button className="edit-trip-desktop" onClick={() => setEditingTrip(trip)}>
+            Edit Trip
+          </button>
+        </div>
 
-            <button onClick={() => setEditingTrip(trip)}>
-              Edit Trip
-            </button>
-          </div>
-
-          <div className="trip-info">
+        {/* --- Trip Info --- */}
+        <div className="trip-info">
+          <div className="trip-info-content">
             <h2>Location: {trip.location}</h2>
             <p>Dates: {trip.arrivalDate} - {trip.departureDate}</p>
             <p>Total Expense: ${trip.totalExpense}</p>
+
+            {/* This version of the button will only show on tablet/mobile */}
+            <button className="edit-trip-mobile" onClick={() => setEditingTrip(trip)}>
+              Edit Trip
+            </button>
+          </div>
+        </div>
+
+        {/* --- Sort + Add Buttons --- */}
+        <div className="table-header-row">
+          <div className="sort-dropdown">
+            <label htmlFor="sort">Sort By: </label>
+            <select
+              id="sort"
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+            >
+              <option value="">-- Select --</option>
+              <option value="price-low-high">Price: Low to High</option>
+              <option value="category-az">Category A → Z</option>
+            </select>
           </div>
 
-          <div className="table-header-row">
-            <div className="sort-dropdown">
-              <label htmlFor="sort">Sort By: </label>
-              <select
-                id="sort"
-                value={sortOption}
-                onChange={(e) => setSortOption(e.target.value)}
-              >
-                <option value="">-- Select --</option>
-                <option value="price-low-high">Price: Low to High</option>
-                <option value="category-az">Category A → Z</option>
-              </select>
-            </div>
-
-            <div className="add-expense-container">
-              <button onClick={() => setEditingExpense({})}>
-                + Add Expense
-              </button>
-            </div>
+          <div className="add-expense-container">
+            <button onClick={() => setEditingExpense({})}>
+              + Add Expense
+            </button>
           </div>
+        </div>
 
-          <div className="expense-table-container">
-            <h3>Expenses:</h3>
-            <ExpenseTable
-              // Pass expenses data to table
-              expenses={sortedExpenses}
-              // Open edit modal
-              onEdit={(expense) => setEditingExpense(expense)}
-              // Open delete modal
-              onDelete={(expense) => setExpenseToDelete(expense)}
-            />
+        {/* --- Expenses Table or Cards --- */}
+        <div className="expense-table-container">
+          <h3>Expenses:</h3>
+          <ExpenseTable
+            expenses={sortedExpenses}
+            onEdit={(expense) => setEditingExpense(expense)}
+            onDelete={(expense) => setExpenseToDelete(expense)}
+          />
         </div>
       </>
     )}
