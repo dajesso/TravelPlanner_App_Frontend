@@ -11,11 +11,12 @@
   },
   "dependencies": {
     "install": "^0.13.0",
-    "joi-browser": "^13.4.0",
+    "joi": "^17.13.3",
     "jwt-decode": "^4.0.0",
     "npm": "^11.4.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-responsive": "^10.0.1",
     "react-router-dom": "^7.6.1"
   },
   "devDependencies": {

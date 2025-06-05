@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { validateAuth, validateForm } from '../components/validateAuth.jsx';
 import { auth } from '../components/auth.jsx';
-//import './Login.css';
+import './Login.css';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -10,7 +10,6 @@ export default function Login() {
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
   const schema = validateAuth();
-
   const navigate = useNavigate();
 
   async function handleSubmit(event) {
@@ -18,6 +17,7 @@ export default function Login() {
     setError('');
     setStatus('');
 
+    // Validate input
     const validationError = validateForm(email, password, schema);
     if (validationError) {
       setError(validationError);
@@ -34,6 +34,8 @@ export default function Login() {
       });
 
       const requestData = await response.json();
+      console.log(requestData);
+
       auth(requestData, response, 'login', setStatus, setError);
 
       if (response.ok && requestData.token) {
@@ -45,14 +47,15 @@ export default function Login() {
     }
   }
 
-
   return (
     <div className="login-page">
       <div className="about-section">
         <h2>Welcome to Travel Planner</h2>
         <p>
-          Travel Planner helps you manage trips, track expenses, and stay organized.
-          Sign in to access your dashboard and start planning!
+          Travel Planner helps you effortlessly manage your trips, track expenses, and stay organized all in one place.
+          Whether you're backpacking across Europe or planning a weekend getaway, our intuitive app provides everything
+          you need to simplify travel planning. Sign in now to access your personalized dashboard and start organizing
+          your journeys with ease.
         </p>
       </div>
 
@@ -83,3 +86,5 @@ export default function Login() {
     </div>
   );
 }
+
+
