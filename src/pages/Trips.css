@@ -332,19 +332,43 @@
         font-size: 1.5rem;
     }
 
+    /* filter bar and button vertically */
+    .filter-and-add-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
     .filter-bar {
         flex-direction: column;
         align-items: stretch;
         gap: 0.75rem;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
+        width: 100%;
     }
 
-    .filter-bar input,
-    .filter-bar select,
-    .filter-bar button {
+    .filter-bar select{
         width: 100%;
         max-width: none;
         flex: none;
+        height: 36px;
+    }
+
+    .filter-bar input{
+        width: 100%;
+        max-width: 95%;
+        align-self: flex-end;
+    }
+
+    .filter-bar button{
+        width: 100%;
+        max-width: 98%;
+        align-self: flex-start;
+    }
+    
+    /* button below filter bar stretches */
+    .add-trip-button {
+        width: 100%;
+        height: 36px;
     }
 
     .trip-grid {
@@ -373,7 +397,6 @@
         padding: 0.6rem;
     }
 
-    /* Create Trip Form adjustments */
     .create-trip-container form {
         max-width: 100%;
     }
