@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getToken } from '../../utils/getToken';
 import { filterTripsBy } from '../../utils/filterTrips';
 import DeleteTripConfirmation from '../../components/DeleteTripConfirmation';
+import '../Trips.css';
 
 export default function GetAllTrips() {
   const [trips, setTrips] = useState([]);
@@ -96,7 +97,7 @@ export default function GetAllTrips() {
     <div className="trip-list">
       <h2>Travel List</h2>
 
-      <div style={{ marginBottom: '1rem' }}>
+      <div className="filter-bar">
         <input
           ref={locationInputRef}
           type="text"
