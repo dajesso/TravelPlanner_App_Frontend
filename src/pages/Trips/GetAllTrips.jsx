@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getToken } from '../../utils/getToken';
 import { filterTripsBy } from '../../utils/filterTrips';
 import DeleteTripConfirmation from '../../components/DeleteTripConfirmation';
+import '../Trips.css';
 
 export default function GetAllTrips() {
   const [trips, setTrips] = useState([]);
@@ -96,7 +97,7 @@ export default function GetAllTrips() {
     <div className="trip-list">
       <h2>Travel List</h2>
 
-      <div style={{ marginBottom: '1rem' }}>
+      <div className="filter-bar">
         <input
           ref={locationInputRef}
           type="text"
@@ -128,16 +129,19 @@ export default function GetAllTrips() {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {filteredTrips.length === 0 && !error && <p>No trips found.</p>}
 
-      <ul>
+      <div className="trip-grid">
         {filteredTrips.map(trip => (
-          <li key={trip._id}>
-            <strong>{trip.location}</strong><br />
-            {trip.arrivalDate} → {trip.departureDate}<br />
-            <button onClick={() => navigate(`/trips/${trip._id}`)}>View</button>
-            <button onClick={() => setTripToDelete(trip)}>Delete</button>
-          </li>
+          <div className="trip-card" key={trip._id}>
+            <h3>{trip.location}</h3>
+            <p>{trip.arrivalDate} → {trip.departureDate}</p>
+            <p>Total: ${trip.totalExpense}</p>
+            <div className="card-buttons">
+              <button onClick={() => navigate(`/trips/${trip._id}`)}>View</button>
+              <button onClick={() => setTripToDelete(trip)}>Delete</button>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
 
       {tripToDelete && (
         <DeleteTripConfirmation

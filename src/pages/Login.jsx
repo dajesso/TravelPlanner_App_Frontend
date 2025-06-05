@@ -108,8 +108,13 @@ return (
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
-          {!error && <p className="login-status">{status}</p>}
-          {error && <p className="login-error">{error}</p>}
+          {/* Only show status if there is no error */}
+          {!error && <p id="loginStatus" style={{ color: 'white' }}>{status}</p>}
+          {/* Show error in red */}
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+              <p>
+            Don't have an account? <a href="/register">Register</a>
+            </p>
           <button type="submit">Login</button>
         </form>
       </div>

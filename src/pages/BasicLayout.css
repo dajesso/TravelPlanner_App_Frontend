@@ -10,13 +10,14 @@
 
 .header {
   width: 100%;
-  background-color: #424769;
+  background: linear-gradient(to right, #424769, #2d3250);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  text-shadow: 1px 1px 2px #000;
   color: #ffff;
   text-align: center;
   padding: 1.2rem 0;
   font-size: 2rem;
   font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   letter-spacing: 0.5px;
 }
 

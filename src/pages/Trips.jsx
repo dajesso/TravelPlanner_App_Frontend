@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getToken } from '../utils/getToken';
+import './Trips.css';
 
 function Trips() {
   const [trips, setTrips] = useState([]);
@@ -32,8 +33,8 @@ function Trips() {
   }, []);
 
   return (
-    <div style={{ padding: "1rem" }}>
-      <h2>All Trips</h2>
+    <div className="trip-list">
+      <h2 className="page-title">All Trips</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {trips.length === 0 && !error && <p>Loading trips...</p>}
 
