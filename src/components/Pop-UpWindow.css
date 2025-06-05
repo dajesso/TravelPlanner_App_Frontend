@@ -12,21 +12,39 @@
 }
 
 .modal-content {
-  background: rgb(111, 42, 42);
-  color: white;      
-  padding: 1.5rem;
-  border-radius: 8px;
-  width: 350px;
+  background-color: #f9b17a;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  color: #333;
 }
 
 .modal-content h3 {
   margin-top: 0;
+  color: #2d3250;
+}
+
+.modal-content label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 0.5rem;
 }
 
 .modal-buttons {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 1rem;
 }
 
 input, select {
@@ -41,7 +59,7 @@ input, select {
 }
 
 .modal-error {
-  color: #ff6b6b;
+  color: #0000;
   font-weight: bold;
   margin-bottom: 1rem;
   text-align: center;

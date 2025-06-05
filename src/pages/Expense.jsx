@@ -160,6 +160,7 @@ function Expense() {
       <ExpenseEditWindow
         // Current expense being edited or added
         expense={editingExpense}
+        expenses={expenses}
         // Needed for new expenses
         tripId={tripId}
         onClose={() => setEditingExpense(null)}
