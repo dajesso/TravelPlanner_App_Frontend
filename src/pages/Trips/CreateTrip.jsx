@@ -97,6 +97,9 @@ export default function CreateTrip() {
         <button type="submit" disabled={loading}>
           {loading ? 'Saving...' : 'Save Trip'}
         </button>
+        <button type="button" className="cancel-button" onClick={() => navigate('/trips')}>
+          Cancel
+        </button>
       </form>
     </div>
   );
