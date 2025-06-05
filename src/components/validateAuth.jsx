@@ -1,9 +1,13 @@
-import Joi from 'joi-browser';
 
+// import Joi from 'joi-browser'; outdated...superseded by 'joi'
+import Joi from 'joi';
+import React,  { useState } from 'react';
 
-// this component is used to validate the username and password
-// on the login and register pages so we don't get invalid data
-// we need to install joi-browser for this to work you can use npm
+/** 
+ * this component is used to validate the username and password
+ * on the login and register pages so we don't get invalid data
+ * we need to install joi-browser for this to work you can use npm
+*/
 
 
 
@@ -24,7 +28,7 @@ function validateAuth() {
 // we now validate the form data using the schema we created above
 
 
-// we create a schema for the email and password validation using Joi
+// we create a schema for the email and password validation using 'joi'
 
 const validateForm = (email, password, schema) => {
 
