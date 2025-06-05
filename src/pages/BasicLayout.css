@@ -43,7 +43,7 @@
 /* Tablet */
 @media only screen and (max-width: 1024px) and (min-width: 768px) {
   .main-content {
-    padding: 1.2rem 1.5rem;
+    padding: 0;
     max-width: 100%;
     width: 100%;
     margin: 0 auto;
@@ -63,7 +63,7 @@
 /* Phone */
 @media only screen and (max-width: 767px) {
   .main-content {
-    padding: 1rem;
+    padding: 0;
     max-width: 100%;
     width: 100%;
   }

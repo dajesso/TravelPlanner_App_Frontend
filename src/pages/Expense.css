@@ -158,7 +158,7 @@ button:hover {
     }
 
     .page-container {
-        padding: 1rem 4rem 1rem 1rem;
+        padding: 1rem;
         margin: 0 auto;
     }
 
@@ -266,7 +266,7 @@ button:hover {
 /* Mobile Layout */
 @media only screen and (max-width: 767px) {
     .page-container {
-        padding: 1rem 3rem 1rem 1rem;
+        padding: 1rem;
         margin: 0 auto;
     }
 
