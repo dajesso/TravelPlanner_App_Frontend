@@ -1,13 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getToken } from '../../utils/getToken';
-import { filterTripsBy } from '../../utils/filterTrips.js';
+import { filterTripsBy } from '../../utils/filterTrips';
+import DeleteTripConfirmation from '../../components/DeleteTripConfirmation';
 
 export default function GetAllTrips() {
   const [trips, setTrips] = useState([]);
   const [filteredTrips, setFilteredTrips] = useState([]);
   const [filters, setFilters] = useState({ location: '', month: '', year: '' });
   const [error, setError] = useState(null);
+  const [tripToDelete, setTripToDelete] = useState(null);
 
   const locationInputRef = useRef(null);
   const navigate = useNavigate();
@@ -28,7 +30,6 @@ export default function GetAllTrips() {
         const data = await res.json();
         setTrips(data);
 
-        // Load initial filters from URL
         const location = searchParams.get('location') || '';
         const month = searchParams.get('month') || '';
         const year = searchParams.get('year') || '';
@@ -63,6 +64,26 @@ export default function GetAllTrips() {
   };
 
   const goToCreate = () => navigate('/trips/create');
+
+  const handleDelete = async (tripId) => {
+    try {
+      const res = await fetch(`http://localhost:3000/trips/${tripId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      });
+
+      if (!res.ok) throw new Error('Failed to delete trip');
+
+      const updatedTrips = trips.filter(trip => trip._id !== tripId);
+      setTrips(updatedTrips);
+      setFilteredTrips(filterTripsBy(updatedTrips, filters));
+      setTripToDelete(null);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   const months = Array.from({ length: 12 }, (_, i) => {
     const val = String(i + 1).padStart(2, '0');
@@ -113,9 +134,18 @@ export default function GetAllTrips() {
             <strong>{trip.location}</strong><br />
             {trip.arrivalDate} → {trip.departureDate}<br />
             <button onClick={() => navigate(`/trips/${trip._id}`)}>View</button>
+            <button onClick={() => setTripToDelete(trip)}>Delete</button>
           </li>
         ))}
       </ul>
+
+      {tripToDelete && (
+        <DeleteTripConfirmation
+          trip={tripToDelete}
+          onCancel={() => setTripToDelete(null)}
+          onConfirm={() => handleDelete(tripToDelete._id)}
+        />
+      )}
     </div>
   );
 }
