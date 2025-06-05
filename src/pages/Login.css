@@ -95,44 +95,50 @@
 
 /* Tablet and below */
 @media only screen and (max-width: 1023px) {
+    .login-page {
+        flex-direction: column;
+        height: auto; 
+        width: 90%;
+        max-width: 600px; 
+        margin: 2rem auto;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
 
-  .login-page {
-    flex-direction: column;
-    height: auto; /* let height grow naturally */
-    width: 90%;        /* responsive width */
-    max-width: 600px; 
-    margin: 2rem auto;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
 
-  }
+    /* Make login section appear first */
+    .login-section {
+        order: 0;
+        padding: 2rem 2rem 1.5rem 2rem; 
+        flex: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; 
+    }
 
-  /* Make login section appear first */
-  .login-section {
-    order: 0;
-    padding: 2rem 2rem 1.5rem 2rem; /* slightly larger padding */
-    flex: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; /* center form content horizontally */
-  }
+    /* About section goes second */
+    .about-section {
+        order: 1;
+        padding: 2rem 2rem 1.5rem 2rem;
+        flex: none;
+        border-top: 1px solid #444;
+        padding-top: 1.5rem;
+        text-align: center;
+    }
 
-  /* About section goes second */
-  .about-section {
-    order: 1;
-    padding: 2rem 2rem 1.5rem 2rem;
-    flex: none;
-    border-top: 1px solid #444;
-    padding-top: 1.5rem;
-    text-align: center; /* center about text */
-  }
+    /* Make inputs and button full width */
+    .login-section input,
+    .login-section button {
+        width: 100%;
+        max-width: 400px; 
+        box-sizing: border-box;
+    }
+    .login-message {
+        margin-bottom: 0.25rem;
+    }
 
-  /* Make inputs and button full width */
-  .login-section input,
-  .login-section button {
-    width: 100%;
-    max-width: 400px;  /* keeps input/button from stretching too wide */
-    box-sizing: border-box;
-  }
+    .register-link {
+        margin-top: 0;
+    }
 }
