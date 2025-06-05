@@ -31,6 +31,9 @@ function Expense() {
   const [editingTrip, setEditingTrip] = useState(null);
   const [sortOption, setSortOption] = useState("");
 
+  const [backendError, setBackendError] = useState("");
+
+
   const navigate = useNavigate();
 
   // Load trip and associated expenses from backend
@@ -65,7 +68,7 @@ function Expense() {
       setExpenseToDelete(null);
 
     } else {
-      alert("Failed to delete: " + data.error);
+      setBackendError("Failed to delete: " + data.error);
     }
   };
 
@@ -89,6 +92,11 @@ function Expense() {
 
   return (
     <div className="page-container">
+      {backendError && (
+        <p style={{ color: "red", fontWeight: "bold", marginBottom: "1rem" }}>
+          {backendError}
+        </p>
+      )}
       {error && <p style={{ color: "red" }}>{error}</p>}
       {!trip && !error && <p>Loading trip data...</p>}
 
@@ -126,7 +134,7 @@ function Expense() {
                 <option value="category-az">Category A → Z</option>
               </select>
             </div>
-            
+
             <div className="add-expense-container">
               <button onClick={() => setEditingExpense({})}>
                 + Add Expense

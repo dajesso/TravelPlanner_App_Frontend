@@ -38,8 +38,11 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
     // Delete category
     const [showCategoryManager, setShowCategoryManager] = useState(false);
 
+    // Error Handling
+    const [localError, setLocalError] = useState("");
 
-  // Run everytime when the expense changed (prefill the form)
+
+    // Run everytime when the expense changed (prefill the form)
     useEffect(() => {
         if (expense) {
             setFormData({
@@ -88,6 +91,9 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
     const handleSubmit = async (e) => {
         // stop the page from reloading
         e.preventDefault();
+        
+        // Clear all previous error
+        setLocalError("");
 
         try {
 
@@ -107,7 +113,8 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
             const categoryData = await categoryRes.json();
 
             if (!categoryRes.ok) {
-                return alert("Failed to add new category: " + categoryData.error);
+                setLocalError("Failed to add new category: " + categoryData.error);
+                return;
             }
 
             categoryId = categoryData._id; 
@@ -158,10 +165,10 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
             onClose(); 
 
         } else {
-            alert("Update failed: " + data.error);
+            setLocalError("Update failed: " + data.error);
         }
         } catch (err) {
-        alert("Network error: " + err.message);
+            setLocalError("Network error: " + err.message);
         }
     };
 
@@ -177,7 +184,7 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
             const data = await res.json();
 
             if (!res.ok) {
-                alert("Failed to delete category: " + data.error);
+                setLocalError("Failed to delete: " + data.error);
             } else {
             // Update category list
             setCategories((prev) => prev.filter((cat) => cat._id !== categoryId));
@@ -188,7 +195,7 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
             }
         }
     } catch (err) {
-        alert("Error deleting category: " + err.message);
+        setLocalError("Error deleting category: " + err.message); 
     }
 };
 
@@ -197,6 +204,7 @@ function ExpenseEditWindow({ expense, tripId, onClose, onSave }) {
         <div className="modal-backdrop">
         <div className="modal-content">
             <h3>{isEditMode ? "Edit Expense" : "Add Expense"}</h3>
+            {localError && <p className="modal-error">{localError}</p>}
             <form onSubmit={handleSubmit}>
             <label>
                 Category:
