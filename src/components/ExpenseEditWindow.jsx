@@ -14,6 +14,8 @@
 import React, { useEffect, useState } from 'react';
 import { getToken } from '../utils/getToken';
 import CategoryManagerModal from './CategoryDeleteModal';
+import CustomSelect from "./CostumSelectCategory";
+import { capitalize } from "../utils/expenseHelper";
 import './Pop-UpWindow.css';
 
 // Current expense object we want to edit, function to close the popup, function to save the updated data.}
@@ -218,41 +220,30 @@ function ExpenseEditWindow({ expense, tripId, expenses,onClose, onSave }) {
                 Category:
                     {!isAddingCategory ? (
                         <>
-                            <select
-                                name="category"
+                            <CustomSelect
+                                options={[
+                                    ...categories.map(cat => ({ _id: cat._id, name: capitalize(cat.name)
+                                    })),
+                                    { _id: "__add_new__", name: "+ Add New Category" }
+                                    ]}
                                 value={formData.category}
-                                onChange={(e) => {
-                                    if (e.target.value === "__add_new__") {
+                                onChange={(selectedId) => {
+                                    if (selectedId === "__add_new__") {
                                     setIsAddingCategory(true);
-                                    setFormData((prev) => ({ ...prev, category: "" }));
+                                    
                                     } else {
-                                    handleChange(e);
+                                    setFormData(prev => ({ ...prev, category: selectedId }));
                                     }
                                 }}
-                                // required
-                            >
-
-                            <option value="">-- Select Category --</option>
-
-                            {categories.map((cat) => (
-
-                                <option key={cat._id} value={cat._id}>
-                                {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
-                                </option>
-
-                            ))}
-
-                            <option value="__add_new__">+ Add New Category</option>
-                            </select>
-                            
+                                placeholder="-- Select Category --"
+                            />
                             <button
                                 type="button"
                                 style={{ marginTop: "0.5rem" }}
                                 onClick={() => setShowCategoryManager(true)}
-                                >
+                            >
                                 Manage Categories
                             </button>
-
                         </>
 
                         ) : (
@@ -268,13 +259,13 @@ function ExpenseEditWindow({ expense, tripId, expenses,onClose, onSave }) {
                                 />
                                 <button 
                                     type="button" 
-                                    className='btn-primary'
+                                    className='inline-button'
                                     onClick={handleAddCategory}
                                 >
                                     Add   
                                 </button>
                                 <button
-                                    className="btn-cancel"
+                                    className="inline-button-cancel"
                                     type="button"
                                     onClick={() => {
                                         setIsAddingCategory(false);
