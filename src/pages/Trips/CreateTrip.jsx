@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getToken } from '../../utils/getToken';
 import { formatDateToDDMMYYYY } from '../../utils/formatDate';
+import '../Trips.css';
 
 export default function CreateTrip() {
   const navigate = useNavigate();
@@ -62,8 +63,8 @@ export default function CreateTrip() {
 
 
   return (
-    <div>
-      <h2>Create a New Trip</h2>
+    <div className="create-trip-container">
+      <h2 className="page-title">Create a New Trip</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <label>Location:</label>
@@ -95,6 +96,9 @@ export default function CreateTrip() {
 
         <button type="submit" disabled={loading}>
           {loading ? 'Saving...' : 'Save Trip'}
+        </button>
+        <button type="button" className="cancel-button" onClick={() => navigate('/trips')}>
+          Cancel
         </button>
       </form>
     </div>

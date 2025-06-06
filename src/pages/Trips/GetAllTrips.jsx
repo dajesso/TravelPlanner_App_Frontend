@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getToken } from '../../utils/getToken';
 import { filterTripsBy } from '../../utils/filterTrips';
 import DeleteTripConfirmation from '../../components/DeleteTripConfirmation';
+import '../Trips.css';
 
 export default function GetAllTrips() {
   const [trips, setTrips] = useState([]);
@@ -95,49 +96,53 @@ export default function GetAllTrips() {
   return (
     <div className="trip-list">
       <h2>Travel List</h2>
+      <div className="filter-and-add-container">
+        <div className="filter-bar">
+          <input
+            ref={locationInputRef}
+            type="text"
+            name="location"
+            placeholder="Location"
+            value={filters.location}
+            onChange={handleFilterChange}
+          />
 
-      <div style={{ marginBottom: '1rem' }}>
-        <input
-          ref={locationInputRef}
-          type="text"
-          name="location"
-          placeholder="Location"
-          value={filters.location}
-          onChange={handleFilterChange}
-        />
+          <select name="month" value={filters.month} onChange={handleFilterChange}>
+            <option value="">Month</option>
+            {months.map(({ label, value }) => (
+              <option key={value} value={value}>{label}</option>
+            ))}
+          </select>
 
-        <select name="month" value={filters.month} onChange={handleFilterChange}>
-          <option value="">Month</option>
-          {months.map(({ label, value }) => (
-            <option key={value} value={value}>{label}</option>
-          ))}
-        </select>
+          <select name="year" value={filters.year} onChange={handleFilterChange}>
+            <option value="">Year</option>
+            {years.map(y => (
+              <option key={y} value={y}>{y}</option>
+            ))}
+          </select>
 
-        <select name="year" value={filters.year} onChange={handleFilterChange}>
-          <option value="">Year</option>
-          {years.map(y => (
-            <option key={y} value={y}>{y}</option>
-          ))}
-        </select>
+          <button onClick={resetFilters}>Clear All</button>
+        </div>
 
-        <button onClick={resetFilters}>Clear All</button>
+        <button onClick={goToCreate}>+ Add Trip</button>
       </div>
-
-      <button onClick={goToCreate}>+ Add Trip</button>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {filteredTrips.length === 0 && !error && <p>No trips found.</p>}
 
-      <ul>
+      <div className="trip-grid">
         {filteredTrips.map(trip => (
-          <li key={trip._id}>
-            <strong>{trip.location}</strong><br />
-            {trip.arrivalDate} → {trip.departureDate}<br />
-            <button onClick={() => navigate(`/trips/${trip._id}`)}>View</button>
-            <button onClick={() => setTripToDelete(trip)}>Delete</button>
-          </li>
+          <div className="trip-card" key={trip._id}>
+            <h3>{trip.location}</h3>
+            <p>{trip.arrivalDate} → {trip.departureDate}</p>
+            <p>Total: ${trip.totalExpense}</p>
+            <div className="card-buttons">
+              <button onClick={() => navigate(`/trips/${trip._id}`)}>View</button>
+              <button onClick={() => setTripToDelete(trip)}>Delete</button>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
 
       {tripToDelete && (
         <DeleteTripConfirmation

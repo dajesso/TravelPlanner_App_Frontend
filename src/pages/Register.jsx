@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // import { StrictMode } from 'react'
 // import { createRoot } from 'react-dom/client'
@@ -6,6 +6,8 @@ import { useState } from 'react'
 
 import {auth} from '../components/auth.jsx';
 import { validateAuth, validateForm } from '../components/validateAuth.jsx';
+
+import "./Login.css"
 
 // We are building onto the template we will create a html form with a username and password input
 function Register()
@@ -19,8 +21,26 @@ const [status, setStatus] = useState("");
 const [error, setError] = useState("");
 const schema = validateAuth();
 
+const [secondsLeft, setSecondsLeft] = useState(30);
+
+  useEffect(() => {
+    if (secondsLeft === 0) {
+      window.location.href = '/login';
+      return;
+    }
+    const timer = setTimeout(() => {
+      setSecondsLeft(secondsLeft - 1);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [secondsLeft]);
+
+
 const submitButton = async (event) => {
 event.preventDefault();
+
+// we use this effect to start the countdown to the redirect.
+
+
 
 
   try{
@@ -79,8 +99,19 @@ event.preventDefault();
 
 
 return (
-  <div>
-    <h1>Travel Planner Authentication: Register</h1>
+    <div className="login-page">
+      <div className="about-section">
+        <h2>Welcome to Travel Planner</h2>
+        <p>
+          Travel Planner helps you effortlessly manage your trips, track expenses, and stay organized all in one place.
+          Whether you're backpacking across Europe or planning a weekend getaway, our intuitive app provides everything you need to
+          simplify travel planning. Sign in now to access your personalized dashboard and start organizing your journeys with ease.
+        </p>
+      </div>
+    
+
+  <div className="login-section">
+    <h1>Register</h1>
     <form onSubmit={submitButton}>
       <input
         type="text"
@@ -98,8 +129,22 @@ return (
       {!error && <p id="registerStatus" style={{ color: 'white' }}>{status}</p>}
       {/* Show error in red */}
       {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      {/* Show login link if registration was successful */}
+    {!error && status.toLowerCase().includes('success') && (
+      <div style={{ marginTop: '1em' }}>
+         <p>Redirecting to login page in {secondsLeft} second{secondsLeft !== 1 ? 's' : ''}...</p>
+
+      </div>
+    )}
+
+     <p>
+        Already have an account? <a href="/login">Login</a>
+        </p>
       <button type="submit">Register</button>
     </form>
+    
+  </div>
   </div>
 );
 }

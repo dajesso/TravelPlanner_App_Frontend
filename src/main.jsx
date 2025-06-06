@@ -18,7 +18,7 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Routes>
         {/* Redirect root to login Page */}
-        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/" element={<Navigate to="/register" />} />
 
         {/* Layout wrapper */}
         <Route element={<App />}>
