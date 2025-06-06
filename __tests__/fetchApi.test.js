@@ -1,6 +1,8 @@
 import { deleteExpense } from "../src/utils/fetchApi";
 import { getToken } from '../src/utils/getToken';
 
+process.env.REACT_APP_API_URL = 'https://travel-planner-latteb.onrender.com/'
+
 jest.mock('../src/utils/getToken', () => ({
   getToken: jest.fn(() => 'mocked-token')
 }));
