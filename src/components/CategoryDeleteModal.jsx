@@ -1,23 +1,22 @@
-import React, { useState } from "react";
-import "./Pop-UpWindow.css"; // Reuse modal styles
+import React, { useState } from 'react';
+import ConfirmDeleteModal from './ConfirmDeleteModal';
+import './Pop-UpWindow.css';
 
 function CategoryManagerModal({ categories, onClose, onDelete, expenses }) {
-    const [error, setError] = useState("");
+  const [categoryToDelete, setCategoryToDelete] = useState(null);
+  const [error, setError] = useState("");
     
+  const handleDelete = (categoryId, categoryName) => {
+    const isUsed = expenses.some(exp => exp.category?._id === categoryId);
 
-    const handleDelete = (categoryId, categoryName) => {
-        const isUsed = expenses.some(exp => exp.category?._id === categoryId);
+    if (isUsed) {
+      setError(`"${categoryName}" is in use by some expenses.`);
+      return;
+    }
 
-        if (isUsed) {
-        setError(`"${categoryName}" is in use by some expenses.`);
-        return;
-        }
-
-        // Confirm and trigger parent delete
-        if (window.confirm(`Are you sure you want to delete "${categoryName}"?`)) {
-        setError(""); // clear error first
-        onDelete(categoryId);
-        }
+    // clear error first
+    setError(""); 
+    setCategoryToDelete({ id: categoryId, name: categoryName });
     };
         
   return (
@@ -34,6 +33,7 @@ function CategoryManagerModal({ categories, onClose, onDelete, expenses }) {
               <li key={cat._id} style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
                 <span>{cat.name}</span>
                 <button
+                  type = "button"
                   className="btn-primary"
                   onClick={() => handleDelete(cat._id, cat.name)}
                 >
@@ -46,6 +46,16 @@ function CategoryManagerModal({ categories, onClose, onDelete, expenses }) {
         <div className="modal-buttons">
           <button className="btn-cancel" type="button" onClick={onClose}>Close</button>
         </div>
+        {categoryToDelete && (
+        <ConfirmDeleteModal
+          itemName={categoryToDelete.name}
+          onConfirm={() => {
+            onDelete(categoryToDelete.id);
+            setCategoryToDelete(null);
+          }}
+          onCancel={() => setCategoryToDelete(null)}
+        />
+      )}
       </div>
     </div>
   );

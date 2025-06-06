@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { getToken } from "../utils/getToken";
-import "./Pop-UpWindow.css";
+import React, { useState, useEffect } from 'react';
+import { getToken } from '../utils/getToken';
+import './Pop-UpWindow.css';
 
 function TripEditWindow({ trip, onClose, onSave }) {
   const [formData, setFormData] = useState({
