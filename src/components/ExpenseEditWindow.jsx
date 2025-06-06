@@ -167,6 +167,7 @@ function ExpenseEditWindow({ expense, tripId, expenses,onClose, onSave }) {
         setFormData((prev) => ({ ...prev, category: categoryData._id }));
         setIsAddingCategory(false);
         setNewCategoryName("");
+        setLocalError(""); 
     } catch (err) {
             setLocalError("Error creating category: " + err.message);
         }

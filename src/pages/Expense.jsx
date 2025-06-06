@@ -11,7 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 // Import custom components and styles
 import ExpenseTable from "../components/ExpenseTable";
 import ExpenseEditWindow from "../components/ExpenseEditWindow";
-import ExpenseDeleteWindow from "../components/ExpenseDeleteWindow";
+import ExpenseDeleteWindow from "../components/ConfirmDeleteModal";
 import "./Expense.css";
 
 // Import utility functions
@@ -170,8 +170,8 @@ function Expense() {
     {expenseToDelete && (
       <ExpenseDeleteWindow
         // Expense to delete
-        expense={expenseToDelete}
-        onConfirm={confirmDelete}
+        itemName={expenseToDelete.description || "Expense"}
+        onConfirm={() => confirmDelete(expenseToDelete._id)}
         onCancel={() => setExpenseToDelete(null)}
       />
     )}
