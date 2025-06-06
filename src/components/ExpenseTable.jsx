@@ -1,9 +1,19 @@
+import React from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { capitalize } from "../utils/expenseHelper";
 import "./ExpenseTable.css";
+
+/**
+ * Displays a list of expenses in table or card layout depending on screen size.
+ * 
+ * Props:
+ * - expenses: Array of expense objects to display
+ * - onEdit: Function to call when Edit is clicked
+ * - onDelete: Function to call when Delete is clicked
+ */
 
 function ExpenseTable({ expenses, onEdit, onDelete }) {
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1023 });
-  const capitalize = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
 
   if (isTabletOrMobile) {
     return (
@@ -41,8 +51,8 @@ function ExpenseTable({ expenses, onEdit, onDelete }) {
       <tbody>
         {expenses.map((exp) => (
           <tr key={exp._id}>
-            <td>{exp.category?.name.charAt(0).toUpperCase() + exp.category?.name.slice(1)}</td>
-            <td>{exp.description.charAt(0).toUpperCase() + exp.description.slice(1)}</td>
+            <td>{capitalize(exp.category?.name)}</td>
+            <td>{capitalize(exp.description)}</td>
             <td>${exp.amount}</td>
             <td>
               <button onClick={() => onEdit(exp)}>Edit</button>

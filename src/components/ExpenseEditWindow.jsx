@@ -11,10 +11,10 @@
 // 2. Adjust the form title and API
 // 3. Save it (as same as save Edit)
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { getToken } from '../utils/getToken';
-import CategoryManagerModal from "./CategoryDeleteModal"
-import "./Pop-UpWindow.css";
+import CategoryManagerModal from './CategoryDeleteModal';
+import './Pop-UpWindow.css';
 
 // Current expense object we want to edit, function to close the popup, function to save the updated data.}
 function ExpenseEditWindow({ expense, tripId, expenses,onClose, onSave }) {
@@ -63,19 +63,17 @@ function ExpenseEditWindow({ expense, tripId, expenses,onClose, onSave }) {
                 });
 
             const data = await res.json();
-            
             if (res.ok) setCategories(data);
-
             else console.error("Failed to load categories:", data.error);
 
-            } catch (err) {
-                console.error("Error fetching categories:", err.message);
-            }
-        };
+        } catch (err) {
+            console.error("Error fetching categories:", err.message);
+        }
+    };
 
     fetchCategories();
     // Only run on first render
-    }, []);
+}, []);
 
     // When user types into an input field
     //e = event that happens when the user types.
@@ -96,82 +94,37 @@ function ExpenseEditWindow({ expense, tripId, expenses,onClose, onSave }) {
         setLocalError("");
 
         try {
-
-            let categoryId = formData.category;
-
-            // Create new category if needed
-            if (isAddingCategory && newCategoryName.trim()) {
-            const categoryRes = await fetch("http://localhost:3000/categories", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${getToken()}`,
-                },
-                body: JSON.stringify({ name: newCategoryName.trim() }),
-            });
-
-            const categoryData = await categoryRes.json();
-
-            if (!categoryRes.ok) {
-                setLocalError("Failed to add new category: " + categoryData.error);
-                return;
-            }
-
-            categoryId = categoryData._id; 
-
-            // Update UI and category list
-            setFormData((prev) => ({ ...prev, category: categoryId }));
-            setIsAddingCategory(false);
-            setNewCategoryName("");
-            setCategories((prev) => [...prev, categoryData]);
-
-            // Save the new category in formData
-            setFormData((prev) => ({ ...prev, category: categoryId }));
-            }
-
-            // Choose the mode
+            const method = isEditMode ? 'PUT' : 'POST';
             const url = isEditMode
-            ? `http://localhost:3000/expenses/${expense._id}`
-            : "http://localhost:3000/expenses";
+                ? `http://localhost:3000/expenses/${expense._id}`
+                : 'http://localhost:3000/expenses';
 
-            const method = isEditMode ? "PUT" : "POST";
-
-            // Add Trip Id only when adding a new expense
             const body = {
                 ...formData,
-                category: categoryId,
                 ...(isEditMode ? {} : { trip: tripId }),
             };
-            
-            // Send request to backend
+
             const res = await fetch(url, {
                 method,
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${getToken()}`,
                 },
-
-                // Convert data to Json
                 body: JSON.stringify(body),
             });
 
-        const data = await res.json();
-
-        if (res.ok) {
-
-            // update parent state
-            onSave(data); 
-
-            // close modal
-            onClose(); 
-
-        } else {
-            setLocalError("Update failed: " + data.error);
-        }
+            const data = await res.json();
+            if (res.ok) {
+                onSave(data);
+                onClose();
+            } else {
+                setLocalError(`Update failed: ${data.error}`);
+            }
         } catch (err) {
-            setLocalError("Network error: " + err.message);
+            setLocalError(`Network error: ${err.message}`);
         }
     };
+
     const handleAddCategory = async () => {
         if (!newCategoryName.trim()) {
             setLocalError("Category name cannot be empty.");
@@ -186,27 +139,34 @@ function ExpenseEditWindow({ expense, tripId, expenses,onClose, onSave }) {
                 Authorization: `Bearer ${getToken()}`,
             },
             body: JSON.stringify({ name: newCategoryName.trim() }),
-            });
+        });
 
-            const categoryData = await categoryRes.json();
+        const categoryData = await categoryRes.json();
 
-            if (!categoryRes.ok) {
+        if (!categoryRes.ok) {
             setLocalError("Failed to add new category: " + categoryData.error);
             return;
-            }
+        }
 
-            // Update dropdown list and select new category
-            setCategories((prev) => [...prev, categoryData]);
-            setFormData((prev) => ({ ...prev, category: categoryData._id }));
-            setIsAddingCategory(false);
-            setNewCategoryName("");
-        } catch (err) {
+        // Update dropdown list and select new category
+        setCategories((prev) => [...prev, categoryData]);
+        setFormData((prev) => ({ ...prev, category: categoryData._id }));
+        setIsAddingCategory(false);
+        setNewCategoryName("");
+    } catch (err) {
             setLocalError("Error creating category: " + err.message);
         }
-        };
+    };
 
 
     const handleCategoryDelete = async (categoryId) => {
+         const isUsed = expenses.some((exp) => exp.category?._id === categoryId);
+
+        if (isUsed) {
+            setLocalError('This category is in use and cannot be deleted.');
+            return;
+        }
+
         try {
             const res = await fetch(`http://localhost:3000/categories/${categoryId}`, {
                 method: "DELETE",
@@ -220,17 +180,18 @@ function ExpenseEditWindow({ expense, tripId, expenses,onClose, onSave }) {
             if (!res.ok) {
                 setLocalError("Failed to delete category: " + data.error);
             } else {
-            // Update category list
-            setCategories((prev) => prev.filter((cat) => cat._id !== categoryId));
-            setLocalError("");
+                // Update category list
+                setCategories((prev) => prev.filter((cat) => cat._id !== categoryId));
+                setLocalError("");
 
-            // Clear selected category if it was deleted
-            if (formData.category === categoryId) {
-                setFormData((prev) => ({ ...prev, category: "" }));
-            }
+                // Clear selected category if it was deleted
+                if (formData.category === categoryId) {
+                    setFormData((prev) => ({ ...prev, category: "" }));
+                }
+                setLocalError('');
         }
     } catch (err) {
-        setLocalError("Error deleting category: " + err.message); 
+        setLocalError(`Error deleting category: ${err.message}`); 
     }
 };
 

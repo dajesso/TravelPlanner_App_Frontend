@@ -1,5 +1,5 @@
-import React from "react";
-import "./Pop-UpWindow.css";
+import React from 'react';
+import './Pop-UpWindow.css';
 
 function ExpenseDeleteWindow({ expense, onConfirm, onCancel }) {
   if (!expense) return null;

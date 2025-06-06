@@ -1,22 +1,23 @@
-import React, { useState } from "react";
-import "./Pop-UpWindow.css"; // Reuse modal styles
+import React, { useState } from 'react';
+import './Pop-UpWindow.css';
 
 function CategoryManagerModal({ categories, onClose, onDelete, expenses }) {
     const [error, setError] = useState("");
     
-
     const handleDelete = (categoryId, categoryName) => {
         const isUsed = expenses.some(exp => exp.category?._id === categoryId);
 
         if (isUsed) {
-        setError(`"${categoryName}" is in use by some expenses.`);
-        return;
+          setError(`"${categoryName}" is in use by some expenses.`);
+          return;
         }
 
         // Confirm and trigger parent delete
         if (window.confirm(`Are you sure you want to delete "${categoryName}"?`)) {
-        setError(""); // clear error first
-        onDelete(categoryId);
+
+          // clear error first
+          setError(""); 
+          onDelete(categoryId);
         }
     };
         

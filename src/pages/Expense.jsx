@@ -9,61 +9,63 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 // Import custom components and styles
-import ExpenseTable from '../components/ExpenseTable';
+import ExpenseTable from "../components/ExpenseTable";
 import ExpenseEditWindow from "../components/ExpenseEditWindow";
 import ExpenseDeleteWindow from "../components/ExpenseDeleteWindow";
-import './Expense.css';
+import "./Expense.css";
 
 // Import utility functions
-import { deleteExpense, fetchData, loadExpensesByTrip } from '../utils/fetchApi';
+import { deleteExpense, fetchData, loadExpensesByTrip } from "../utils/fetchApi";
+import { sortExpenses } from "../utils/expenseHelper";
 import TripEditWindow from "../components/TripEditWindow";
 
 function Expense() {
   //  grabs the tripId from the URL
   const { tripId } = useParams();
+  const navigate = useNavigate();
 
   // Storing the follwing data
   const [trip, setTrip] = useState(null);
   const [expenses, setExpenses] = useState([]);
-  const [error, setError] = useState("");
   const [editingExpense, setEditingExpense] = useState(null);
   const [expenseToDelete, setExpenseToDelete] = useState(null);
   const [editingTrip, setEditingTrip] = useState(null);
   const [sortOption, setSortOption] = useState("");
-
+  const [error, setError] = useState("");
   const [backendError, setBackendError] = useState("");
-
-
-  const navigate = useNavigate();
 
   // Load trip and associated expenses from backend
   const loadTripAndExpenses = async () => {
-
     // Fetch Trip Details
     await fetchData(`http://localhost:3000/trips/${tripId}`, setTrip, "Failed to load trip", setError);
+
     // Fetch all expenses related to the trip
     await loadExpensesByTrip(tripId, setExpenses, setError);
   };
 
+  // Load trip and expenses when component mounts or tripId changes
+  useEffect(() => {
+    loadTripAndExpenses();
+  }, [tripId]);
+
   // Called after saving an expense to refresh the list
   const handleSaveExpense = async() => {
-
     // Refresh the data from backend
     await loadTripAndExpenses();
+
     // Close the edit modal
     setEditingExpense(null);
-    };
+  };
 
   // confirm actual deletion
   const confirmDelete = async (expenseId) => {
-
     // Attempt to delete the expense
     const { ok, data } = await deleteExpense(expenseId);
 
     if (ok) {
-
       // Refresh data
       await loadTripAndExpenses();
+
       // Close the modal
       setExpenseToDelete(null);
 
@@ -72,22 +74,11 @@ function Expense() {
     }
   };
 
-  // Load trip and expenses when component mounts or tripId changes
-  useEffect(() => {
-    loadTripAndExpenses();
-  }, [tripId]);
-
   // Sort by...
-  const sortedExpenses = [...expenses];
+  const sortedExpenses = sortExpenses(expenses, sortOption);
 
-  if (sortOption === "price-low-high") {
-    sortedExpenses.sort((a, b) => a.amount - b.amount);
-  } else if (sortOption === "category-az") {
-    sortedExpenses.sort((a, b) => {
-      const nameA = a.category?.name?.toLowerCase() || "";
-      const nameB = b.category?.name?.toLowerCase() || "";
-      return nameA.localeCompare(nameB);
-    });
+  if (!trip && !error) {
+    return <p>Loading trip data...</p>;
   }
 
   return (
@@ -102,7 +93,7 @@ function Expense() {
 
       {trip && (
       <>
-        {/* --- Top Row --- */}
+        {/* Top Row */}
         <div className="top-row">
           <button className="back-button" onClick={() => navigate("/trips")}>
             ← All Trips
@@ -116,7 +107,7 @@ function Expense() {
           </button>
         </div>
 
-        {/* --- Trip Info --- */}
+        {/* Trip Info */}
         <div className="trip-info">
           <div className="trip-info-content">
             <h2>Location: {trip.location}</h2>
@@ -130,7 +121,7 @@ function Expense() {
           </div>
         </div>
 
-        {/* --- Sort + Add Buttons --- */}
+        {/* Sort + Add Buttons */}
         <div className="table-header-row">
           <div className="sort-dropdown">
             <label htmlFor="sort">Sort By: </label>
@@ -152,7 +143,7 @@ function Expense() {
           </div>
         </div>
 
-        {/* --- Expenses Table or Cards --- */}
+        {/* Expenses Table or Cards */}
         <div className="expense-table-container">
           <h3>Expenses:</h3>
           <ExpenseTable
