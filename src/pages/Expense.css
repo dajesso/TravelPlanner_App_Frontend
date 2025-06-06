@@ -330,6 +330,13 @@ button:hover {
         padding: 0.8rem;
     }
 
+    .expense-card .expense-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
     .expense-card h4 {
         font-size: 1rem;
     }
@@ -341,5 +348,6 @@ button:hover {
     .expense-card .expense-actions button {
         font-size: 0.75rem;
         padding: 0.3em 0.6em;
+        flex: 1;
     }
     }

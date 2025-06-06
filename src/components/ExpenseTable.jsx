@@ -16,7 +16,7 @@ function ExpenseTable({ expenses, onEdit, onDelete }) {
                     </div>
                     <div className="expense-meta-row">
                     <span className="description"><strong>Description:</strong> {capitalize(exp.description)}</span>
-                    <div className="card-buttons">
+                    <div className="expense-actions">
                         <button onClick={() => onEdit(exp)}>Edit</button>
                         <button onClick={() => onDelete(exp)}>Delete</button>
                     </div>
