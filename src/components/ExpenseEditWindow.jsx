@@ -93,6 +93,18 @@ function ExpenseEditWindow({ expense, tripId, expenses,onClose, onSave }) {
         // Clear all previous error
         setLocalError("");
 
+        // User side validation before submitting to backend
+        if (!formData.category || !formData.description.trim() || !formData.amount) {
+            if (!formData.category) {
+                setLocalError("Category is required.");
+            } else if (!formData.description.trim()) {
+                setLocalError("Description is required.");
+            } else if (!formData.amount) {
+                setLocalError("Amount is required.");
+            }
+            return; 
+        }
+
         try {
             const method = isEditMode ? 'PUT' : 'POST';
             const url = isEditMode
@@ -254,8 +266,12 @@ function ExpenseEditWindow({ expense, tripId, expenses,onClose, onSave }) {
                                     onChange={(e) => setNewCategoryName(e.target.value)}
                                     // required
                                 />
-                                <button type="button" onClick={handleAddCategory}>
-                                    
+                                <button 
+                                    type="button" 
+                                    className='btn-primary'
+                                    onClick={handleAddCategory}
+                                >
+                                    Add   
                                 </button>
                                 <button
                                     className="btn-cancel"

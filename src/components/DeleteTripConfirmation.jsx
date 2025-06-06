@@ -1,5 +1,5 @@
-import React from "react";
-import "./Pop-UpWindow.css";
+import React from 'react';
+import './Pop-UpWindow.css';
 
 export default function DeleteTripConfirmation({ trip, onCancel, onConfirm }) {
   return (
