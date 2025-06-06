@@ -39,7 +39,7 @@ export default function CreateTrip() {
 
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3000/trips', {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/trips`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${getToken()}`,

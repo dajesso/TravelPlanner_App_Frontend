@@ -33,7 +33,7 @@ function TripEditWindow({ trip, onClose, onSave }) {
     setLocalError("");
 
     try {
-      const res = await fetch(`http://localhost:3000/trips/${trip._id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/trips/${trip._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

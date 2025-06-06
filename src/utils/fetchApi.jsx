@@ -33,7 +33,7 @@ export const fetchData = async (url, setter, errorMsg, setError = console.error)
 // - setError: state setter to display error message if failed
 export const loadExpensesByTrip = async (tripId, setExpenses, setError) => {
   try {
-    const res = await fetch(`http://localhost:3000/expenses?trip=${tripId}`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/expenses?trip=${tripId}`, {
       headers: { Authorization: `Bearer ${getToken()}` },
     });
 
@@ -54,7 +54,7 @@ export const loadExpensesByTrip = async (tripId, setExpenses, setError) => {
 // Returns a result object: { ok: true/false, data: the server response }
 export const deleteExpense = async (expenseId) => {
   // Send DELETE request to backend with Authorization
-  const res = await fetch(`http://localhost:3000/expenses/${expenseId}`, {
+  const res = await fetch(`${process.env.REACT_APP_API_URL}/expenses/${expenseId}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${getToken()}` },
   });

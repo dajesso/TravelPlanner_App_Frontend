@@ -38,17 +38,9 @@ const [secondsLeft, setSecondsLeft] = useState(30);
 const submitButton = async (event) => {
 event.preventDefault();
 
-// we use this effect to start the countdown to the redirect.
-
-
-
-
+// We use this effect to start the countdown to the redirect
   try{
-
-
-
     const validationError = validateForm(email, password, schema);
-
     if (validationError) {
       setError(validationError);
       setStatus("");
@@ -58,7 +50,7 @@ event.preventDefault();
       setStatus("Validating credentials...");
     }
 
-    const response = await fetch("http://localhost:3000/register", {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/register`, {
         method: "POST",
         headers: {
         "Content-Type": "application/json",

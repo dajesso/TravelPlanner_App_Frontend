@@ -9,7 +9,7 @@ function Trips() {
 
   const loadTrips = async () => {
     try {
-      const res = await fetch("http://localhost:3000/trips", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/trips`, {
         headers: {
         Authorization: `Bearer ${getToken()}`,
       },
