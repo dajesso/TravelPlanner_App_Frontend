@@ -37,7 +37,7 @@ function Expense() {
   // Load trip and associated expenses from backend
   const loadTripAndExpenses = async () => {
     // Fetch Trip Details
-    await fetchData(`${process.env.REACT_APP_API_URL}/trips/${tripId}`, setTrip, "Failed to load trip", setError);
+    await fetchData(`http://localhost:3000/trips/${tripId}`, setTrip, "Failed to load trip", setError);
 
     // Fetch all expenses related to the trip
     await loadExpensesByTrip(tripId, setExpenses, setError);

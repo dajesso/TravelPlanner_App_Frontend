@@ -19,7 +19,7 @@ export default function GetAllTrips() {
   useEffect(() => {
     async function fetchTrips() {
       try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/trips`, {
+        const res = await fetch('http://localhost:3000/trips', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${getToken()}`
@@ -68,7 +68,7 @@ export default function GetAllTrips() {
 
   const handleDelete = async (tripId) => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/trips/${tripId}`, {
+      const res = await fetch(`http://localhost:3000/trips/${tripId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${getToken()}`
