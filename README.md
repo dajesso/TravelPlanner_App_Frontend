@@ -12,14 +12,17 @@
 1. [AirBnB JavaScript Style Guide](#airbnb-javascript-style-guide)
 -  [Usage in the Travel Planner code](#usage-in-the-travel-planner-code)
 
-2. [Dependent software and packages](#dependent-software-and-packages)
+2. [How to run the Travel Planner application locally](#how-to-run-the-travel-planner-application-locally)
+
+3. [Dependent software and packages](#dependent-software-and-packages)
 -  [Core Dependencies](#core-dependencies)
 -  [Development dependencies](#development-dependencies)
 
-3. [Hardware requirements](#hardware-requirements)
-4. [Comparisons to alternative technology choices](#comparisons-to-alternative-technology-choices)
-5. [Purposes of chosen technologies](#purposes-of-chosen-technologies)
-6. [Licensing of chosen technologies](#licensing-of-chosen-technologies)
+4. [Hardware requirements](#hardware-requirements)
+5. [Comparisons to alternative technology choices](#comparisons-to-alternative-technology-choices)
+6. [Purposes of chosen technologies](#purposes-of-chosen-technologies)
+7. [Licensing of chosen technologies](#licensing-of-chosen-technologies)
+8. [References](#references)
 
 ---
 ## AirBnB JavaScript Style Guide
@@ -32,8 +35,8 @@ The use of the **Airbnb JavaScript Style Guide** is mainly focused on mantaining
 
 ## How to run the Travel Planner application locally
 
-- Repo in GitHub to the [Travel Planner server](git@github.com:Angie-newbie/TravelPlanner_App_Backend.git)
-- Repo in GitHub to the [Travel Planner client](git@github.com:hernan-vela/TravelPlanner_App_Frontend.git)
+- Repo in GitHub to the [Travel Planner Server](git@github.com:Angie-newbie/TravelPlanner_App_Backend.git)
+- Repo in GitHub to the [Travel Planner Client](git@github.com:hernan-vela/TravelPlanner_App_Frontend.git)
 
 To run the web application from your local machine, first clone both repositories ==>
 
@@ -43,22 +46,34 @@ Server:
 Client:
 ```git clone git@github.com:hernan-vela/TravelPlanner_App_Frontend.git```
 
-From your preferred Source Code Editor, open both files in separate windows and from separate terminal, run the command:
+Second, using your preferred source code editor, open both the **Client** and and **Server** project folders in separate windows or tabs. Then, open a separate terminal for each project and run ```npm install```. This will install all the software dependencies and packages required for the web application to operate flawless.
 
-```npm install```
-
-This will install all the software dependencies and packages required for the web application to operate flawless.
-
-Next, from the terminal of the Server folder, run the command ```npm run dev```. As a result the server will connect, and a confirmation message will display on your terminal environment, such as:
+Third, from the terminal of the Server folder, run the command ```npm run dev```. As a result the server will connect, and a confirmation message will be displayed on your terminal environment, such as:
 
 ```terminal
 developer@localMachine TravelPlanner_App_Backend % npm run dev
-travelplanner_app_backend@1.0.0 dev
-node --watch src/index.js
-Example app listening on port 3000
-Mongoose connected
+
+  > travelplanner_app_backend@1.0.0 dev
+  > node --watch src/index.js
+
+  Example app listening on port 4000
+  Mongoose connected
 ```
 
+Fourth, execute the same command, ```npm run dev```, from the terminal of the Client folder. In this case, you will see this displayed on your screen:
+
+```terminal
+VITE v6.3.5  ready in 214 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+```
+
+Finally, open the url in your browser and you will be redirected to the login page. You can click on *'register'* to create a new user and follow the prompts to interact with the Travel Planner.
+
+![travel planner login page](./doc-resources/travel-planner-login.png)
+*Login web page of the Travel Planner app*
 
 ## Dependent Software and Packages
 
