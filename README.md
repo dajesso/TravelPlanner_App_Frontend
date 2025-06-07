@@ -10,12 +10,18 @@
 ## Table of contents
 
 1. [Code Style Guide - AirBnB JavaScript Style Guide](#code-style-guide-airbnb-javascript-style-guide)
-1.1 [Usage in our code](#usage-in-our-code)
+
+- [Usage in our code](#usage-in-our-code)
 
 2. [Dependent software and packages](#Dependent-software-and-packages)
+
 - [Core Dependencies](#core-dependencies)
+
 - [Development dependencies](#development-dependencies)
-2. [Hardware requirements](#hardware-requirements)
+
+3. [Hardware requirements](#hardware-requirements)
+4. [Comparisons to alternative technology choices](#comparisons-to-alternative-technology-choices)
+5. 
 
 
 ---
@@ -23,11 +29,11 @@
 
 The code of the Travel Planner Web Application is written following the **Airbnb JavaScript Style Guide**(Airbnb, 2025)[^1], to facilitate readability, safe JavaScript practices, and seamless interaction among coders that might want to inspect this source in the future.
 
-### Usage in our code
+### Usage in the Travel Planner code
 
 The use of the **Airbnb JavaScript Style Guide** is mainly focused on mantaining readability, naming conventions, designing clear and functional components, simple and meaningful comments, *PascalCase* for components, and *camelCase* for prop names.
 
-## Dependent software and packages
+## Dependent Software and Packages
 
 This project uses software packages which enhance a friendly user interaction, straigthforward client and server communication, data security, and responsivenes.
 
@@ -50,11 +56,65 @@ This project uses software packages which enhance a friendly user interaction, s
 
 ### Development Dependencies
 
+- **babel/preset-env(^7.27.2)** --> Dependency to translate modern JavaScript to the older version of the language, according to the browse in which the app will be run. It ensures functionality among different browsers (Babel, ).
+
+- **Jest(^29.7.0)** --> Simple JavaScript testing framework, employed to run testing files, mock functions and establish expected results in the app. Simple to set up, no complex configuration needed  (Jest, 2025)[^8]
+
+- **jest-environment-jsdom (^30.0.0-beta.3)** --> Simulated environment similar to a browser with window, document, DOM to implement Jest testing (npm, 2025)[^9].
+
+- **Vite (^6.3.5)** -->  Build tool and development server, provides faster and simple functionalities for modern web applications. It includes native support for ES modules, HMR and tree-shaking (Vite, 2025)[^10].
+
 
 ## Hardware Requirements
 
+For local development, the next components are recommended:
+
+| Component | Hardware Requirement |
+| - | - |
+| CPU |  Dual-core 2.0 GHz (Intel i3 / AMD equivalent) |
+| RAM | **4 GB** minimun (server and client) |
+| Storage | **500 MB** free space (coding + node_modules) |
+| OS | Windows 10+, macOS Catalina+, or any modern Linux distro |
+| Browser | Any Chromim-based browser (Chrome/Edge) or Firefox |
+
+Considering that The Travel Planner is a ligthweight program, it might not need the latest technologies to run properly, but below it is shown a list of how some dependencies affect the resources:
+
+| Dependency | Impact |
+|  -  |  -  |
+| React 19 | Runs great with Vite / require minimal runtime memory |
+| Vite | Fast builds, low memory consumption (~200MB during dev) |
+| MongoDB (local) | during queries uses 300-500MB |
+| Jest | Test runs might spike RAM momentarily |
+| Babel | Used during dev, can consume 300-500MB top during builds |
 
 ## Comparisons to alternative technology choices
+
+Although this project was initially conceived using MERN stack, it is reasonable to consider alternative techonologies for future developments. Here there is a brief comparison:
+
+### React vs. Vue.js
+
+| Criteria | React | Vue.js |
+| - | - | - |
+| **Characteristics** | Component-based UI library focused in declarative rendering an state management | Progressive framework with reactivity system and integrated tooling |
+| **Pros**| Massive ecosystem, job market, strong community support, flexible integration with other libraries | Simpler syntax, fast setup and learning curve, integrated features  |
+| **Cons** | Requires more boilerplate for state an forms, tough learning curve for beginners, JSX syntax may feel excesive | Smaller ecosystem in contrast,  newer community = less experience, hardly adopted by companies |
+Source: State of JS, 2023[^11]
+
+
+| Criteria | React | Angular |
+| - | - | - |
+| **Characteristics** | Component-based UI library focused in declarative rendering and hooks | Framework built with TypeScript, built-in routing, state and HTTP services |
+| **Pros** | Massive ecosystem, strong community, flexible with other libraries, backed by Meta | Built-in features, great for enterprise-scale apps, supported by Google. |
+| **Cons** | Tougher learning curveS with JSX and state management; requires more setup for full-stack capabilities. | Heavyweight; steeper learning curve due to TypeScript, decorators, and RxJS complexity. |
+Source: (State of JS, 2023)[^11]
+
+
+| Criteria | React | Svelte |
+| - | - | - |
+| **Characteristics** | Component-based UI library focused in declarative rendering and hooks | Compiler-based framework that converts components into vanilla JS at build time |
+| **Pros** | Massive ecosystem, strong community, flexible with other libraries, backed by Meta | Very fast, small bundles, no virtual DOM, simpler syntax. |
+| **Cons** | Requires a build step for JSX; runtime abstraction may lead to performance tradeoffs | Smaller ecosystem, fewer jobs, less mature tooling compared to React |
+Source: (State of JS, 2023)[^11], (Svelte in GitHub, 2025)[^12]
 
 
 ## Purposes of chosen technologies
@@ -78,3 +138,13 @@ This project uses software packages which enhance a friendly user interaction, s
 [^6]: npm, 2023, *react-responsive*, accessed on 06 June 2025, https://www.npmjs.com/package/react-responsive
 
 [^7]: React Router, 2025, *REACT ROUTER*, accessed on 01 June 2025, https://reactrouter.com/
+
+[^8]: Jest on Github, 2025, Delightful JavaScript Testing, accessed on 5 May 2025, https://github.com/jestjs/jest
+
+[^9]: npm, 2025, *jest-environment-jsdom*, accessed on 06 June 2025, https://www.npmjs.com/package/jest-environment-jsdom
+
+[^10]: Vite, 2025, *Vite, The Build Tool for the Web*, accessed on 06 June 2025, https://vite.dev/
+
+[^11]: State of JS, 2023, *Libraries*, accessed on 06 June 2025, https://2023.stateofjs.com/en-US/libraries/
+
+[^12]: Svelete in GiHub, 2025, *sveltejs / svelte*, accessed on 06 June 2025, https://github.com/sveltejs/svelte
