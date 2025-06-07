@@ -9,29 +9,56 @@
 
 ## Table of contents
 
-1. [Code Style Guide - AirBnB JavaScript Style Guide](#code-style-guide-airbnb-javascript-style-guide)
+1. [AirBnB JavaScript Style Guide](#airbnb-javascript-style-guide)
+-  [Usage in the Travel Planner code](#usage-in-the-travel-planner-code)
 
-- [Usage in our code](#usage-in-our-code)
-
-2. [Dependent software and packages](#Dependent-software-and-packages)
-
-- [Core Dependencies](#core-dependencies)
-
-- [Development dependencies](#development-dependencies)
+2. [Dependent software and packages](#dependent-software-and-packages)
+-  [Core Dependencies](#core-dependencies)
+-  [Development dependencies](#development-dependencies)
 
 3. [Hardware requirements](#hardware-requirements)
 4. [Comparisons to alternative technology choices](#comparisons-to-alternative-technology-choices)
-5. 
-
+5. [Purposes of chosen technologies](#purposes-of-chosen-technologies)
+6. [Licensing of chosen technologies](#licensing-of-chosen-technologies)
 
 ---
-## Code Style Guide - AirBnB JavaScript Style Guide
+## AirBnB JavaScript Style Guide
 
 The code of the Travel Planner Web Application is written following the **Airbnb JavaScript Style Guide**(Airbnb, 2025)[^1], to facilitate readability, safe JavaScript practices, and seamless interaction among coders that might want to inspect this source in the future.
 
 ### Usage in the Travel Planner code
 
 The use of the **Airbnb JavaScript Style Guide** is mainly focused on mantaining readability, naming conventions, designing clear and functional components, simple and meaningful comments, *PascalCase* for components, and *camelCase* for prop names.
+
+## How to run the Travel Planner application locally
+
+- Repo in GitHub to the [Travel Planner server](git@github.com:Angie-newbie/TravelPlanner_App_Backend.git)
+- Repo in GitHub to the [Travel Planner client](git@github.com:hernan-vela/TravelPlanner_App_Frontend.git)
+
+To run the web application from your local machine, first clone both repositories ==>
+
+Server:
+``` git clone git@github.com:Angie-newbie/TravelPlanner_App_Backend.git```
+
+Client:
+```git clone git@github.com:hernan-vela/TravelPlanner_App_Frontend.git```
+
+From your preferred Source Code Editor, open both files in separate windows and from separate terminal, run the command:
+
+```npm install```
+
+This will install all the software dependencies and packages required for the web application to operate flawless.
+
+Next, from the terminal of the Server folder, run the command ```npm run dev```. As a result the server will connect, and a confirmation message will display on your terminal environment, such as:
+
+```terminal
+developer@localMachine TravelPlanner_App_Backend % npm run dev
+travelplanner_app_backend@1.0.0 dev
+node --watch src/index.js
+Example app listening on port 3000
+Mongoose connected
+```
+
 
 ## Dependent Software and Packages
 
@@ -100,6 +127,7 @@ Although this project was initially conceived using MERN stack, it is reasonable
 | **Cons** | Requires more boilerplate for state an forms, tough learning curve for beginners, JSX syntax may feel excesive | Smaller ecosystem in contrast,  newer community = less experience, hardly adopted by companies |
 Source: State of JS, 2023[^11]
 
+### React vs. Angular
 
 | Criteria | React | Angular |
 | - | - | - |
@@ -108,6 +136,7 @@ Source: State of JS, 2023[^11]
 | **Cons** | Tougher learning curveS with JSX and state management; requires more setup for full-stack capabilities. | Heavyweight; steeper learning curve due to TypeScript, decorators, and RxJS complexity. |
 Source: (State of JS, 2023)[^11]
 
+### React vs. Svelte
 
 | Criteria | React | Svelte |
 | - | - | - |
@@ -116,11 +145,48 @@ Source: (State of JS, 2023)[^11]
 | **Cons** | Requires a build step for JSX; runtime abstraction may lead to performance tradeoffs | Smaller ecosystem, fewer jobs, less mature tooling compared to React |
 Source: (State of JS, 2023)[^11], (Svelte in GitHub, 2025)[^12]
 
+### React Router vs. Reach Router
+
+| Criteria | React | Svelte |
+| - | - | - |
+| **Characteristics** | Feature routing library for React with nested routing, route loaders and data APIs | Lightweigh route focused on accessibitlity and simplicity |
+| **Pros** | Built-in support for nested layouts and loaders, mantained and widely adopted, rich ecosystem | Simpler syntax, smaller bundle size, automated route handling accessibility |
+| **Cons** | Tough to learn, boilerplate in dynamic routing | No longer actively mantained or recommended for new projects |
+
 
 ## Purposes of chosen technologies
 
+The chosen technology for this project comprises relevant characteristics, especially those advantageous for the app's functionalities. Some of these characteristics are:
+
+- **React** is ideal because it facilitates faster building of reusable components such as pop-up windows and page containers. In addition, the number of tutorials, documentation, and packages available online makes it easier to learn about React's use.
+
+- **react-router-DOM** enables the seamless client-side navigation between pages such as ```login```, ```trips```, ```create```, without reloading the whole page after every transition. It supports dynamic routing, and its designs fits naturally with React components. In general, it provides the flexibility and efficiency needed for building a responsive single-page application.
+
+- **jwt-decode** allows to extract user data from tokens without calling the backend. Small and lightweight.
+
+- **Vite (Bundler/Dev Server)** uses Hot Module Replacement (HMR), it is optimised for development and uses tree-shaking to discard the modules that the application do not use.
+
+- **react-responsive** exhibits a granular control, which eases the building of different layouts for the most relevant devices, such as Mobile, desktop and tablets.
+
+- **Jest + babel-jest - jsdom** enable reliable unit testing of logic, API calls, and user interactions. This setup makes it easy to mock tokens and endpoints, allowing tests to run in isolation. The simulated DOM, provided by jsdom, makes possible to test React components without an actual browser.
+
 
 ## Licensing of chosen technologies
+
+The technologies use in the development of this Travel Planner web application, hold MIT License, allowing their free use, modification and distribution.
+
+| Package             | License | License URL                                                      |
+|---------------------|---------|------------------------------------------------------------------|
+| react               | MIT     | https://github.com/facebook/react/blob/main/LICENSE              |
+| react-dom           | MIT     | https://github.com/facebook/react/blob/main/LICENSE              |
+| react-router-dom    | MIT     | https://github.com/remix-run/react-router/blob/dev/LICENSE       |
+| react-responsive    | MIT     | https://github.com/yocontra/react-responsive/blob/master/LICENSE |
+| jwt-decode          | MIT     | https://github.com/auth0/jwt-decode/blob/master/LICENSE          |
+| vite                | MIT     | https://github.com/vitejs/vite/blob/main/LICENSE                 |
+| jest                | MIT     | https://github.com/jestjs/jest/blob/main/LICENSE                 |
+| babel-jest          | MIT     | https://github.com/babel/jest/blob/main/LICENSE                  |
+| jsdom               | MIT     | https://github.com/jsdom/jsdom/blob/master/LICENSE.txt           |
+| eslint              | MIT     | https://github.com/eslint/eslint/blob/main/LICENSE               |
 
 
 ## References 
