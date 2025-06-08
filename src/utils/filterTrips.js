@@ -1,4 +1,5 @@
 
+// Filter 'All Trips'
 export function filterTripsBy(trips, { location, month, year }) {
   return trips.filter(trip => {
     const [_, arrivalMonth, arrivalYear] = trip.arrivalDate.split('/');

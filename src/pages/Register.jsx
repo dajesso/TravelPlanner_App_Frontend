@@ -1,28 +1,20 @@
 import { useState, useEffect } from 'react'
-
-// import { StrictMode } from 'react'
-// import { createRoot } from 'react-dom/client'
-// import { verifyToken } from '../components/verifyToken.jsx'
-
 import {auth} from '../components/auth.jsx';
 import { validateAuth, validateForm } from '../components/validateAuth.jsx';
-
 import "./Login.css"
 
-// We are building onto the template we will create a html form with a username and password input
-function Register()
-{
+// Register function
+function Register() {
 
-//we handle the state of the form using useState
+  // State hooks
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState("");
+  const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
+  const schema = validateAuth();
+  const [secondsLeft, setSecondsLeft] = useState(30);
 
-const [email, setEmail] = useState('');
-const [password, setPassword] = useState("");
-const [status, setStatus] = useState("");
-const [error, setError] = useState("");
-const schema = validateAuth();
-
-const [secondsLeft, setSecondsLeft] = useState(30);
-
+  // Countdown to redirect if registration is successful
   useEffect(() => {
     if (secondsLeft === 0) {
       window.location.href = '/login';
@@ -34,61 +26,48 @@ const [secondsLeft, setSecondsLeft] = useState(30);
     return () => clearTimeout(timer);
   }, [secondsLeft]);
 
+  // Submission handler
+  const submitButton = async (event) => {
+    event.preventDefault();
 
-const submitButton = async (event) => {
-event.preventDefault();
+  // Start countdown to redirect user
+    try{
 
-// We use this effect to start the countdown to the redirect
-  try{
-    const validationError = validateForm(email, password, schema);
-    if (validationError) {
-      setError(validationError);
-      setStatus("");
-      return;
-    }else{
-      setError("");
-      setStatus("Validating credentials...");
-    }
+      // Validation of user input
+      const validationError = validateForm(email, password, schema);
+      if (validationError) {
+        setError(validationError);
+        setStatus("");
+        return;
+      }else{
+        setError("");
+        setStatus("Validating credentials...");
+      }
 
-    const response = await fetch('http://localhost:3000/register', {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json",
-
-        // we are sending the data as json
-
-        }, body: JSON.stringify({email, password}),
-
-        
-
-   
-    });
+      // Send data to the server
+      const response = await fetch('http://localhost:3000/register', {
+          method: "POST",
+          headers: {
+          "Content-Type": "application/json",
+          }, body: JSON.stringify({email, password}),
+      });
+        console.log(JSON.stringify({email, password}))
 
 
-      // now to deal with the response we will use the auth function
-
-
-      console.log(JSON.stringify({email, password}))
-
-
-        // get the data from the request
-
-        const requestData = await response.json();
-
+      // Parses response from server
+      const requestData = await response.json();
         console.log(requestData);
 
-        auth(requestData, response, "register", setStatus, setError);
+      // Authenticate user  
+      auth(requestData, response, "register", setStatus, setError);
 
-        
-  } catch (error) {
-    console.error("Error during login:", error);
-    console.log(error)
-    setError("Login failed. Please try again.");
+    // Error handling for wrong login      
+    } catch (error) {
+      console.error("Error during login:", error);
+      console.log(error)
+      setError("Login failed. Please try again.");
+    }
   }
-}
-
-// display the web form and set register status to the status message of the error or success message
-
 
 return (
     <div className="login-page">

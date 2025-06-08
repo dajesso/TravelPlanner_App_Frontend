@@ -5,6 +5,7 @@ import { filterTripsBy } from '../../utils/filterTrips';
 import DeleteTripConfirmation from '../../components/DeleteTripConfirmation';
 import '../Trips.css';
 
+// Fetch list of trips belonging to the logged in user
 export default function GetAllTrips() {
   const [trips, setTrips] = useState([]);
   const [filteredTrips, setFilteredTrips] = useState([]);
@@ -16,6 +17,7 @@ export default function GetAllTrips() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
+  // Check ownership of trips using auth token
   useEffect(() => {
     async function fetchTrips() {
       try {
@@ -26,17 +28,21 @@ export default function GetAllTrips() {
           }
         });
 
+        // Error handling for wrong token
         if (!res.ok) throw new Error('Failed to fetch trips');
 
+        // Fetches data of trips
         const data = await res.json();
         setTrips(data);
 
+        // Establish fields and filters
         const location = searchParams.get('location') || '';
         const month = searchParams.get('month') || '';
         const year = searchParams.get('year') || '';
         const initialFilters = { location, month, year };
         setFilters(initialFilters);
 
+        // Apply filters to trips and error handling
         const initialFiltered = filterTripsBy(data, initialFilters);
         setFilteredTrips(initialFiltered);
       } catch (err) {
@@ -47,6 +53,7 @@ export default function GetAllTrips() {
     fetchTrips();
   }, []);
 
+  // Handle filters depending on user input
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     const updatedFilters = { ...filters, [name]: value };
@@ -56,6 +63,7 @@ export default function GetAllTrips() {
     setFilteredTrips(filtered);
   };
 
+  // Clear filters and show 'All Trips' again
   const resetFilters = () => {
     const cleared = { location: '', month: '', year: '' };
     setFilters(cleared);
@@ -64,8 +72,10 @@ export default function GetAllTrips() {
     locationInputRef.current?.focus();
   };
 
+  // Take user to the 'Create Trip' page
   const goToCreate = () => navigate('/trips/create');
 
+  // Using token authorise user to delete trip
   const handleDelete = async (tripId) => {
     try {
       const res = await fetch(`http://localhost:3000/trips/${tripId}`, {
@@ -75,8 +85,10 @@ export default function GetAllTrips() {
         }
       });
 
+      // Error handling for unauth user
       if (!res.ok) throw new Error('Failed to delete trip');
 
+      // Filter trips, update list and reapply filters
       const updatedTrips = trips.filter(trip => trip._id !== tripId);
       setTrips(updatedTrips);
       setFilteredTrips(filterTripsBy(updatedTrips, filters));
@@ -86,6 +98,7 @@ export default function GetAllTrips() {
     }
   };
 
+  // Creates month options and formats months for dropdown
   const months = Array.from({ length: 12 }, (_, i) => {
     const val = String(i + 1).padStart(2, '0');
     return { label: val, value: val };

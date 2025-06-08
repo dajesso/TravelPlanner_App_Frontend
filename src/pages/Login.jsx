@@ -26,6 +26,7 @@ export default function Login() {
 
     setStatus('Validating credentials...');
 
+    // Take user input and send it the server
     try {
       const response = await fetch('http://localhost:3000/login', {
         method: 'POST',
@@ -36,11 +37,15 @@ export default function Login() {
       const requestData = await response.json();
       console.log(requestData);
 
+      // Authentication handler
       auth(requestData, response, 'login', setStatus, setError);
 
+      // Redirects user is login is successful
       if (response.ok && requestData.token) {
         navigate('/trips');
       }
+
+    // Error handling  
     } catch (err) {
       console.error('Login error:', err);
       setError('Login failed. Please try again.');
@@ -88,5 +93,3 @@ export default function Login() {
     </div>
   );
 }
-
-
