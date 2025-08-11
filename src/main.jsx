@@ -9,7 +9,9 @@ import Register from './pages/Register.jsx'
 import CreateTrip from './pages/Trips/CreateTrip.jsx'
 import GetAllTrips from './pages/Trips/GetAllTrips.jsx'
 import Expense from './pages/Expense.jsx';
-import Logout from './pages/Logout.jsx';
+
+// 'Logout' available for future use
+// import Logout from './pages/Logout.jsx';
 
 
 
@@ -18,14 +20,13 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Routes>
         {/* Redirect root to login Page */}
-        <Route path="/" element={<Navigate to="/register" />} />
+        <Route path="/" element={<Navigate to="/login" />} />
 
         {/* Layout wrapper */}
         <Route element={<App />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/logout" element={<Logout />} />
-
+          {/* <Route path="/logout" element={<Logout />} /> */}
 
           {/* Create a new trip */}
           <Route path="/trips/create" element={<CreateTrip />} />

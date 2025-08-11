@@ -14,7 +14,7 @@ function CategoryManagerModal({ categories, onClose, onDelete, expenses }) {
       return;
     }
 
-    // clear error first
+    // Clear error first
     setError(""); 
     setCategoryToDelete({ id: categoryId, name: categoryName });
     };

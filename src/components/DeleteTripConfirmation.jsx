@@ -1,6 +1,7 @@
 import React from 'react';
 import './Pop-UpWindow.css';
 
+// Ask user to confirm trip deletion
 export default function DeleteTripConfirmation({ trip, onCancel, onConfirm }) {
   return (
     <div className="modal-backdrop">

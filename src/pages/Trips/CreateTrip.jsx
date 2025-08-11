@@ -4,9 +4,11 @@ import { getToken } from '../../utils/getToken';
 import { formatDateToDDMMYYYY } from '../../utils/formatDate';
 import '../Trips.css';
 
+// Create a new trip entry
 export default function CreateTrip() {
   const navigate = useNavigate();
 
+  // Establish fields to complete
   const [trip, setTrip] = useState({
     location: '',
     arrivalDate: '',
@@ -16,6 +18,7 @@ export default function CreateTrip() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // Handles modifications in the fields
   function handleChange(e) {
     const { name, value } = e.target;
     setTrip(prev => ({ ...prev, [name]: value }));
@@ -37,6 +40,7 @@ export default function CreateTrip() {
       departureDate: formatDateToDDMMYYYY(trip.departureDate)
     };
 
+    // Retrieve token to authorise trip creation
     setLoading(true);
     try {
       const res = await fetch('http://localhost:3000/trips', {
@@ -48,11 +52,13 @@ export default function CreateTrip() {
         body: JSON.stringify(tripToSend)
       });
 
+      // If not token, denies trip creation
       if (!res.ok) {
         const data = await res.json();
         throw new Error(data.error || 'Trip creation failed');
       }
 
+      // After trip creation, user is redirected to 'All Trips'
       navigate('/trips');
     } catch (err) {
       setError(err.message);

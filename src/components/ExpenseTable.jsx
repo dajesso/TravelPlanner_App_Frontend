@@ -7,9 +7,9 @@ import "./ExpenseTable.css";
  * Displays a list of expenses in table or card layout depending on screen size.
  * 
  * Props:
- * - expenses: Array of expense objects to display
- * - onEdit: Function to call when Edit is clicked
- * - onDelete: Function to call when Delete is clicked
+ * expenses: Array of expense objects to display
+ * onEdit: Function to call when Edit is clicked
+ * onDelete: Function to call when Delete is clicked
  */
 
 function ExpenseTable({ expenses, onEdit, onDelete }) {
