@@ -8,7 +8,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: "index.html",
-        login: "login.html", // Add login.html as an entry point
+        // login: "login.html", // Add login.html as an entry point
       },
     },
   },
