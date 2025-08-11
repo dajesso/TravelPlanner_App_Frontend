@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  frontend:
+    build: .
+    image: travelplanner-frontend-image:local
+    ports:
+      - "8080:80"
+    restart: unless-stopped

@@ -1,4 +1,7 @@
 node_modules
 dist
-.dockerignore
-Dockerfile
+.git
+
+# .dockerignore
+# Dockerfile
+
