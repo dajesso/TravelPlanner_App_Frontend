@@ -59,14 +59,10 @@ event.preventDefault();
 
         }, body: JSON.stringify({email, password}),
 
-        
-
-   
     });
 
 
       // now to deal with the response we will use the auth function
-
 
       console.log(JSON.stringify({email, password}))
 
